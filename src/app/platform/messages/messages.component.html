@@ -1,0 +1,378 @@
+<div class="header-bg top-white">
+  <div class="ml-4 mr-5">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+
+          <form class="float-right app-searchx">
+
+            <button class="btn btn-light btn text-dark" type="button"
+                    (click)="triggerModal('open','create_role_modal')" *ngIf="userActivities?.create">
+              <i class="dripicons-mail"></i> Compose
+            </button>
+          </form>
+          <h4 class="page-title"><i class="dripicons-inbox"></i> Messages</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="ml-2 mr-2">
+
+
+    <div class="row">
+      <div class="col-5" *ngIf="authUser?.user_type=='admin'">
+        <form role="form" [formGroup]="messageForm" (ngSubmit)="createMessage()" action="">
+
+          <div class="card m-t-20">
+            <div class="card-header">
+              <div class="pull-right">
+                <div class="btn-group">
+                  <button type="button" class="btn btn-danger waves-effect waves-light m-r-5"><i
+                    class="fa fa-trash-o"></i></button>
+                  <button class="btn btn-purple waves-effect waves-light" [disabled]="sending"
+                          type="submit">
+                    <span>Send</span>
+                    <i class="fa fa-send m-l-10" *ngIf="!sending"></i>
+                    <i class="fa fa-cog fa-spin" *ngIf="sending"></i>
+                  </button>
+                </div>
+
+              </div>
+              <h4><i class="fa fa-pencil"></i> Compose</h4>
+            </div>
+            <div class="card-body">
+
+
+              <div class="form-group">
+                <label for="recipients_list">Recipients:</label>
+                <select formControlName="recipient_id"  class="select2_list" multiple="multiple" id="recipients_list"
+                        name="recipients[]"
+                        multiple="multiple">
+                  <option value="all">All</option>
+                  <option [value]="rcp?.id" *ngFor="let rcp of allRecipients">
+
+                      {{rcp?.full_name}} ({{rcp?.email}})
+
+
+                    <!--<ng-container>-->
+                      <!--{{rcp?.name || rcp?.company_name}}-->
+                      <!--&lt;!&ndash;({{rcp?.email}})&ndash;&gt;-->
+                    <!--</ng-container>-->
+
+
+                  </option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <input type="text" formControlName="subject" class="form-control" placeholder="Subject">
+              </div>
+              <div class="form-group">
+                <input type="text" formControlName="msg_body" class="d-none">
+                <small *ngIf="msgError" class="text-danger">
+                  {{msgError}}
+                </small>
+                <div class="summernote" id="message_note">
+                  <h6>Hello <em>{{authUser?.full_name}}</em></h6>
+                  <ul>
+                    <li>
+                      Write a message.
+                    </li>
+                    <li>
+                      Clear this message to start.
+                    </li>
+                  </ul>
+
+
+                </div>
+
+              </div>
+
+
+            </div>
+
+          </div>
+        </form>
+
+      </div>
+
+
+      <div class="col-{{authUser?.user_type == 'admin' ? '7':'12'}}">
+
+        <div class="card m-t-20">
+          <div class="card-header" id="messageList">
+            <h4><i class="dripicons-mail"></i> All</h4>
+          </div>
+
+
+          <div class="row">
+            <div class="col-md-12">
+              <div class="cardx m-b-20">
+                <div class="card-bodyx">
+                  <!-- Nav tabs -->
+                  <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" data-toggle="tab" href="#home1" role="tab">{{authUser?.user_type=='admin'?'Sent':'Admin Messages'}}</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" data-toggle="tab" href="#profile1" role="tab">Deals Messages</a>
+                    </li>
+                  </ul>
+
+                  <!-- Tab panes -->
+                  <div class="tab-content">
+                    <div class="tab-pane active p-3" id="home1" role="tabpanel">
+
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item" *ngFor="let message of allAppMessages; let i = index">
+
+                          <ul class="message-list">
+                            <li class="">
+                              <div id="messages_accordion" class="card p-2 {{message?.focused ? 'bg-secondary':''}}">
+                                <a href="#collapseTwo{{i}}" (click)="setMessage(message)" data-toggle="collapse"
+                                   aria-expanded="true"
+                                   [attr.aria-controls]="'collapseTwo' + i">
+                                  <div class="col-mail col-mail-1 {{message?.focused ? 'text-white':''}}">
+                                    <div class="checkbox-wrapper-mail bg-primary">
+                                      <i class="fa fa-angle-{{message?.viewing ? 'up':'down'}} text-white"
+                                         style="position: absolute; top: 4px; left: 5px"></i>
+
+                                    </div>
+                                    <p class="title {{message?.focused ? 'text-white':''}}">{{'Inbox'}}
+                                      <span
+                                        *ngIf="message?.recipients?.length - 1">({{message?.recipients?.length - 1}} others)</span>
+                                    </p><span class="star-toggle fa fa-eye{{message?.viewing ? '-slash':''}}"></span>
+                                  </div>
+                                  <div class="col-mail col-mail-2 {{message?.focused ? 'text-white':''}}">
+                                    <div class="subject"><span class="teaser">{{message?.subject}}</span>
+                                    </div>
+                                    <div class="date">{{message?.created_at | date:'mediumDate'}}</div>
+                                  </div>
+                                </a>
+
+                              </div>
+                            </li>
+                          </ul>
+
+
+                          <div class="d-block">
+                            <div id="collapseTwo{{i}}" class="collapse"
+                                 aria-labelledby="messageList" data-parent="#messages_accordion">
+
+
+                              <div class="card m-t-20">
+                                <div class="card-body">
+
+                                  <div class="media m-b-30">
+                                    <img class="d-flex mr-3 rounded-circle thumb-md"
+                                         [src]="message?.user?.business_logo || 'assets/images/small/empty.png'"
+                                         alt="Generic placeholder image">
+                                    <div class="media-body">
+                                      <h4 class="font-14 m-0">{{message?.user?.full_name}}</h4>
+                                      <small class="text-muted">{{message?.user?.email}}</small>
+                                    </div>
+                                  </div>
+
+                                  <h4 class="mt-0 font-18">{{message?.subject}}</h4>
+
+                                  <div [innerHTML]="message?.msg_body |allow">
+
+                                  </div>
+                                  <hr/>
+
+                                  <!--<div class="card-headerx ">-->
+                                  <!--<h6><em>Recipients</em></h6>-->
+                                  <!--</div>-->
+                                  <!--<div class="row mt-1">-->
+                                  <!--<div class="col-sm-2 col-xs-4" *ngFor="let rcp of message?.recipients">-->
+                                  <!--<div class="card m-b-20">-->
+                                  <!--<img class="card-img-top img-fluid" [src]="rcp?.business_logo"-->
+                                  <!--alt="Card image cap">-->
+                                  <!--<div class="p-t-10 p-b-10 text-center">-->
+                                  <!--<a href="mailto:{{rcp?.email}}" class="text-muted font-600">-->
+                                  <!--<small>{{rcp?.email}}</small>-->
+                                  <!--</a>-->
+                                  <!--</div>-->
+                                  <!--</div>-->
+                                  <!--</div>-->
+
+                                  <!--</div>-->
+
+                                  <!--<a href="javascript:void(0)" class="btn btn-secondary waves-effect m-t-30"-->
+                                  <!--*ngIf="userCanAccess && authUser?.user_type !== 'admin'"><i-->
+                                  <!--class="mdi mdi-reply"></i> Reply</a>-->
+                                </div>
+
+                              </div>
+
+
+                            </div>
+
+                          </div>
+
+
+                        </li>
+                        <li class="list-group-item" *ngIf="allAppMessages.length == 0">
+
+                          <div class="spinner" *ngIf="loaders?.processing"></div>
+                          <div class="jumbotron text-center" *ngIf="!loaders?.processing">
+                            No Messages
+                          </div>
+                        </li>
+
+
+
+                      </ul>
+
+                    </div>
+                    <div class="tab-pane p-3" id="profile1" role="tabpanel">
+
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item" *ngFor="let message of allDealMessages; let j = index">
+
+                          <ul class="message-list">
+                            <li class="">
+                              <div id="deal_messages_accordion" class="card p-2 {{message?.focused ? 'bg-secondary':''}}">
+                                <a href="#collapseTwoDeal{{j}}" (click)="setMessage(message)" data-toggle="collapse"
+                                   aria-expanded="true"
+                                   [attr.aria-controls]="'collapseTwoDeal' + j">
+                                  <div class="col-mail col-mail-1 {{message?.focused ? 'text-white':''}}">
+                                    <div class="checkbox-wrapper-mail bg-primary">
+                                      <i class="fa fa-angle-{{message?.viewing ? 'up':'down'}} text-white"
+                                         style="position: absolute; top: 4px; left: 5px"></i>
+
+                                    </div>
+                                    <p class="title {{message?.focused ? 'text-white':''}}">{{'Inbox'}}
+                                      <span
+                                        *ngIf="message?.recipients?.length - 1">({{message?.recipients?.length - 1}} others)</span>
+                                    </p><span class="star-toggle fa fa-eye{{message?.viewing ? '-slash':''}}"></span>
+                                  </div>
+                                  <div class="col-mail col-mail-2 {{message?.focused ? 'text-white':''}}">
+                                    <div class="subject"><span class="teaser">{{message?.subject}}</span>
+                                    </div>
+                                    <div class="date">{{message?.created_at | date:'mediumDate'}}</div>
+                                  </div>
+                                </a>
+
+                              </div>
+                            </li>
+                          </ul>
+
+
+                          <div class="d-block">
+                            <div id="collapseTwoDeal{{j}}" class="collapse"
+                                 aria-labelledby="messageList" data-parent="#messages_accordion">
+
+
+                              <div class="card m-t-20">
+                                <div class="card-body">
+
+                                  <div class="media m-b-30">
+                                    <img class="d-flex mr-3 rounded-circle thumb-md"
+                                         [src]="message?.user?.business_logo || 'assets/images/small/empty.png'"
+                                         alt="Generic placeholder image">
+                                    <div class="media-body">
+                                      <h4 class="font-14 m-0">{{message?.user?.full_name}}</h4>
+                                      <small class="text-muted">{{message?.user?.email}}</small>
+                                    </div>
+                                  </div>
+
+                                  <h4 class="mt-0 font-18">{{message?.subject}}</h4>
+
+                                  <div [innerHTML]="message?.msg_body |allow">
+
+                                  </div>
+                                  <hr/>
+
+                                  <!--<div class="card-headerx ">-->
+                                  <!--<h6><em>Recipients</em></h6>-->
+                                  <!--</div>-->
+                                  <!--<div class="row mt-1">-->
+                                  <!--<div class="col-sm-2 col-xs-4" *ngFor="let rcp of message?.recipients">-->
+                                  <!--<div class="card m-b-20">-->
+                                  <!--<img class="card-img-top img-fluid" [src]="rcp?.business_logo"-->
+                                  <!--alt="Card image cap">-->
+                                  <!--<div class="p-t-10 p-b-10 text-center">-->
+                                  <!--<a href="mailto:{{rcp?.email}}" class="text-muted font-600">-->
+                                  <!--<small>{{rcp?.email}}</small>-->
+                                  <!--</a>-->
+                                  <!--</div>-->
+                                  <!--</div>-->
+                                  <!--</div>-->
+
+                                  <!--</div>-->
+
+                                  <!--<a href="javascript:void(0)" class="btn btn-secondary waves-effect m-t-30"-->
+                                  <!--*ngIf="userCanAccess && authUser?.user_type !== 'admin'"><i-->
+                                  <!--class="mdi mdi-reply"></i> Reply</a>-->
+                                </div>
+
+                              </div>
+
+
+                            </div>
+
+                          </div>
+
+
+                        </li>
+                        <li class="list-group-item" *ngIf="allDealMessages.length == 0">
+
+                          <div class="spinner" *ngIf="loaders?.processing"></div>
+                          <div class="jumbotron text-center" *ngIf="!loaders?.processing">
+                            No Deal Messages
+                          </div>
+                        </li>
+
+
+
+                      </ul>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+          </div>
+
+
+
+
+
+
+
+        </div> <!-- panel -->
+
+        <div class="row m-t-20">
+          <div class="col-7">
+            <b><em>{{allAppMessages?.length  + allDealMessages?.length}} Message{{allAppMessages?.length  + allDealMessages?.length ==1 ? '':'s'}}</em></b>
+          </div>
+          <div class="col-5">
+            <div class="btn-group pull-right">
+              <button type="button" class="btn btn-sm btn-{{focusItem?'secondary':'purple'}} waves-effect"
+                      (click)="focusItem = !focusItem"><i class="dripicons-pin"></i>
+                Focus{{focusItem?'ed':''}}
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+      </div> <!-- end col -->
+
+
+
+    </div> <!-- end row -->
+
+  </div> <!-- end container -->
+</div>

@@ -1,0 +1,743 @@
+<div class="header-bg top-white">
+  <div class="ml-4 mr-5">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+
+          <h4 class="page-title no_button"><i class="fa fa-plus"></i> Create Deal</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="ml-2 mr-2">
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card m-b-20">
+          <div class="card-body">
+
+            <form [formGroup]="createDealForm" (ngSubmit)="createDeal()" id="create_deal_form"
+                  *ngIf="userIsDealRunnerOrOwner && authUser?.has_profile">
+
+
+              <div class="container-fluid">
+
+                <div class="card m-b-20">
+
+
+                  <div class="card-body">
+
+
+                    <!--<h4 class="mt-0 header-title">ENTREPRENEUR<small>@if($isAdmin)<b>: {{$user->name}}</b> @endif </small></h4>-->
+
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-pills" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#general" role="tab">General</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#project_overview" role="tab">Project Overview</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#funding_req" role="tab">Funding Requirements</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#financials" role="tab">Financials</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#team" role="tab">Team</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#key_challenge" role="tab">Key Challenges</a>
+                      </li>
+
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#documents" role="tab">Documents</a>
+                      </li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content" style="min-height: 500px;">
+                      <div class="tab-pane active p-3" id="general" role="tabpanel">
+
+
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="card">
+                              <div class="card-body">
+
+
+                                <p class="text-danger text-center">
+                                  <!--<b>Provide general project details.</b>-->
+
+                                </p>
+
+                                <div class="form-group row">
+                                  <label for="example-text-input" class="col-sm-2 col-form-label">Project Name<span
+                                    class="text-danger">*</span></label>
+                                  <div class="col-sm-10">
+                                    <input class="form-control" type="text" formControlName="project_name"
+                                           name="project_name"
+                                           value="" id="example-text-input">
+                                  </div>
+                                </div>
+                                <div class="form-group row">
+                                  <label for="example-text-input" class="col-sm-2 col-form-label">Project Type<span
+                                    class="text-danger">*</span></label>
+                                  <div class="col-sm-10">
+                                    <select class="form-control" formControlName="project_type" name="project_type">
+                                      <option value="">Select</option>
+                                      <option value="start_up">
+                                        Start Up
+                                      </option>
+                                      <option value="scale_up">
+                                        Scale Up
+                                      </option>
+                                    </select>
+                                  </div>
+                                </div>
+
+                                <div class="form-group row">
+                                  <label for="telephone_input" class="col-sm-2 col-form-label">Telephone<span
+                                    class="text-danger">*</span></label>
+                                  <div class="col-sm-10">
+                                    <input class="form-control" (change)="patchCountryValue()"
+                                           formControlName="telephone" name="telephone" type="text"
+                                           value=""
+                                           id="telephone_input">
+                                  </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                  <label for="country_list" class="col-sm-2 col-form-label">Location<span
+                                    class="text-danger">*</span></label>
+                                  <div class="col-sm-10">
+
+                                    <div class="row">
+                                      <div class="col-md-{{showCity ? '6' :12}}">
+
+                                        <select id="country_list" #countryList (change)="setCountry(countryList.value)"
+                                                class="form-control">
+                                          <option value="">Select Country</option>
+                                          <option *ngFor="let country of allCountries" [value]="country?.name">
+                                            {{country?.name}}
+                                          </option>
+                                        </select>
+                                        <small class="text-muted" style="position: absolute; top: -2px; right: 20px">
+                                          Country
+                                        </small>
+                                      </div>
+                                      <div class="col-md-6" *ngIf="showCity">
+
+                                        <input formControlName="location" type="text" class="form-control" value=""
+                                               placeholder="City e.g, New York">
+                                        <small class="text-muted" style="position: absolute; top: -2px; right: 20px">
+                                          City
+                                        </small>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                  <label class="col-sm-2 col-form-label">Sector<span
+                                    class="text-danger">*</span></label>
+                                  <div class="col-sm-10">
+                                    <select class="form-control" formControlName="sector_id" (change)=setSector($event)
+                                            name="sector_id">
+                                      <option value="">Select</option>
+                                      <option *ngFor="let sector of allSectors; let i = index" [value]="sector | json">
+                                        {{sector?.name}}
+                                      </option>
+
+                                    </select>
+                                  </div>
+                                </div>
+
+                                <div class="form-group row">
+                                  <label class="col-sm-2 col-form-label">Fund Type<span
+                                    class="text-danger">*</span></label>
+                                  <div class="col-sm-10">
+                                    <select class="form-control" formControlName="fund_type_id" name="fund_type_id"
+                                            (change)="setFundType($event)">
+                                      <option value="">Select</option>
+                                      <option *ngFor="let fundType of allFundTypes; let i = index"
+                                              [value]="fundType | json">
+                                        {{fundType?.name}}
+                                      </option>
+
+                                    </select>
+                                  </div>
+                                </div>
+
+                                <div class="form-group row">
+                                  <label class="col-sm-2 col-form-label">Funding Amount ($)<span
+                                    class="text-danger">*</span></label>
+                                  <div class="col-sm-4">
+                                    <input class="form-control" formControlName="funding_amount" name="funding_amount"
+                                           type="number" value=""
+                                           id="create_funding_amount">
+                                  </div>
+                                  <div class="col-sm-3 border-left">
+
+                                  <span class="post-tags">    <b class="mt-2">${{createDealForm?.value?.funding_amount
+                                        | number }}</b></span>
+                                  </div>
+                                  <div class="col-sm-3 border-left">
+                                      <span class="post-tags">    <b class="mt-2">${{createDealForm?.value?.funding_amount
+                                        | number | summarize}}</b></span>
+                                  </div>
+                                </div>
+                                <div class="form-group row">
+                                  <label for="example-email-input" class="col-sm-2 col-form-label">Email<span
+                                    class="text-danger">*</span></label>
+                                  <div class="col-sm-10">
+                                    <input class="form-control" formControlName="email" name="email" type="email"
+                                           value=""
+                                           id="example-email-input">
+                                  </div>
+                                </div>
+
+
+                                <div class="form-group row">
+                                  <label for="example-url-input" class="col-sm-2 col-form-label">Website</label>
+                                  <div class="col-sm-10">
+                                    <input class="form-control" formControlName="website" name="website" type="url"
+                                           value=""
+                                           id="example-url-input">
+                                  </div>
+                                </div>
+
+
+                              </div>
+                            </div>
+                          </div> <!-- end col -->
+                        </div> <!-- end row -->
+
+
+                      </div>
+                      <div class="tab-pane p-3" id="project_overview" role="tabpanel">
+
+                        <div class="row">
+                          <div class="col-md-12">
+
+                            <!-- <h4 class="mt-0 header-title">Company/Project Overview</h4> -->
+                            <p class="text-danger m-b-30 font-14 text-center ">
+
+                              <!--<b>-->
+                              <!--Provide a succinct overview of your organisation-->
+                              <!--or project-->
+                              <!--using the sample headings provided as much as possible.</b>-->
+
+                            </p>
+
+                            <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#problem_situation"
+                                   role="tab">Problem
+                                  Situation</a>
+                              </li>
+
+                              <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#business_model"
+                                   role="tab">Business Model</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#operating_model" role="tab">Operating
+                                  Model</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#target_market" role="tab">Target Market</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#current_status_achievements"
+                                   role="tab">Current
+                                  Achievements</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#future_plans"
+                                   role="tab">Future Plans</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#competition" role="tab">Competition</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#revenue_streams" role="tab">Revenue
+                                  Stream</a>
+                              </li>
+
+                            </ul>
+
+                            <div class="tab-content" style="min-height: 500px;">
+                              <div class="tab-pane active p-3" id="problem_situation" role="tabpanel">
+
+                                <div class="row">
+
+                                  <div class="col-md-12">
+                                    <p class="text-muted"><b>Describe Your Problem Situation</b></p>
+                                    <input type="text" formControlName="problem_situation" id="problem_situation_value"
+                                           name="problem_situation"
+                                           style="display: none">
+                                    <div class="summernote" id="problem_situation_note"></div>
+                                  </div>
+
+                                </div>
+                              </div>
+                              <div class="tab-pane active p-3" id="business_model" role="tabpanel">
+
+                                <div class="row">
+
+                                  <div class="col-md-12">
+                                    <p class="text-muted"><b>Describe your Business Model</b></p>
+                                    <input type="text" formControlName="business_model" id="business_model_value"
+                                           name="business_model" style="display: none">
+                                    <div class="summernote" id="business_model_note"></div>
+                                  </div>
+
+                                </div>
+                              </div>
+
+                              <div class="tab-pane p-3" id="operating_model" role="tabpanel">
+
+                                <div class="row">
+
+                                  <div class="col-md-12">
+                                    <p class="text-muted"><b>Describe Operating Model</b></p>
+                                    <input type="text" formControlName="operating_model" id="operating_model_value"
+                                           name="operating_model" style="display: none">
+                                    <div class="summernote" id="operating_model_note"></div>
+                                  </div>
+                                </div>
+
+                              </div>
+                              <div class="tab-pane p-3" id="target_market" role="tabpanel">
+
+                                <div class="row">
+
+                                  <div class="col-md-12">
+                                    <p class="text-muted"><b>Describe Target Market</b></p>
+                                    <input type="text" formControlName="target_market" id="target_market_value"
+                                           name="target_market" style="display: none">
+                                    <div class="summernote" id="target_market_note"></div>
+                                  </div>
+                                </div>
+
+                              </div>
+
+
+                              <div class="tab-pane p-3" id="current_status_achievements" role="tabpanel">
+                                <div class="row">
+
+                                  <div class="col-md-12">
+                                    <p class="text-muted"><b>Describe Current Status/Achievements</b></p>
+                                    <input type="text" formControlName="current_status_achievements"
+                                           id="current_status_value"
+                                           name="current_status_achievements"
+                                           style="display: none">
+                                    <div class="summernote" id="current_status_note"></div>
+                                  </div>
+
+                                </div>
+                              </div>
+                              <div class="tab-pane p-3" id="future_plans" role="tabpanel">
+                                <div class="row">
+
+                                  <div class="col-md-12">
+                                    <p class="text-muted"><b>Describe your Future Plans</b></p>
+                                    <input type="text" formControlName="future_plans" id="future_plans_value"
+                                           name="future_plans"
+                                           style="display: none">
+                                    <div class="summernote" id="future_plans_note"></div>
+                                  </div>
+                                </div>
+                              </div>
+
+
+                              <div class="tab-pane p-3" id="competition" role="tabpanel">
+                                <div class="row">
+
+                                  <div class="col-md-12">
+                                    <p class="text-muted"><b>Describe Competition</b></p>
+                                    <input type="text" formControlName="competition" id="competition_value"
+                                           name="competition"
+                                           style="display: none">
+                                    <div class="summernote" id="competition_note"></div>
+                                  </div>
+
+                                </div>
+                              </div>
+
+                              <div class="tab-pane p-3" id="revenue_streams" role="tabpanel">
+                                <div class="row">
+
+                                  <div class="col-md-12">
+                                    <p class="text-muted"><b>Describe Revenue Streams</b></p>
+                                    <input type="text" formControlName="revenue_streams" id="revenue_streams_value"
+                                           name="revenue_streams" style="display: none">
+                                    <div class="summernote" id="revenue_streams_note"></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="tab-pane p-3" id="financials" role="tabpanel">
+                        <div class="row">
+                          <div class="col-md-12">
+                            <p class="text-muted m-b-30 font-14 ">
+                              <b>Financials</b>
+                            </p>
+                            <input type="text" formControlName="financials" id="financial_value" name="financials"
+                                   style="display: none">
+                            <div class="summernote" id="financial_note"></div>
+                          </div>
+                          <!--<div class="col-md-6 border-left">-->
+                          <!--<p class="text-muted"><b>Upload Financial Document (optional)</b></p>-->
+                          <!--<div class="m-b-30">-->
+                          <!--<form action="#" class="dropzone">-->
+                          <!--<div class="fallback">-->
+                          <!--<input name="file" type="file" multiple="multiple">-->
+                          <!--</div>-->
+                          <!--</form>-->
+                          <!--</div>-->
+                          <!--</div>-->
+
+
+                        </div>
+                      </div>
+                      <div class="tab-pane p-3" id="funding_req" role="tabpanel">
+                        <div class="row">
+                          <div class="col-md-12">
+
+                            <!-- <h4 class="mt-0 header-title">Company/Project Overview</h4> -->
+                            <p class="text-danger m-b-30 font-14 text-center ">
+                              <!--<b>Describe Funding Requirements.</b>-->
+                            </p>
+
+                            <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#amount_fund_usage" role="tab">Usage
+                                  of
+                                  Funds</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#fund_infused"
+                                   role="tab">Funds
+                                  Infused (Current Indicative Valuation)</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#ownership_structure"
+                                   role="tab"> Ownership Structure</a>
+                              </li>
+
+
+                            </ul>
+
+                            <div class="tab-content" style="min-height: 500px;">
+                              <div class="tab-pane active p-3" id="amount_fund_usage" role="tabpanel">
+
+                                <div class="row">
+
+                                  <div class="col-md-12 pb-3">
+                                    <div class="row">
+                                      <div class="col-md-1">
+                                        <p class="text-muted"><b>Summary:</b></p>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <p style="border: 2px dashed grey; padding: 5px">
+                                          <em *ngIf="createDealForm?.value?.funding_amount">USD <b>{{createDealForm?.value?.funding_amount
+                                            | number |summarize}}</b></em> <em
+                                          *ngIf="createDealForm?.value?.fund_type_id">
+                                          {{selectedFundType?.name?.toLowerCase()?.startsWith('eq') ? 'and
+                                          offering':'as'}} <b>{{selectedFundType?.name |titlecase}} </b></em> <em
+                                          *ngIf="createDealForm?.value?.project_type"> for {{isVowel ?'an':'a'}}
+                                          {{selectedSector?.name|titlecase}} {{createDealForm?.value?.project_type |
+                                          removeUnderscore |titlecase}}</em>
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <p class="text-muted"><b>Describe how funds will be used.</b></p>
+                                    <input type="text" formControlName="fund_usage" id="fund_usage_value"
+                                           name="fund_usage"
+                                           style="display: none">
+                                    <div class="summernote" id="fund_usage_note"></div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="tab-pane p-3" id="fund_infused" role="tabpanel">
+
+                                <div class="row">
+
+                                  <div class="col-md-12">
+                                    <p class="text-muted"><b>Describe funds infused into the business or current
+                                      indicative
+                                      valuation</b></p>
+                                    <input type="text" formControlName="fund_infused_current_indicative"
+                                           id="fund_infused_current_indicative_value" name="operating_model"
+                                           style="display: none">
+                                    <div class="summernote" id="fund_infused_current_indicative_note"></div>
+                                  </div>
+
+                                </div>
+
+                              </div>
+                              <div class="tab-pane p-3" id="ownership_structure" role="tabpanel">
+
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <p class="text-muted"><b>Describe Ownership Structure</b></p>
+                                    <input type="text" formControlName="ownership_structure"
+                                           id="ownership_structure_value"
+                                           name="operating_model"
+                                           style="display: none">
+                                    <div class="summernote" id="ownership_structure_note"></div>
+                                  </div>
+                                </div>
+
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane p-3" id="team" role="tabpanel">
+                        <div class="row">
+                          <div class="col-md-12">
+
+                            <!-- <h4 class="mt-0 header-title">Company/Project Overview</h4> -->
+                            <p class="text-muted m-b-30 font-14 ">
+                              <b>Team Description.</b>
+                            </p>
+
+                            <input type="text" formControlName="team" id="team_value" name="team" style="display: none">
+
+                            <div class="summernote" id="team_note"></div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="tab-pane p-3" id="key_challenge" role="tabpanel">
+                        <div class="row">
+
+                          <div class="col-md-12">
+                            <input type="text" formControlName="key_challenges" id="key_challenge_value"
+                                   name="key_challenges"
+                                   style="display: none">
+
+                            <!-- <h4 class="mt-0 header-title">Company/Project Overview</h4> -->
+                            <p class="text-muted m-b-30 font-14 ">
+                              <b>Key Challenges.</b>
+                            </p>
+
+                            <div class="summernote" id="key_challenge_note"></div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane p-3" id="documents" role="tabpanel">
+
+                        <p class="text-danger m-b-30 font-14 ">
+                          <!--<b>Team Description.</b>-->
+                        </p>
+                        <div class="row">
+                          <div class="col-md-5">
+
+                            <div class="card">
+
+                              <div class="card-header">
+                                <h4>Add Document</h4>
+                              </div>
+
+                              <div class="card-body">
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>Document Name</label>
+                                      <!--<input type="text" #document_name class="form-control" id="document_name"-->
+                                      <!--placeholder="e.g, Financials">-->
+
+                                      <select class="form-control" (change)="setDocument(document_name.value)"
+                                              #document_name name="document_name"
+                                              id="document_name">
+                                        <option value="">Select Document</option>
+                                        <option value="{{doc?.id}}" *ngFor="let doc of allDocsToUpload">
+                                          {{doc?.name}}
+                                        </option>
+                                      </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                      <label>Upload File</label>
+
+
+                                      <div class="custom-file">
+                                        <input type="file" class="custom-file-input mt-3"
+                                               id="document_file" accept=".xlsx,.xls,.pdf,.doc,.docx"
+                                               (change)="uploadFile($event, true)">
+                                        <label class="custom-file-label"
+                                               for="document_file">{{manualPaymentFileName}}</label>
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <!--<div class="col-md-6 card-lined-small scanned-preview">-->
+
+                                  <!--<img [src]="manualPaymentFileUrl" alt="">-->
+
+                                  <!--</div>-->
+
+                                </div>
+                                <div class="mt-3 mr-3" *ngIf="uploadInProgress">
+                                  <div class="progress">
+                                    <div [ngClass]="setProgressStatus(percentageUpload)" role="progressbar"
+                                         [ngStyle]="setProgressBar(percentageUpload)" aria-valuenow="50"
+                                         aria-valuemin="0"
+                                         aria-valuemax="100">
+                                      {{percentageUpload}}
+                                    </div>
+                                  </div>
+                                  <div>
+                                    {{percentageInFraction}}
+                                    <small class="text-{{percentageUpload !== '100%'?'info':'success'}}"><b>complete</b>
+                                    </small>
+                                  </div>
+                                </div>
+
+                              </div>
+                              <div class="card-footer">
+                                <button class="btn waves-effect pull-right"
+                                        (click)="uploadDocumentFile(tempDoc?.name)"
+                                        [disabled]="!manualPaymentFileName || !document_name.value || uploadInProgress"
+                                        [ngClass]="setValidationClass(manualPaymentFileName && document_name.value)">
+                                  <i class="fa fa-plus" *ngIf="!uploadInProgress"></i>
+                                  <i class="fa fa-cog fa-spin" *ngIf="uploadInProgress"></i>
+                                  Add
+                                </button>
+                              </div>
+                            </div>
+
+
+                          </div>
+                          <div class="col-md-7 border-left">
+                            <div class="card" style="min-height: 340px">
+                              <div class="card-header">
+                                <h4>
+                                  Documents List
+                                </h4>
+                              </div>
+
+                              <div class="card-body">
+                                <div class="table">
+                                  <table id="create_documents_table"
+                                         class="table table-striped table-hover table-bordered ">
+                                    <thead>
+                                    <tr>
+                                      <th>Name</th>
+                                      <th>Doc Type</th>
+                                      <th>Date Created</th>
+                                      <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr *ngIf="allDocuments?.length == 0">
+                                      <td colspan="4" class="text-center">No documents available</td>
+
+                                    </tr>
+                                    <tr *ngFor="let doc of allDocuments; let i = index">
+
+                                      <td>{{doc?.name}}</td>
+                                      <td>
+                                        <i class="fa fa-2x fa-file-{{doc?.icon}}"></i>
+                                      </td>
+                                      <td>{{doc?.created_at |date:'mediumDate'}}</td>
+                                      <td>
+                                        <div class="btn-group button btn btn-sm btn-info"
+                                             (click)="downloadDocument(doc)">
+                                          <i class="fa fa-download" *ngIf="!doc?.fetching"></i>
+                                          <i class="fa fa-cog fa-spin" *ngIf="doc?.fetching"></i>
+                                        </div>
+                                        <div class="btn-group button btn btn-sm btn-danger"
+                                             (click)="deleteDocument(doc)"><i class="fa fa-times"></i>
+                                        </div>
+                                      </td>
+
+                                    </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+
+                              <div class="card-footer">
+                                <div class="row">
+                                  <div class="col-md-10"></div>
+                                  <div class="col-md-2"><h6><em>{{allDocuments?.length}} file(s)</em></h6></div>
+
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+
+
+                    </div>
+
+                  </div> <!-- Page content Wrapper -->
+
+
+                  <div class="card-footer" style="bottom: 0">
+                    <div class="pull-right">
+
+                      <button class="btn  waves-effect btn-md" type="submit"
+                              [disabled]="createDealForm.invalid || loaders?.processing"
+                              [ngClass]="setValidationClass(createDealForm.valid)"> {{messages.create}}&nbsp;
+                        <i class="spinner" *ngIf="loaders?.processing"></i>
+                        <i class="fa fa-save" *ngIf="!loaders?.processing"></i>
+                      </button>&nbsp;&nbsp;
+                      <!--<button role="button" type="button" [disabled]="openingOverlay" class="btn btn-secondary btn-lg "-->
+                      <!--(click)="closeOverlay('create_deal_overlay')">Close-->
+                      <!--<i class="fa fa-times" *ngIf="!openingOverlay"></i>-->
+                      <!--<i class="fa fa-cog fa-spin" *ngIf="openingOverlay"></i>-->
+                      <!--</button>-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+
+            <div class="jumbotron text-center" *ngIf="!userIsDealRunnerOrOwner || !authUser?.has_profile">
+              <h4>
+                <ng-container *ngIf="!userIsDealRunnerOrOwner">
+                  This View is not Yours
+
+                </ng-container>
+                <ng-container *ngIf="userIsDealRunnerOrOwner && !authUser?.has_profile">
+                  Please
+                  <a class="btn btn-secondary" (click)="setCreateIntent()" routerLink="/panel/profile-update/{{authUser?.user_ref}}">Update</a>
+                  your profile before you can create a deal
+                </ng-container>
+
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end col -->
+    </div> <!-- end row -->
+
+  </div> <!-- end container -->
+</div>

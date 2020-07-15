@@ -1,0 +1,842 @@
+<div class="header-bg top-white">
+  <div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12 ">
+        <div class="page-title-box mr-3">
+          <form class="float-right app-search">
+            <ng-container *ngIf="!userCanViewAll">
+              <input type="text" placeholder="My Dashboard" class="form-control">
+              <button type="button"><i class="fa fa-search"></i></button>
+            </ng-container>
+            <select name="dashboard_selection" id="" #dashboard_selection class="form-control"
+                    (change)="getDashboardByUser(dashboard_selection.value)" *ngIf="userCanViewAll">
+              <option style="color: black" value="0">{{defaultTitle}} Dashboard</option>
+              <ng-container *ngFor="let user of allUsers;">
+                <option style="color: black" *ngIf="user?.user_type !=='admin'" [value]="user?.id">{{user?.full_name}}
+                </option>
+              </ng-container>
+            </select>
+          </form>
+          <!--<h4 class="page-title ml-3"><i class="dripicons-meter"></i> <em>{{authUser?.user_type?.split('_').join('-->
+            <!--')|titlecase}}</em> Dashboard</h4> -->
+
+          <h4 class="page-title ml-3"><i class="dripicons-meter"></i> <em>{{authUser?.full_name |titlecase}}</em></h4>
+
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+
+
+    <div class="spinner" *ngIf="loaders?.processing"></div>
+  </div>
+</div>
+
+
+<div class="wrapper">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-6 col-xl-4">
+        <div class="card bg-secondary text-white text-center m-b-30">
+          <div class="mb-2 card-body">
+            <div class="row">
+
+
+              <div class="col-md-2">
+                <i class="fa fa-users fa-2x"></i>
+              </div>
+              <div class="col-md-5">
+
+
+                <div class="row">
+                  <ng-container *ngIf="!userIsDealRunnerOrOwner">
+                    <div class="col-md-12">
+                      <span class="badge badge-purple">{{userType=='admin'?'All':'My'}} Deal Runners. ({{dashboardData?.deal_runners_count | number | summarize}})</span>
+                    </div>
+                    <div class="col-md-12">
+                      <span class="badge badge-success">{{userType=='admin'?'All':'My'}} Deal Owners. ({{dashboardData?.deal_owners_count | number | summarize}})</span>
+
+                    </div>
+
+                  </ng-container>
+
+                  <ng-container>
+
+                  </ng-container>
+
+                  <ng-container *ngIf="userType !=='financier'">
+                    <div class="col-md-12">
+                      <span class="badge badge-primary">{{userType=='admin'?'All':'My'}} Financiers. ({{dashboardData?.financiers_count | number | summarize}})</span>
+
+                    </div>
+                  </ng-container>
+
+                  <ng-container *ngIf="userType=='admin'">
+
+                    <div class="col-md-12">
+                      <span class="badge badge-danger">Admin ({{dashboardData?.admin_count | number | summarize}})</span>
+
+                    </div>
+
+
+                  </ng-container>
+
+
+                </div>
+
+
+              </div>
+              <div class="col-md-5">
+                <h3 class="text-white">({{dashboardData?.users_count | number | summarize}})</h3>
+                {{userType=='admin'?'All':'My'}} {{userIsDealRunnerOrOwner?'Financiers':'People'}}
+              </div>
+
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-4">
+        <div class="card bg-info text-white text-center m-b-30">
+          <div class="mb-2 card-body">
+            <div class="row">
+              <div class="col-2">
+                <i class="dripicons-suitcase fa-2x"></i>
+              </div>
+              <div class="col-4">
+                <span class="badge badge-secondary">On-going ({{dashboardData?.ongoing_deals_count | number | summarize}})</span>
+
+              </div>
+              <div class="col-6">
+                <h3 class="text-white">({{dashboardData?.all_deals_count | number | summarize}})</h3>
+                {{userType=='admin'?'All':'My'}} {{userType=='financier'?'Interests':'Deals'}}
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-xl-4">
+
+        <div class="card bg-primary text-center m-b-30">
+          <div class="mb-2 card-body text-white">
+            <div class="pull-left">
+              <i class="fa fa-money fa-2x"></i>
+            </div>
+            <h3 class="text-white">${{dashboardData?.total_value | number |summarize}}</h3>
+            Total Deals' Value
+
+          </div>
+        </div>
+      </div>
+      <!-- end row -->
+
+
+      <!-- end row -->
+
+      <!--<div class="row">-->
+      <!--<div class="col-xl-8">-->
+      <!--<div class="card m-b-30">-->
+      <!--<div class="card-body">-->
+      <!--<h4 class="mt-0 m-b-30 header-title">Latest Transactions</h4>-->
+
+      <!--<div class="table-responsive">-->
+      <!--<table class="table m-t-20 mb-0 table-vertical">-->
+
+      <!--<tbody>-->
+      <!--<tr>-->
+      <!--<td>-->
+      <!--<img src="assets/images/users/avatar-2.jpg" alt="user-image" class="thumb-sm rounded-circle mr-2"/>-->
+      <!--Herbert C. Patton-->
+      <!--</td>-->
+      <!--<td><i class="mdi mdi-checkbox-blank-circle text-success"></i> Confirm</td>-->
+      <!--<td>-->
+      <!--$14,584-->
+      <!--<p class="m-0 text-muted font-14">Amount</p>-->
+      <!--</td>-->
+      <!--<td>-->
+      <!--5/12/2016-->
+      <!--<p class="m-0 text-muted font-14">Date</p>-->
+      <!--</td>-->
+      <!--<td>-->
+      <!--<button type="button" class="btn btn-secondary btn-sm waves-effect">Edit</button>-->
+      <!--</td>-->
+      <!--</tr>-->
+
+      <!--<tr>-->
+      <!--<td>-->
+      <!--<img src="assets/images/users/avatar-3.jpg" alt="user-image" class="thumb-sm rounded-circle mr-2"/>-->
+      <!--Mathias N. Klausen-->
+      <!--</td>-->
+      <!--<td><i class="mdi mdi-checkbox-blank-circle text-warning"></i> Waiting payment</td>-->
+      <!--<td>-->
+      <!--$8,541-->
+      <!--<p class="m-0 text-muted font-14">Amount</p>-->
+      <!--</td>-->
+      <!--<td>-->
+      <!--10/11/2016-->
+      <!--<p class="m-0 text-muted font-14">Date</p>-->
+      <!--</td>-->
+      <!--<td>-->
+      <!--<button type="button" class="btn btn-secondary btn-sm waves-effect">Edit</button>-->
+      <!--</td>-->
+      <!--</tr>-->
+
+      <!--<tr>-->
+      <!--<td>-->
+      <!--<img src="assets/images/users/avatar-4.jpg" alt="user-image" class="thumb-sm rounded-circle mr-2"/>-->
+      <!--Nikolaj S. Henriksen-->
+      <!--</td>-->
+      <!--<td><i class="mdi mdi-checkbox-blank-circle text-success"></i> Confirm</td>-->
+      <!--<td>-->
+      <!--$954-->
+      <!--<p class="m-0 text-muted font-14">Amount</p>-->
+      <!--</td>-->
+      <!--<td>-->
+      <!--8/11/2016-->
+      <!--<p class="m-0 text-muted font-14">Date</p>-->
+      <!--</td>-->
+      <!--<td>-->
+      <!--<button type="button" class="btn btn-secondary btn-sm waves-effect">Edit</button>-->
+      <!--</td>-->
+      <!--</tr>-->
+
+      <!--<tr>-->
+      <!--<td>-->
+      <!--<img src="assets/images/users/avatar-5.jpg" alt="user-image" class="thumb-sm rounded-circle mr-2"/>-->
+      <!--Lasse C. Overgaard-->
+      <!--</td>-->
+      <!--<td><i class="mdi mdi-checkbox-blank-circle text-danger"></i> Payment expired</td>-->
+      <!--<td>-->
+      <!--$44,584-->
+      <!--<p class="m-0 text-muted font-14">Amount</p>-->
+      <!--</td>-->
+      <!--<td>-->
+      <!--7/11/2016-->
+      <!--<p class="m-0 text-muted font-14">Date</p>-->
+      <!--</td>-->
+      <!--<td>-->
+      <!--<button type="button" class="btn btn-secondary btn-sm waves-effect">Edit</button>-->
+      <!--</td>-->
+      <!--</tr>-->
+
+      <!--<tr>-->
+      <!--<td>-->
+      <!--<img src="assets/images/users/avatar-6.jpg" alt="user-image" class="thumb-sm rounded-circle mr-2"/>-->
+      <!--Kasper S. Jessen-->
+      <!--</td>-->
+      <!--<td><i class="mdi mdi-checkbox-blank-circle text-success"></i> Confirm</td>-->
+      <!--<td>-->
+      <!--$8,844-->
+      <!--<p class="m-0 text-muted font-14">Amount</p>-->
+      <!--</td>-->
+      <!--<td>-->
+      <!--1/11/2016-->
+      <!--<p class="m-0 text-muted font-14">Date</p>-->
+      <!--</td>-->
+      <!--<td>-->
+      <!--<button type="button" class="btn btn-secondary btn-sm waves-effect">Edit</button>-->
+      <!--</td>-->
+      <!--</tr>-->
+
+      <!--</tbody>-->
+      <!--</table>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+      <!--<div class="col-xl-4">-->
+      <!--<div class="card m-b-30">-->
+      <!--<div class="card-body">-->
+      <!--<h4 class="mt-0 m-b-15 header-title">Recent Activity Feed</h4>-->
+
+      <!--<ol class="activity-feed mb-0">-->
+      <!--<li class="feed-item">-->
+      <!--<span class="date">Sep 25</span>-->
+      <!--<span class="activity-text">Responded to need “Volunteer Activities”</span>-->
+      <!--</li>-->
+
+      <!--<li class="feed-item">-->
+      <!--<span class="date">Sep 24</span>-->
+      <!--<span class="activity-text">Added an interest “Volunteer Activities”</span>-->
+      <!--</li>-->
+      <!--<li class="feed-item">-->
+      <!--<span class="date">Sep 23</span>-->
+      <!--<span class="activity-text">Joined the group “Boardsmanship Forum”</span>-->
+      <!--</li>-->
+      <!--<li class="feed-item">-->
+      <!--<span class="date">Sep 21</span>-->
+      <!--<span class="activity-text">Responded to need “In-Kind Opportunity”</span>-->
+      <!--</li>-->
+      <!--<li class="feed-item">-->
+      <!--<span class="date">Sep 18</span>-->
+      <!--<span class="activity-text">Created need “Volunteer Activities”</span>-->
+      <!--</li>-->
+      <!--<li class="feed-item pb-2">-->
+      <!--<span class="date">Sep 17</span>-->
+      <!--<span class="activity-text">Attending the event “Some New Event”. Responded to needed</span>-->
+      <!--</li>-->
+      <!--</ol>-->
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+
+
+      <!--</div>-->
+
+
+      <!-- end row -->
+
+    </div> <!-- end container -->
+    <div class="row">
+
+
+      <ng-container *ngIf="authUser?.user_type == 'deal_runner' || authUser?.user_type == 'admin'">
+
+        <div class="col-xl-6">
+          <div class="card m-b-30">
+            <div class="card-body" >
+              <h4 class="mt-0 header-title">Hot Startups & Scaleups<sup class="text-danger"><i
+                class="fa fa-certificate fa-2x"></i></sup></h4>
+
+              <div class="row">
+                <div class="col-xl-12">
+                  <div class="card m-b-30">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table id="xdd" class="table m-t-20 mb-0 table-striped table-hover table-vertical">
+                          <thead>
+                          <tr>
+                            <th><b>#</b></th>
+                            <th>Logo</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>No. of Employees</th>
+
+
+                          </tr>
+                          </thead>
+
+                          <tbody>
+
+
+                          <tr>
+                            <td class="text-center" colspan="5">
+                              No Start ups
+                            </td>
+                          </tr>
+                          </tbody>
+                          <tfoot>
+                          <tr>
+                            <td colspan="7">
+                              <!--<p><span class="text-dark"><b>Today:</b></span> <i>'''</i></p>-->
+                            </td>
+                          </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div class="card m-b-30">
+            <div class="card-body">
+              <h4 class="mt-0 header-title">Hot Financiers<sup class="text-danger"><i
+                class="fa fa-certificate fa-2x"></i></sup></h4>
+
+              <div class="row">
+                <div class="col-xl-12">
+                  <div class="card m-b-30">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table id="xddx" class="table m-t-20 mb-0 table-striped table-hover table-vertical">
+                          <thead>
+                          <tr>
+                            <th><b>#</b></th>
+                            <th>Logo</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>No. of Employees</th>
+
+
+                          </tr>
+                          </thead>
+
+                          <tbody>
+
+
+                          <tr>
+                            <td class="text-center" colspan="5">
+                              No Financiers
+                            </td>
+                          </tr>
+                          </tbody>
+                          <tfoot>
+                          <tr>
+                            <td colspan="7">
+                              <!--<p><span class="text-dark"><b>Today:</b></span> <i>'''</i></p>-->
+                            </td>
+                          </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+
+      <ng-container *ngIf="authUser?.user_type == 'financier'">
+
+        <div class="col-xl-6">
+          <div class="card m-b-30">
+            <div class="card-body" >
+              <h4 class="mt-0 header-title">Hot Startups<sup class="text-danger"><i
+                class="fa fa-certificate fa-2x"></i></sup></h4>
+
+              <div class="row">
+                <div class="col-xl-12">
+                  <div class="card m-b-30">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table id="xddxd" class="table m-t-20 mb-0 table-striped table-hover table-vertical">
+                          <thead>
+                          <tr>
+                            <th><b>#</b></th>
+                            <th>Logo</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>No. of Employees</th>
+
+
+                          </tr>
+                          </thead>
+
+                          <tbody>
+
+
+                          <tr>
+                            <td class="text-center" colspan="5">
+                              No Start ups
+                            </td>
+                          </tr>
+                          </tbody>
+                          <tfoot>
+                          <tr>
+                            <td colspan="7">
+                              <!--<p><span class="text-dark"><b>Today:</b></span> <i>'''</i></p>-->
+                            </td>
+                          </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div class="card m-b-30">
+            <div class="card-body">
+              <h4 class="mt-0 header-title">Hot Scaleups<sup class="text-danger"><i
+                class="fa fa-certificate fa-2x"></i></sup></h4>
+
+              <div class="row">
+                <div class="col-xl-12">
+                  <div class="card m-b-30">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table id="xddxr" class="table m-t-20 mb-0 table-striped table-hover table-vertical">
+                          <thead>
+                          <tr>
+                            <th><b>#</b></th>
+                            <th>Logo</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>No. of Employees</th>
+
+
+                          </tr>
+                          </thead>
+
+                          <tbody>
+
+
+                          <tr>
+                            <td class="text-center" colspan="5">
+                              No Scale ups
+                            </td>
+                          </tr>
+                          </tbody>
+                          <tfoot>
+                          <tr>
+                            <td colspan="7">
+                              <!--<p><span class="text-dark"><b>Today:</b></span> <i>'''</i></p>-->
+                            </td>
+                          </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+
+
+      <ng-container *ngIf="authUser?.user_type == 'deal_owner'">
+
+        <div class="col-xl-6">
+          <div class="card m-b-30">
+            <div class="card-body" >
+              <h4 class="mt-0 header-title">Hot Financiers<sup class="text-danger"><i
+                class="fa fa-certificate fa-2x"></i></sup></h4>
+
+              <div class="row">
+                <div class="col-xl-12">
+                  <div class="card m-b-30">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table id="dealowner_financiers" class="table m-t-20 mb-0 table-striped table-hover table-vertical">
+                          <thead>
+                          <tr>
+                            <th><b>#</b></th>
+                            <th>Logo</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>No. of Employees</th>
+
+
+                          </tr>
+                          </thead>
+
+                          <tbody>
+
+
+                          <tr>
+                            <td class="text-center" colspan="5">
+                              No Financiers
+                            </td>
+                          </tr>
+                          </tbody>
+                          <tfoot>
+                          <tr>
+                            <td colspan="7">
+                              <!--<p><span class="text-dark"><b>Today:</b></span> <i>'''</i></p>-->
+                            </td>
+                          </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div class="card m-b-30">
+            <div class="card-body">
+              <h4 class="mt-0 header-title">Hot DealRunners<sup class="text-danger"><i
+                class="fa fa-certificate fa-2x"></i></sup></h4>
+
+              <div class="row">
+                <div class="col-xl-12">
+                  <div class="card m-b-30">
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table id="dealowner_runners" class="table m-t-20 mb-0 table-striped table-hover table-vertical">
+                          <thead>
+                          <tr>
+                            <th><b>#</b></th>
+                            <th>Logo</th>
+                            <th>Name</th>
+                            <th>Location</th>
+                            <th>No. of Employees</th>
+
+
+                          </tr>
+                          </thead>
+
+                          <tbody>
+
+
+                          <tr>
+                            <td class="text-center" colspan="5">
+                              No Deal Runners
+                            </td>
+                          </tr>
+                          </tbody>
+                          <tfoot>
+                          <tr>
+                            <td colspan="7">
+                              <!--<p><span class="text-dark"><b>Today:</b></span> <i>'''</i></p>-->
+                            </td>
+                          </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
+
+
+
+    </div>
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="cardx m-b-30">
+          <div class="card-bodyx">
+            <h3 class="mt-0 header-title text-center"><em>{{userType=='admin'?'All':'My'}} On-going Deals</em></h3>
+
+            <div class="row">
+              <div class="col-xl-12">
+                <div class="card m-b-30">
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      <table id="dashboard_table" class="table table-striped table-sm table-hover table-bordered mt-3"
+                             cellspacing="0" width="100%">
+                        <thead>
+                        <tr>
+                          <th class="border-right-0"></th>
+                          <th>Business Name</th>
+                          <th>Project Name</th>
+                          <th>Date Initiated</th>
+                          <th>Sector</th>
+                          <th class="text-right">($) Amount</th>
+                          <th>Fund Type</th>
+
+                          <th>Interests</th>
+                          <th>Progress</th>
+
+                          <ng-container *ngIf="!userIsDealRunnerOrOwner">
+
+                            <th>Owner</th>
+                            <th>Portfolio</th>
+                          </ng-container>
+
+                          <th>Status</th>
+                          <!--<th>Action</th>-->
+
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+
+                        <tr *ngIf="ongoingDeals?.length == 0">
+                          <td class="text-center" [attr.colspan]="userIsDealRunnerOrOwner ? '10':'12'">
+                            <span *ngIf="!loaders?.processing">No on-going Deals</span>
+                            <div class="spinner" *ngIf="loaders?.processing"></div>
+                          </td>
+                        </tr>
+
+                        <tr *ngFor="let deal of ongoingDeals; let i=index">
+                          <td class="border-right-0">
+                            <img src="{{ deal?.user?.business_logo || 'assets/images/small/img-3.jpg' }}"
+                                 alt="business-logo" class="thumb-sm rounded-circle mr-2"/>
+
+                          </td>
+
+
+                          <td>
+
+                            {{deal?.user?.dealowner_profile ? deal?.user?.dealowner_profile?.name :
+                            deal?.user?.financier_runner_profile ? deal?.user?.financier_runner_profile?.company_name :
+                            '----' }}
+
+
+                          </td>
+
+                          <td>
+                            <a routerLink="../panel/deals/{{deal?.slug}}">
+
+                              {{deal?.project_name}}
+                            </a>
+                            <br>
+                            <span class="text-white badge badge-{{deal?.project_type =='start_up'?'info':'secondary'}}">{{deal?.project_type| removeUnderscore |titlecase}}</span>
+                          </td>
+
+                          <td>
+                            {{deal?.created_at | date:'mediumDate'}}
+                          </td>
+
+                          <td>
+                            <div class="shorten">{{deal?.sector?.name}}</div>
+                          </td>
+                          <td class="text-right">{{deal?.funding_amount | number | summarize}}</td>
+                          <td>
+                            <div class="shorten">{{deal?.fund_type?.name}}</div>
+                          </td>
+
+
+                          <td>
+                            <div class="{{deal?.process_interests ? 'spinner':'activities_div'}}"
+                                 (click)="viewDealActivities(deal)">
+                              <span class="btn badge badge-purple"><small><b>watching <i class="mdi mdi-heart"></i> &nbsp;({{deal?.watchers?.length |number | summarize}})</b></small></span>
+                              <br>
+                              <span class="btn badge text-white badge-warning"> <small><b>accessing <i
+                                class="mdi mdi-key"></i> &nbsp;({{deal?.accessors?.length |number |summarize}})</b></small></span>
+
+                              <br>
+                              <span class="btn badge text-white badge-success"> <small><b>investing <i
+                                class="fa fa-thumbs-up"></i> &nbsp;({{deal?.investors?.length |number |summarize}})</b></small></span>
+
+                            </div>
+
+                            <div class="blinking" *ngIf="deal?.process_interests"><span
+                              class="badge badge-default">fetching</span></div>
+
+
+                          </td>
+
+
+                          <td>
+                            <div class="progress">
+                              <div class="progress-bar progress-bar-striped progress-bar-animated text-white"
+                                   role="progressbar"
+                                   [ngClass]="setDealProgressStatus(deal?.stage?.step)" role="progressbar"
+                                   [ngStyle]="setDealProgressBar(deal?.stage?.percentage)" aria-valuenow="0"
+                                   aria-valuemin="0"
+                                   aria-valuemax="100">
+
+                                {{deal?.stage?.percentage}}%
+
+                              </div>
+                            </div>
+                            <div>
+
+                              <span class="badge badge-default text-dark">{{deal?.stage?.name}}: <small><em>Stage {{deal?.stage?.step}}</em></small></span>
+
+                            </div>
+
+
+                          </td>
+
+                          <ng-container *ngIf="!userIsDealRunnerOrOwner">
+
+
+                            <td>{{deal?.user?.full_name}}</td>
+
+
+                            <td>{{deal?.user?.user_type| removeUnderscore |titlecase}}</td>
+
+                          </ng-container>
+
+                          <td>
+                            <!--{{deal?.status}}-->
+                            <div class="text-center">
+
+                              <ng-container *ngIf="(authUser && authUser?.user_type?.includes('admin'))">
+                                <select class="form-controlx" (change)="toggleDeal($event,deal)" id="deal_item{{i}}">
+                                  <option value="0" [selected]="deal?.status==0" class="text-danger">Inactive</option>
+                                  <option value="1" [selected]="deal?.status==1" class="text-success">Open</option>
+                                  <option value="2" [selected]="deal?.status==2" class="text-info">Closed</option>
+                                </select>
+                                <br>
+
+                                <span [ngClass]="setClass(deal?.status)"
+                                      *ngIf="!deal?.toggling">{{dealLabel(deal?.status)}}</span>
+                                <span class="text-dark blinking badge badge-default"
+                                      *ngIf="deal?.toggling">{{deal?.toggling}}</span>
+
+                              </ng-container>
+
+                              <ng-container *ngIf="(authUser && !authUser?.user_type?.includes('admin'))">
+                         <span [ngClass]="setClass(deal?.status)"
+                               *ngIf="!deal?.toggling">{{dealLabel(deal?.status)}}</span>
+                              </ng-container>
+
+
+                            </div>
+                          </td>
+                          <!--<td>-->
+
+                          <!--<a  routerLink="../panel/deals/{{deal?.slug}}"><em> view deal</em> <i class="fa fa-eye"></i></a>-->
+
+
+                          <!--</td>-->
+
+                        </tr>
+
+
+                        </tbody>
+                        <!--<tfoot>-->
+                        <!--<tr>-->
+                        <!--<td><b>TOTAL</b></td>-->
+
+                        <!--<td colspan="8" class="text-right">-->
+                        <!--<em>  <b>{{dashboardData?.total_ongoing_value| number}}</b></em>-->
+                        <!--</td>-->
+                        <!--</tr>-->
+                        <!--</tfoot>-->
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

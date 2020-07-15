@@ -1,0 +1,299 @@
+
+
+<form method="POST" id="financier_profile_form" [formGroup]="updateProfileForm" (ngSubmit)="saveFinancierProfile()">
+
+
+
+  <div class="container-fluid">
+
+    <div class="card m-b-20">
+      <div class="card-body">
+
+
+        <p class="text-muted m-b-30 font-14"></p>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#company_description" role="tab">Company Description</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#investment_preferences" role="tab">Investment Preferences</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#history_profile" role="tab">History | Accomplishments</a>
+          </li>
+
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+          <div class="tab-pane active p-3" id="company_description" role="tabpanel">
+
+
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="card m-b-20">
+                  <div class="card-header">
+                    <h4 class="text-center">Company Info</h4>
+                  </div>
+                  <div class="card-body">
+
+
+                    <!--<p class="text-danger m-b-30 font-14"><b>Provide company description.</b></p>-->
+
+                    <div class="form-group row">
+                      <label for="example-text-input" class="col-sm-2 col-form-label"> Name<span class="text-danger">*</span></label>
+                      <div class="col-sm-10">
+                        <input class="form-control" type="text" formControlName="company_name" value="" name="company_name" value="" id="example-text-input">
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="company_address" class="col-sm-2 col-form-label">Description<span class="text-danger">*</span></label>
+                      <div class="col-sm-10">
+                        <textarea name="description" formControlName="description" id="description" class="form-control"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="company_address" class="col-sm-2 col-form-label">Address<span class="text-danger">*</span></label>
+                      <div class="col-sm-10">
+                        <textarea name="company_address" formControlName="company_address" id="company_address" class="form-control"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="example-url-input" class="col-sm-2 col-form-label">Website</label>
+                      <div class="col-sm-10">
+                        <input class="form-control" formControlName="company_website" name="company_website" value="" type="url" value="" id="examplex-url-input">
+                      </div>
+                    </div>
+
+
+
+                  </div>
+                </div>
+              </div> <!-- end col -->
+
+              <div class="col-md-4 border-left">
+                <div class="card-header">
+                  <h4 class="text-center">Contact Details</h4>
+                </div>
+
+                <div class="card-body">
+
+
+
+                  <!-- <div class="form-group row">
+                      <label class="col-sm-2 col-form-label">Sector<span class="text-danger">*</span></label>
+                      <div class="col-sm-10">
+                          <select class="form-control" name="sector_id">
+                              <option>Select</option>
+                              @foreach($allSectors as $sector)
+                              <option value="{{$sector->id}}">{{$sector->name}}</option>
+                              @endforeach
+                          </select>
+                      </div>
+                  </div> -->
+
+                  <div class="form-group row">
+                    <label for="example-text-input" class="col-sm-12 col-form-label">Contact Name<span class="text-danger">*</span></label>
+                    <div class="col-sm-12">
+                      <input class="form-control" formControlName="contact_name" type="text" name="contact_name" value="" value="" id="contact_name">
+                    </div>
+                  </div>
+
+
+
+                  <div class="form-group row">
+                    <label for="example-email-input" class="col-sm-12 col-form-label">Email<span class="text-danger">*</span></label>
+                    <div class="col-sm-12">
+                      <input class="form-control" formControlName="contact_email" name="contact_email" value="" type="email"  id="example-email-input">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="example-tel-input" class="col-sm-12 col-form-label">Phone<span class="text-danger">*</span></label>
+                    <div class="col-sm-12">
+                      <input class="form-control" formControlName="contact_phone" (change)="patchCountryValue()" value="" name="contact_phone" type="tel"   id="contact_phone">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <label for="country_list"  class="col-sm-12 col-form-label"> Location<span class="text-danger">*</span></label>
+                    <div class="row">
+                      <div class="col-md-{{showCity ? '6' :12}}">
+
+                        <select id="country_list" formControlName="country" #countryList (change)="setCountry(countryList.value)" class="form-control">
+                          <option value="">Select Country</option>
+                          <option *ngFor="let country of allCountries" [value]="country?.name">{{country?.name}}
+                          </option>
+                        </select>
+                        <small class="text-muted" style="position: absolute; top: -2px; right: 20px">Country</small>
+                      </div>
+                      <div class="col-md-6" *ngIf="showCity">
+
+                        <input formControlName="location" type="text" class="form-control" value="" placeholder="City e.g, New York">
+                        <small class="text-muted" style="position: absolute; top: -2px; right: 20px">City</small>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2 border-left">
+                <div class="card m-b-30">
+                  <div class="card-header">
+                    <h4 class="text-center">Logo </h4>
+                  </div>
+
+                  <div class="card-body">
+                    <i class="spinner" *ngIf="uploadInProgress"></i>
+                    <img class="card-img-top img-fluid" [src]="imageFileUrl" alt="Card image cap">
+                    <h6 class="card-title text-center text-{{uploadError=='na'?'success':'muted'}}" *ngIf="!uploadError || uploadError=='na'">{{uploadMessage}}</h6>
+                    <h6 class="card-title text-center text-danger" *ngIf="uploadError && uploadError!=='na'"><em>{{uploadMessage}}</em></h6>
+                    <hr>
+                    <div class="mt-3 mr-3" *ngIf="uploadInProgress">
+                      <div class="progress">
+                        <div [ngClass]="setProgressStatus(percentageUpload)" role="progressbar"
+                             [ngStyle]="setProgressBar(percentageUpload)" aria-valuenow="50" aria-valuemin="0"
+                             aria-valuemax="100">
+                          {{percentageUpload}}
+                        </div>
+                      </div>
+                      <div>
+                        {{percentageInFraction}}
+                        <small class="text-{{percentageUpload !== '100%'?'info':'success'}}"><b>complete</b></small>
+                      </div>
+                    </div>
+                    <div class="custom-file" *ngIf="!uploadInProgress">
+                      <input type="file" class="custom-file-input mt-3"
+                             id="document_file" accept=".jpg,.jpeg,.png"
+                             (change)="selectFile($event, true)">
+                      <label class="custom-file-label" for="document_file">{{manualPaymentFileName}}</label>
+
+                      <!--uploadInProgress-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> <!-- end row -->
+
+
+
+
+
+
+
+          </div>
+
+          <div class="tab-pane p-3" id="investment_preferences" role="tabpanel">
+            <div class="row">
+              <div class="col-md-12">
+
+                <!-- <h4 class="mt-0 header-title">Company/Project Overview</h4> -->
+                <p class="text-danger m-b-30 font-14 "><b>Specify Preferences</b></p>
+
+
+                <div class="form-group row">
+                  <label for="example-text-input" class="col-sm-2 col-form-label">Financier Type <small>(Tick all that apply)</small><span class="text-danger">*</span></label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="text" formControlName="financier_type" name="financier_type" value="" id="example-text-inputX">
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label for="company_address" class="col-sm-2 col-form-label">Preferred Deal Size<span class="text-danger">*</span></label>
+                  <div class="col-sm-10">
+                    <input class="form-control" type="text" formControlName="deal_size" name="deal_size" value="" id="example-text-inputY">
+
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                  <label for="example-url-input" class="col-sm-2 col-form-label">Type of Funding</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" formControlName="funding_type" name="funding_type" type="url" value="" id="example-url-inputZ">
+                  </div>
+                </div>
+
+
+                <div class="form-group row">
+                  <label for="example-url-input" class="col-sm-2 col-form-label">Sector</label>
+                  <div class="col-sm-10">
+                    <select formControlName="sector" class="form-control sector_list" id="sector_list"  multiple="multiple" name="sectors[]">
+                      <option value=""  disabled id="enable_scroll">Select</option>
+                      <option [value]="sector?.id" *ngFor="let sector of allSectors">{{sector?.name}}</option>
+
+                    </select>
+                  </div>
+                </div>
+
+
+                <div class="form-group row">
+                  <label for="example-url-input" class="col-sm-2 col-form-label">Africa Focus</label>
+                  <div class="col-sm-10">
+                    <input class="form-control" formControlName="african_focus" name="african_focus" type="url" value="" id="example-url-inputb">
+                  </div>
+                </div>
+              </div>
+              <!-- <div class="col-md-4 border-left ">
+
+                  <div class="card m-b-30">
+                      <div class="card-body">
+
+                          <h4 class="mt-0 header-title">Sample Financials Data</h4>
+                          <p class=" m-b-30 font-14 text-danger">[ Click image to zoom ]</p>
+
+                          <div class="zoom-gallery">
+                              <a class="pull-left" href="{{asset('back/images/small/img-3.jpg')}}" title="Project 1"><img src="{{asset('back/images/small/img-3.jpg')}}" width="275"></a>
+                              <a class="pull-left" href="{{asset('back/images/small/img-7.jpg')}}" title="Project 2"><img src="{{asset('back/images/small/img-7.jpg')}}" width="275"></a>
+                          </div>
+                      </div>
+                  </div>
+              </div> -->
+            </div>
+          </div>
+
+          <div class="tab-pane p-3" id="history_profile" role="tabpanel">
+
+            <div class="row">
+              <div class="col-md-6">
+
+                <h4 class="mt-0 header-title text-danger">Company History</h4>
+                <!-- <p class="text-danger m-b-30 font-14 "><b>Company History.</b></p> -->
+                <input type="text" formControlName="history" id="company_history_value" name="history" style="display: none">
+                <div class="summernote" id="company_history_note"></div>
+              </div>
+              <div class="col-md-6 border-left ">
+
+
+                <h4 class="mt-0 header-title text-danger">Accomplishments</h4>
+                <div class="zoom-gallery">
+                  <input type="text" id="accomplishments_value" formControlName="accomplishments" name="accomplishments" style="display: none">
+                  <div class="summernote" id="accomplishments_note"></div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+      <div class="card-footer">
+        <button class="btn btn-secondary pull-right" role="button" type="submit" ><i class="fa fa-save" *ngIf="!loaders?.processing"></i> <i class="spinner" *ngIf="loaders?.processing"></i> {{messages?.update}}</button>
+
+      </div>
+    </div>
+
+  </div> <!-- Page content Wrapper -->
+
+</form>

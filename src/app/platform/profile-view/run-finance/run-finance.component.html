@@ -1,0 +1,289 @@
+<div class="container-fluid">
+
+  <div class="card m-b-20">
+
+    <div class="card-body">
+
+      <div class="row pb-2">
+        <div class="col-md-3">
+
+          <div class="card m-b-30">
+            <div class="card-header">
+              <h4>{{userType | removeUnderscore |titlecase}} Info <sup *ngIf="isOwner"><span
+                class="badge badge-danger">You</span></sup></h4>
+            </div>
+            <img class="card-img-top img-fluid"
+                 src="{{user?.business_logo || businessLogo}}" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title font-20 mt-0">
+                <a routerLink="/panel/profile-view/{{user?.user_ref}}">{{user?.full_name }}
+                </a>
+              </h4>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <b>Email:</b>
+
+                <a href="mailto:{{user?.email }}"> {{user?.email }}</a>
+              </li>
+              <li class="list-group-item"><b>Phone:</b> <em>
+                {{
+                user?.phone }}</em></li>
+              <li class="list-group-item">
+                <b>Date Joined:</b>
+                {{user?.created_at | date:'mediumDate'}}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-md-3 border-left">
+          <div class="card-header">
+            <h4 class="pb-1">Company  <span class="badge badge-info">
+              <!--Corporate -->
+            </span></h4>
+          </div>
+
+          <div id="accordion">
+            <div class="card">
+              <div class="card-header p-3" id="headingOne">
+                <h6 class="m-0">
+                  <a href="#collapseOne" class="text-dark" data-toggle="collapse"
+                     aria-expanded="true"
+                     aria-controls="collapseOne">
+                    General <i class="fa fa-angle-down"></i>
+                  </a>
+                </h6>
+              </div>
+
+              <div id="collapseOne" class="collapse show"
+                   aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item"><b>Company Name:</b> {{user?.financier_runner_profile?.company_name }}
+                    </li>
+
+                    <li class="list-group-item"><b>Company Description:</b> {{user?.financier_runner_profile?.description}}
+                    </li>
+                    <li class="list-group-item"><b>Company Address:</b> {{user?.financier_runner_profile?.company_address?.split('|')?.join(', ')}}
+                    </li>
+                    <li class="list-group-item"><b>Company Website:</b> {{user?.financier_runner_profile?.company_website }}
+                    </li>
+
+
+
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header p-3" id="headingThree">
+                <h6 class="m-0">
+                  <a href="#collapseThree" class="text-dark collapsed" data-toggle="collapse"
+                     aria-expanded="false"
+                     aria-controls="collapseThree">
+                    Contact <i class="fa fa-angle-down"></i>
+                  </a>
+                </h6>
+              </div>
+              <div id="collapseThree" class="collapse"
+                   aria-labelledby="headingThree" data-parent="#accordion">
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Contact Name:</b> {{user?.financier_runner_profile?.contact_name}}
+                    </li>
+                    <li class="list-group-item"><b>Contact Email:</b> <a href="mailto:{{user?.financier_runner_profile?.contact_email}}"> {{user?.financier_runner_profile?.contact_email}}</a>
+                    </li>
+                    <li class="list-group-item"><b>Contact Phone:</b> {{user?.financier_runner_profile?.contact_phone?.split('___')[1]}}
+                    </li>
+                    <li class="list-group-item"><b>Contact Address:</b> {{user?.financier_runner_profile?.contact_address}}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-header p-3" id="headingTwo">
+                <h6 class="m-0">
+                  <a href="#collapseTwo" class="text-dark collapsed" data-toggle="collapse"
+                     aria-expanded="false"
+                     aria-controls="collapseTwo">
+                    Preferences <i class="fa fa-angle-down"></i>
+
+                  </a>
+                </h6>
+              </div>
+              <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                   data-parent="#accordion">
+                <div class="card-body">
+                  <ul class="list-group list-group-flush">
+
+                    <li class="list-group-item"><b>Deal Size:</b> {{user?.financier_runner_profile?.deal_size}}
+                    </li>
+                    <li class="list-group-item"><b>Interests:</b> {{user?.financier_runner_profile?.financier_type}}
+                    </li>
+                    <li class="list-group-item"><b>Funding Type:</b> {{user?.financier_runner_profile?.funding_type}}
+                    </li>
+                    <li class="list-group-item"><b>Sector:</b> {{user?.financier_runner_profile?.sector}}
+                    </li>
+                    <li class="list-group-item"><b>Africa Focus</b> {{user?.financier_runner_profile?.african_focus}}
+                    </li>
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+
+
+
+        </div>
+        <div class="col-md-6 border-left">
+          <div class="card">
+            <div class="card-header">
+              <h4>
+                {{user?.user_type == 'deal_runner'?'Deals':'Interests'}}
+              </h4>
+            </div>
+
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="runner_finance_deals" class="table table-striped table-sm table-hover table-bordered" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+
+              <th>Project Name</th>
+              <th>Date Initiated</th>
+              <th>Sector</th>
+              <th class="text-right">($) Amount</th>
+              <th>Fund Type</th>
+              <th>Status</th>
+            </tr>
+            </thead>
+
+
+            <tbody>
+
+            <tr *ngIf="loaders?.processing || ownerDeals?.length===0">
+              <td [attr.colspan]="'6'" class="text-center"
+                  *ngIf="loaders?.processing">
+                <div class="spinner"></div>
+              </td>
+              <td [attr.colspan]="'6'" class="text-center"
+                  *ngIf="(!loaders?.processing &&  ownerDeals?.length===0) ">
+                No deals available.
+              </td>
+            </tr>
+
+            <tr *ngFor="let deal of ownerDeals; let i=index">
+
+
+
+              <td>
+                <a routerLink="../../deals/{{deal?.slug}}">
+
+                  {{deal?.project_name}}
+                  <br>
+                  <span class="text-white badge badge-{{deal?.project_type =='start_up'?'info':'secondary'}}">{{deal?.project_type| removeUnderscore |titlecase}}</span>
+                </a>
+              </td>
+
+              <td>
+                {{deal?.created_at | date:'mediumDate'}}
+              </td>
+
+              <td>
+                <div class="shorten">{{deal?.sector?.name}}</div>
+              </td>
+              <td class="text-right">{{deal?.funding_amount | number |summarize}}</td>
+              <td>
+                <div class="shorten">
+                  {{deal?.fundtype?.name || deal?.fund_type?.name}}
+                </div>
+              </td>
+
+
+
+
+
+
+
+
+              <td>
+                <!--{{deal?.status}}-->
+                <div class="text-center">
+
+                  <ng-container *ngIf="(authUser && authUser?.user_type?.includes('admin'))">
+                    <select class="form-controlx" (change)="toggleDeal($event,deal)" id="deal_item{{i}}">
+                      <option value="0" [selected]="deal?.status==0" class="text-danger">Inactive</option>
+                      <option value="1" [selected]="deal?.status==1" class="text-success">Open</option>
+                      <option value="2" [selected]="deal?.status==2" class="text-info">Closed</option>
+                    </select>
+                    <br>
+
+                    <span [ngClass]="setClass(deal?.status)"
+                          *ngIf="!deal?.toggling">{{dealLabel(deal?.status)}}</span>
+                    <span class="text-dark blinking badge badge-default"
+                          *ngIf="deal?.toggling">{{deal?.toggling}}</span>
+
+                  </ng-container>
+
+                  <ng-container *ngIf="(authUser && !authUser?.user_type?.includes('admin'))">
+                         <span [ngClass]="setClass(deal?.status)"
+                               *ngIf="!deal?.toggling">{{dealLabel(deal?.status)}}</span>
+                  </ng-container>
+
+
+                </div>
+              </td>
+
+
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+          </div>
+
+        </div>
+      </div> <!-- end row -->
+
+      <hr style="height: 3px;" class="bg-primary">
+      <div class="row mt-2">
+        <div class="col-md-6">
+          <div class="card-header">
+            <h6>History</h6>
+          </div>
+          <div class="card-body summerview" [innerHTML]="user?.financier_runner_profile?.history">
+
+
+
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card-header">
+            <h6>Accomplishments</h6>
+          </div>
+          <div class="card-body summerview"  [innerHTML]="user?.financier_runner_profile?.accomplishments">
+
+
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div> <!-- Page content Wrapper -->
+
+  </div>
+</div>

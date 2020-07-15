@@ -1,0 +1,165 @@
+<body>
+
+<!-- Loader -->
+<!--<div id="preloader"><div id="status"><div class="spinner"></div></div></div>-->
+
+<!-- Begin page -->
+<div class="accountbg"></div>
+<div class="wrapper-page">
+
+  <div class="card">
+
+    <div class="card-header" style="background-color: #333333">
+      <h3 class="text-center m-0">
+        <a routerLink="" class="logo logo-admin"><img src="assets/front/img/app_logo.png" height="30" alt="logo"></a>
+      </h3>
+    </div>
+
+    <div class="card-body">
+
+
+      <div class="pl-3 pr-3">
+        <!--<h4 class="text-muted font-18 m-b-5 text-center">Welcome Back !</h4>-->
+        <!--<p class="text-muted text-center">Sign in to continue to CHI Portal.</p>-->
+
+        <!--<form class="form-horizontal m-t-30" action="https://themesbrand.com/fonik/purple/index.html">-->
+
+        <!--<div class="form-group">-->
+        <!--<label for="username">Username</label>-->
+        <!--<input type="text" class="form-control" id="username" placeholder="Enter username">-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+        <!--<label for="userpassword">Password</label>-->
+        <!--<input type="password" class="form-control" id="userpassword" placeholder="Enter password">-->
+        <!--</div>-->
+
+        <!--<div class="form-group row m-t-20">-->
+        <!--<div class="col-sm-6">-->
+        <!--<div class="custom-control custom-checkbox">-->
+        <!--<input type="checkbox" class="custom-control-input" id="customControlInline">-->
+        <!--<label class="custom-control-label" for="customControlInline">Remember me</label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-6">-->
+        <!--&lt;!&ndash;<a class="btn btn-primary w-md waves-effect waves-light text-light" routerLink="../portal" type="submit">Log In</a>&ndash;&gt;-->
+        <!--<div>-->
+        <!--<button class="btn btn-primary waves-effect waves-light text-light" (click)="logUserIn()" type="button">-->
+        <!--Log In <i class="spinner" *ngIf="loaders?.processing"></i>-->
+        <!--</button>-->
+        <!--</div>-->
+
+        <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group m-t-10 mb-0 row">-->
+        <!--<div class="col-12 m-t-20">-->
+        <!--<a href="pages-recoverpw.html" class="text-muted"><i class="mdi mdi-lock"></i> Forgot your password?</a>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</form>-->
+        <h4 class="text-muted font-18 mb-3 text-center">LOGIN</h4>
+
+        <form class="form-horizontal m-t-30" [formGroup]="userLoginForm" (ngSubmit)="logUserIn()">
+
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" formControlName="username" id="username"
+                   placeholder="Enter email address">
+          </div>
+
+          <div class="form-group">
+            <label for="userpassword">Password</label>
+            <input type="password" class="form-control" formControlName="password" id="userpassword"
+                   placeholder="Enter password">
+            <span class="float-right" style="position: relative">
+              <i class="mdi mdi-eye password-view" (click)="showPass('show')" *ngIf="viewPassword"></i>
+              <i class="mdi mdi-eye-off password-view" (click)="showPass('hide')" *ngIf="!viewPassword"></i>
+            </span>
+          </div>
+
+          <div class="form-group row m-t-20">
+            <!--<div class="col-sm-12">-->
+            <!--<div class="custom-control custom-radio pull-left">-->
+            <!--<input type="radio" class="custom-control-input" id="customControlInline">-->
+            <!--<label class="custom-control-label" for="customControlInline">DMB</label>-->
+
+            <!--</div>-->
+            <!--<div class="custom-control custom-radio pull-right">-->
+            <!--<input type="radio" class="custom-control-input" id="customControlInline2">-->
+            <!--<label class="custom-control-label" for="customControlInline2">OFI</label>-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="col-sm-12 text-right">
+              <!--<button class="btn w-md waves-effect waves-light pull-right" type="button" (click)="logUserIn()">Log In                         <i class="spinner" *ngIf="loaders?.processing"></i>-->
+              <!--</button>-->
+              <!--<a routerLink="../forgot-password" class="text-primary pull-left font-secondary">-->
+              <!--<i class="mdi mdi-lock"></i> Forgot your password?-->
+              <!--</a>-->
+
+              <div class="btn-group">
+
+                <button class="btn btn-secondary waves-effect waves-light text-light" (click)="goHome()" type="button">
+                  <i class="dripicons-home"></i> Home
+                </button>
+
+                <button class="btn btn-primary waves-effect waves-light text-light" type="submit">
+                  <i class="dripicons-enter"></i> Log In <i class="spinner" *ngIf="loaders?.processing"></i>
+                </button>
+
+
+              </div>
+
+
+            </div>
+
+          </div>
+
+          <!--<div class="form-group m-t-10 mb-0 row">-->
+          <!--<div class="col-12 m-t-20">-->
+          <!--<a href="pages-recoverpw.html" class="text-primary font-secondary">-->
+          <!--<i class="mdi mdi-lock"></i> Forgot your password?-->
+          <!--</a>-->
+          <!--</div>-->
+          <!--</div>-->
+        </form>
+      </div>
+
+      <!--<p class="mt-3 text-center">Don't have an account ? <a href="pages-register.html" class="font-500 font-14 text-primary font-secondary"> Signup Now </a> </p>-->
+
+    </div>
+
+    <div class="card-footer">
+      <a routerLink="../forgot-password" class="text-primary pull-left font-secondary">
+        <i class="mdi mdi-lock"></i> Forgot your password?
+      </a>
+
+
+      <a routerLink="../signup" class="text-primary pull-right font-secondary">
+        <i class="dripicons-question"></i> Sign Up
+      </a>
+    </div>
+
+  </div>
+
+  <div class="text-center mt-2 ">
+    © {{year}} DealRooms
+  </div>
+
+</div>
+
+
+<!--&lt;!&ndash; jQuery  &ndash;&gt;-->
+<!--<script src="assets/js/jquery.min.js"></script>-->
+<!--<script src="assets/js/popper.min.js"></script>-->
+<!--<script src="assets/js/bootstrap.min.js"></script>-->
+<!--<script src="assets/js/modernizr.min.js"></script>-->
+<!--<script src="assets/js/waves.js"></script>-->
+<!--<script src="assets/js/jquery.slimscroll.js"></script>-->
+<!--<script src="assets/js/jquery.nicescroll.js"></script>-->
+<!--<script src="assets/js/jquery.scrollTo.min.js"></script>-->
+
+<!--&lt;!&ndash; App js &ndash;&gt;-->
+<!--<script src="assets/js/app.js"></script>-->
+
+</body>

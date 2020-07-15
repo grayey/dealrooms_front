@@ -1,0 +1,13 @@
+.col-md-12 .badge{
+  width: 150px !important;
+  text-align: left;
+}
+
+.col-4 .badge{
+  width: 150px !important;
+  text-align: left;
+}
+
+.card.bg-info, .card.bg-secondary, .card.bg-primary{
+  height: 8rem !important;
+}

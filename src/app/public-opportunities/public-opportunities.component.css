@@ -1,0 +1,21 @@
+.tiny-tags {
+  width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /*display: inline-block;*/
+  /*background-color: rgb(240, 243, 252);*/
+  /*border-radius: 999px;*/
+  /*-webkit-border-radius: 999px;*/
+  /*-moz-border-radius: 999px;*/
+  /*-ms-border-radius: 999px;*/
+  /*-o-border-radius: 999px;*/
+  /*padding: 4px;*/
+}
+
+
+.deal-img{
+  height: 8rem !important;
+  width: 100% !important;
+}

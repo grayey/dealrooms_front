@@ -1,0 +1,373 @@
+<div class="header-bg">
+  <!-- Navigation Bar-->
+  <header id="topnav">
+    <div class="topbar-main">
+      <div class="container-fluid mt-4">
+
+        <!-- Logo container-->
+        <div class="logo">
+          <!-- Text Logo -->
+          <a routerLink="" class="logo ml-5 mt-2">
+            DealRooms
+          </a>
+          <!-- Image Logo -->
+          <!--<a routerLink="" class="logo">-->
+          <!--<img src="assets/front/img/app_logo.png" alt="" height="22" class="logo-small">-->
+          <!--&lt;!&ndash;<img src="assets/images/logo.png" alt="" height="24" class="logo-large">&ndash;&gt;-->
+          <!--</a>-->
+
+        </div>
+        <!-- End Logo container-->
+
+
+        <div class="menu-extras topbar-custom pt-3">
+
+          <ul class="list-inline float-right mb-0">
+
+            <!-- notification-->
+            <li class="list-inline-item dropdown notification-list">
+              <a class="nav-link dropdown-toggle arrow-none waves-effect" data-toggle="dropdown" href="#" role="button"
+                 aria-haspopup="false" aria-expanded="false">
+                <i class="ti-bell noti-icon"></i>
+                <span class="badge badge-info badge-pill noti-icon-badge">{{allNotifications.length}}</span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right dropdown-arrow dropdown-menu-lg">
+                <!-- item-->
+                <div class="dropdown-item noti-title" style="border-bottom: 1px solid #333333">
+                  <h5>New Notifications ({{allNotifications.length}})</h5>
+                </div>
+
+                <!-- item-->
+                <div class="notification_div">
+
+                  <a href="javascript:void(0);" class="dropdown-item notify-item {{i == 1 ?'active':''}}"
+                     *ngFor="let notification of allNotifications; let i = index">
+                    <div class="notify-icon {{notification?.head?.bg}}"><i class="{{notification?.head?.icon}}"></i>
+                    </div>
+                    <p class="notify-details"><b>{{notification?.head?.line}}</b>
+                      <small class="text-muted">{{notification?.body}}</small>
+                    </p>
+                  </a>
+
+
+                </div>
+
+
+                <!-- All-->
+                <a style="cursor: pointer; " (click)="allNotifications = []" class="dropdown-item notify-item"
+                   routerLink="my-notifications">
+                  View All
+                </a>
+
+              </div>
+            </li>
+            <!-- User-->
+            <li class="list-inline-item dropdown notification-list">
+              <a class="nav-link dropdown-toggle arrow-none waves-effect nav-user" data-toggle="dropdown" href="#"
+                 role="button"
+                 aria-haspopup="false" aria-expanded="false">
+                <img src="assets/front/img/avatars/{{getAvatar(authUser?.full_name)}}.png" alt="user"
+                     class="rounded-circle">
+                <span class="ml-1">{{(authUser)? authUser?.full_name?.split(' ')[0]:''}}
+                  <!--+ " "+ authUser?.full_name?.split(' ')[1][0] : ' '}}.-->
+                  <i
+                    class="mdi mdi-chevron-down"></i> </span>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+                <a class="dropdown-item" style="cursor: pointer" routerLink="../change-password"><i
+                  class="fa fa-refresh text-muted"></i>Password</a>
+                <!--<a class="dropdown-item" href="#"><i class="dripicons-wallet text-muted"></i> My Wallet</a>-->
+                <!--<a class="dropdown-item" href="#"><span class="badge badge-success pull-right m-t-5">5</span><i class="dripicons-gear text-muted"></i> Settings</a>-->
+                <!--<a class="dropdown-item" href="#"><i class="dripicons-lock text-muted"></i> Lock screen</a>-->
+                <!--<div class="dropdown-divider"></div>-->
+                <a class="dropdown-item" (click)="logUserOut()" style="cursor: pointer"><i
+                  class="dripicons-exit text-muted"></i>Logout</a>
+              </div>
+            </li>
+            <li class="menu-item list-inline-item">
+              <!-- Mobile menu toggle-->
+              <a class="navbar-toggle nav-link">
+                <div class="lines">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </a>
+              <!-- End mobile menu toggle-->
+            </li>
+
+          </ul>
+        </div>
+        <!-- end menu-extras -->
+
+        <div class="clearfix"></div>
+
+      </div> <!-- end container -->
+    </div>
+    <!-- end topbar-main -->
+
+    <!-- MENU Start -->
+    <div class="navbar-custom">
+      <div class="container-fluid">
+        <div id="navigation">
+          <!-- Navigation Menu-->
+          <ul class="navigation-menu">
+
+            <li class="has-submenu no_task">
+              <a routerLink="../" class="a_point"><i class="dripicons-home"></i>Website</a>
+            </li>
+
+            <li class="has-submenu no_task">
+              <a (click)="reRoute('')" class="a_point"><i class="dripicons-meter"></i>Dashboard</a>
+            </li>
+
+
+
+
+            <li class="has-submenu no_task">
+              <a class="a_point"><i class="dripicons-user-id"></i>My
+                <!--<em>{{authUser?.user_type| removeUnderscore-->
+                  <!--|titlecase}}</em>-->
+                Profile <i
+                class="mdi mdi-chevron-down mdi-drop"></i></a>
+
+              <ul class="submenu megamenu">
+                <li>
+                  <ul>
+                    <li class="no_task" id="view_profile"><a routerLink="../panel/profile-view/{{authUser?.user_ref}}"
+                                                             class="a_point"><i
+                      class="text-dark mdi mdi-eye "></i> View</a></li>
+                    <li class="no_task" id="update_profile"><a routerLink="../panel/profile-update/{{authUser?.user_ref}}" class="a_point"><i
+                      class="fa text-dark fa-pencil"></i> Update</a></li>
+                  </ul>
+                </li>
+
+              </ul>
+            </li>
+
+
+            <!--<li class="has-submenu task" id="companies_list">-->
+              <!--<a class="a_point"><i class="dripicons-rocket"></i>Companies <i-->
+                <!--class="mdi mdi-chevron-down mdi-drop"></i></a>-->
+              <!--<ul class="submenu megamenu">-->
+                <!--<li>-->
+                  <!--<ul>-->
+                    <!--<li class="no_task" id="create_company"><a (click)="reRoute('/companies.create')" class="a_point">Create</a>-->
+                    <!--</li>-->
+                    <!--<li class="no_task" id="list_start_scale"><a (click)="reRoute('/companies.start-scale')"-->
+                                                                 <!--class="a_point">Startups & Scaleups</a></li>-->
+                    <!--<li class="no_task" id="list_corporates"><a (click)="reRoute('/companies.corporates')"-->
+                                                                <!--class="a_point">Corporates</a>-->
+                    <!--</li>-->
+                  <!--</ul>-->
+                <!--</li>-->
+
+              <!--</ul>-->
+            <!--</li>-->
+
+            <li class="has-submenu no_task" id="deals_list">
+              <a class="a_point"><i class="dripicons-suitcase"></i>{{userType=='admin'?'All':'My'}}
+                {{userType=='financier'?'Interests':'Deals'}}<i
+                class="mdi mdi-chevron-down mdi-drop"></i></a>
+              <ul class="submenu megamenu">
+                <li>
+                  <ul>
+                    <li class="no_task" id="create_deal"><a routerLink="../panel/deals"  class="a_point">
+                      <i
+                        class="mdi mdi-eye text-dark"></i> View</a>
+                    </li>
+                    <li class="no_task" id="view_deals" *ngIf="userType=='deal_runner' || userType=='deal_owner'"><a routerLink="../panel/deals/create"
+                                                                 class="a_point"> <i
+                      class="fa fa-plus text-dark"></i> Create</a>
+                    </li>
+                  </ul>
+                </li>
+
+              </ul>
+            </li>
+
+            <li class="has-submenu no_task">
+              <a routerLink="../panel/opportunities" class="a_point"><i
+                class="dripicons-view-thumb"></i>{{userType=='deal_runner' || userType=='deal_owner' ? 'Opportunities':'Opportunities'}}</a>
+            </li>
+
+            <li class="has-submenu no_task">
+              <a routerLink="../panel/matching-tool" class="a_point"><i class=" mdi mdi-bookmark-outline"></i>Matching
+                Tool</a>
+            </li>
+            <li class="has-submenu no_task">
+              <a routerLink="../panel/messages" class="a_point"><i class="dripicons-inbox"></i>Messages</a>
+            </li>
+
+
+            <!--<li class="has-submenu no_task">-->
+              <!--<a class="a_point"><i class="dripicons-user-group"></i>People <i-->
+                <!--class="mdi mdi-chevron-down mdi-drop"></i></a>-->
+              <!--<ul class="submenu megamenu">-->
+                <!--<li>-->
+                  <!--<ul>-->
+                    <!--<li class="no_task" id="list_dealowners"><a (click)="reRoute('/people.deal-owners')"-->
+                                                                <!--class="a_point"><i-->
+                      <!--class="dripicons-user-group text-dark"></i> Deal Owners</a></li>-->
+                    <!--<li class="no_task" id="list_dealrunners"><a (click)="reRoute('/people.deal-runners')"-->
+                                                                 <!--class="a_point"><i-->
+                      <!--class="dripicons-user-group text-dark"></i> Deal Runners</a></li>-->
+                    <!--<li class="no_task" id="list_investors"><a (click)="reRoute('/people.financiers')" class="a_point"><i-->
+                      <!--class="dripicons-user-group text-dark"></i> Financiers</a></li>-->
+                  <!--</ul>-->
+                <!--</li>-->
+
+              <!--</ul>-->
+            <!--</li>-->
+
+
+            <li class="has-submenu no_task">
+              <a class="a_point"><i class="dripicons-list"></i>More <i
+                class="mdi mdi-chevron-down mdi-drop"></i></a>
+              <ul class="submenu megamenu">
+                <li>
+                  <ul>
+                    <li class="no_task" id="deals_timeline"><a routerLink="../panel/timeline"
+                                                                class="a_point"><i
+                      class="dripicons-list text-dark"></i> Deals Timeline </a></li>
+                  </ul>
+                </li>
+
+              </ul>
+            </li>
+
+            <li class="has-submenu task" id="assign_role_permissions">
+              <a class="a_point"><i class="dripicons-lock"></i>Administration <i
+                class="mdi mdi-chevron-down mdi-drop"></i></a>
+              <ul class="submenu megamenu">
+                <li>
+                  <ul>
+                    <li class="task" id="list_admin"><a (click)="reRoute('/users')" class="a_point">Users</a></li>
+                    <li class="task" id="list_sectors"><a (click)="reRoute('/sectors')" class="a_point">Sectors</a></li>
+                    <li class="task" id="list_roles"><a (click)="reRoute('/roles')" class="a_point">Roles</a></li>
+                    <li class="task" id="list_tasks"><a (click)="reRoute('/tasks')" class="a_point">Tasks</a></li>
+                    <li class="task" id="list_funding_types"><a (click)="reRoute('/tasks')" class="a_point">Funding
+                      Types</a></li>
+                    <li class="task" id="list_business_types"><a (click)="reRoute('/tasks')" class="a_point">Business
+                      Types</a></li>
+                  </ul>
+                </li>
+
+              </ul>
+            </li>
+
+            <!--<li class="has-submenu">-->
+            <!--<a href="#"><i class="dripicons-to-do"></i>Components <i class="mdi mdi-chevron-down mdi-drop"></i></a>-->
+            <!--<ul class="submenu">-->
+            <!--<li class="has-submenu">-->
+            <!--<a href="#">Email</a>-->
+            <!--<ul class="submenu">-->
+            <!--<li><a href="email-inbox.html">Inbox</a></li>-->
+            <!--<li><a href="email-read.html">Email Read</a></li>-->
+            <!--<li><a href="email-compose.html">Email Compose</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<a href="calendar.html">Calendar</a>-->
+            <!--</li>-->
+            <!--<li class="has-submenu">-->
+            <!--<a href="#">Forms</a>-->
+            <!--<ul class="submenu">-->
+            <!--<li><a href="form-elements.html">Form Elements</a></li>-->
+            <!--<li><a href="form-validation.html">Form Validation</a></li>-->
+            <!--<li><a href="form-advanced.html">Form Advanced</a></li>-->
+            <!--<li><a href="form-editors.html">Form Editors</a></li>-->
+            <!--<li><a href="form-uploads.html">Form File Upload</a></li>-->
+            <!--<li><a href="form-mask.html">Form Mask</a></li>-->
+            <!--<li><a href="form-summernote.html">Summernote</a></li>-->
+            <!--<li><a href="form-xeditable.html">Form Xeditable</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li class="has-submenu">-->
+            <!--<a href="#">Icons</a>-->
+            <!--<ul class="submenu">-->
+            <!--<li><a href="icons-material.html">Material Design</a></li>-->
+            <!--<li><a href="icons-ion.html">Ion Icons</a></li>-->
+            <!--<li><a href="icons-fontawesome.html">Font Awesome</a></li>-->
+            <!--<li><a href="icons-themify.html">Themify Icons</a></li>-->
+            <!--<li><a href="icons-dripicons.html">Dripicons</a></li>-->
+            <!--<li><a href="icons-typicons.html">Typicons Icons</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li class="has-submenu">-->
+            <!--<a href="#">Charts</a>-->
+            <!--<ul class="submenu">-->
+            <!--<li><a href="charts-morris.html">Morris Chart</a></li>-->
+            <!--<li><a href="charts-chartist.html">Chartist Chart</a></li>-->
+            <!--<li><a href="charts-chartjs.html">Chartjs Chart</a></li>-->
+            <!--<li><a href="charts-flot.html">Flot Chart</a></li>-->
+            <!--<li><a href="charts-c3.html">C3 Chart</a></li>-->
+            <!--<li><a href="charts-other.html">Jquery Knob Chart</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li class="has-submenu">-->
+            <!--<a href="#">Tables </a>-->
+            <!--<ul class="submenu">-->
+            <!--<li><a href="tables-basic.html">Basic Tables</a></li>-->
+            <!--<li><a href="tables-datatable.html">Data Table</a></li>-->
+            <!--<li><a href="tables-responsive.html">Responsive Table</a></li>-->
+            <!--<li><a href="tables-editable.html">Editable Table</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li class="has-submenu">-->
+            <!--<a href="#">Maps</a>-->
+            <!--<ul class="submenu">-->
+            <!--<li><a href="maps-google.html"> Google Map</a></li>-->
+            <!--<li><a href="maps-vector.html"> Vector Map</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+
+            <!--<li class="has-submenu">-->
+            <!--<a href="#"><i class="dripicons-trophy"></i>Advanced UI <i class="mdi mdi-chevron-down mdi-drop"></i></a>-->
+            <!--<ul class="submenu">-->
+            <!--<li><a href="advanced-animation.html">Animation</a></li>-->
+            <!--<li><a href="advanced-highlight.html">Highlight</a></li>-->
+            <!--<li><a href="advanced-rating.html">Rating</a></li>-->
+            <!--<li><a href="advanced-nestable.html">Nestable</a></li>-->
+            <!--<li><a href="advanced-alertify.html">Alertify</a></li>-->
+            <!--<li><a href="advanced-rangeslider.html">Range Slider</a></li>-->
+            <!--<li><a href="advanced-sessiontimeout.html">Session Timeout</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+
+            <!--<li class="has-submenu">-->
+            <!--<a href="#"><i class="dripicons-copy"></i>Pages <i class="mdi mdi-chevron-down mdi-drop"></i></a>-->
+            <!--<ul class="submenu megamenu">-->
+            <!--<li>-->
+            <!--<ul>-->
+            <!--<li><a href="pages-timeline.html">Timeline</a></li>-->
+            <!--<li><a href="pages-invoice.html">Invoice</a></li>-->
+            <!--<li><a href="pages-directory.html">Directory</a></li>-->
+            <!--<li><a href="pages-login.html">Login</a></li>-->
+            <!--<li><a href="pages-register.html">Register</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--<li>-->
+            <!--<ul>-->
+            <!--<li><a href="pages-recoverpw.html">Recover Password</a></li>-->
+            <!--<li><a href="pages-lock-screen.html">Lock Screen</a></li>-->
+            <!--<li><a href="pages-blank.html">Blank Page</a></li>-->
+            <!--<li><a href="pages-404.html">Error 404</a></li>-->
+            <!--<li><a href="pages-500.html">Error 500</a></li>-->
+            <!--</ul>-->
+            <!--</li>-->
+            <!--</ul>-->
+            <!--</li>-->
+
+          </ul>
+          <!-- End navigation menu -->
+        </div> <!-- end #navigation -->
+      </div> <!-- end container -->
+    </div> <!-- end navbar-custom -->
+  </header>
+  <!-- End Navigation Bar-->
+
+
+</div>

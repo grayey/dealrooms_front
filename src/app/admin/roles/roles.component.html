@@ -1,0 +1,201 @@
+<div id="create_role_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="create_role_modalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <form [formGroup]="createRoleForm" (ngSubmit)="createRole()">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="pull-left">
+            <img class=" modal-logo" src="assets/front/img/app_logo.png">
+
+          </div>
+          <h5 class="modal-title mt-2 ml-5 text-center" id="create_role_modalLabel">Create New Role</h5>
+          <button type="button" class="close " data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Name<span class="required"
+                             *ngIf="hasRequiredField(createRoleForm.get('name'))">*</span></label>
+            <input formControlName="name" type="text" class=" form-control" value="">
+          </div>
+
+          <div class="form-group">
+            <label>Description<span class="required"
+                                    *ngIf="hasRequiredField(createRoleForm.get('description'))">*</span></label>
+            <textarea formControlName="description" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+          <button type="submit" class="" [disabled]="createRoleForm.invalid || loaders?.processing"
+                  [ngClass]="setValidationClass(createRoleForm.valid)">
+            {{messages.create}}&nbsp;
+            <i class="spinner" *ngIf="loaders?.processing"></i>
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </form>
+
+  </div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
+<div id="update_role_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="update_role_modalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <form [formGroup]="updateRoleForm" (ngSubmit)="updateRole()">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="pull-left">
+            <img class=" modal-logo" src="assets/front/img/app_logo.png">
+
+          </div>
+          <h5 class="modal-title mt-2 ml-5 text-center" id="update_role_modalLabel">Edit: <b>{{roleToEdit?.name}}</b>
+          </h5>
+          <button type="button" class="close " data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Name<span class="required"
+                             *ngIf="hasRequiredField(updateRoleForm.get('name'))">*</span></label>
+            <input formControlName="name" type="text" class=" form-control" value="">
+          </div>
+
+          <div class="form-group">
+            <label>Description<span class="required"
+                                    *ngIf="hasRequiredField(updateRoleForm.get('description'))">*</span></label>
+            <textarea formControlName="description" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+          <button type="submit" class="" [disabled]="updateRoleForm.invalid || loaders?.processing"
+                  [ngClass]="setValidationClass(updateRoleForm.valid)">
+            {{messages.update}}&nbsp;
+            <i class="spinner" *ngIf="loaders?.processing"></i>
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </form>
+
+  </div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
+
+
+<div class="header-bg top-white">
+  <div class="ml-4 mr-5">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+
+          <form class="float-right app-searchx">
+
+            <button class="btn btn-light btn text-dark" type="button"
+                    (click)="triggerModal('open','create_role_modal')" *ngIf="userActivities?.create">
+              <i class="dripicons-plus"></i> Create Role
+            </button>
+          </form>
+          <h4 class="page-title"><i class="dripicons-lock-open"></i> Roles</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="ml-2 mr-2">
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card m-b-20">
+          <div class="card-body">
+
+            <div class="table-responsive">
+
+              <table id="roles_table" class="table table-striped table-hover table-bordered mt-3" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                  <th><b>#</b></th>
+                  <th>Name</th>
+                  <th>Description</th>
+                  <th>Date Created</th>
+                  <th>Date Updated</th>
+                  <th>Status</th>
+                  <th>Action</th>
+
+                </tr>
+                </thead>
+
+
+                <tbody>
+
+                <tr *ngIf="loaders?.processing || allRoles?.length===0">
+                  <td colspan="7" class="text-center" *ngIf="loaders?.processing">
+                    <div class="spinner"></div>
+                  </td>
+                  <td colspan="7" class="text-center"
+                      *ngIf="(!loaders?.processing &&  allRoles?.length===0) ">
+                    No roles available.
+                  </td>
+                </tr>
+
+                <tr *ngFor="let role of allRoles; let i=index">
+                  <td><b>{{i+1}}.</b></td>
+                  <td>
+                    <a class="page-nav-link" routerLink="{{role?.slug}}">
+                      {{role?.name}}
+                    </a>
+                  </td>
+                  <td>{{role?.description}}</td>
+                  <td>{{role?.created_at | date:'mediumDate'}}</td>
+                  <td>{{role?.updated_at | date:'mediumDate'}}</td>
+                  <td>
+
+                    <input type="checkbox" id="switch3_{{i}}" switch="bool"
+                           [checked]="role?.enabled" (click)="toggleRole(role)" *ngIf="userActivities?.toggle">
+                    <label for="switch3_{{i}}" [attr.data-on-label]="'on'"
+                           [attr.data-off-label]="'off'"></label>
+
+                    <span [ngClass]="setClassByNumber(role)">
+                      <span *ngIf="!role?.deleting"> {{setStatusLabel(role?.enabled)}}</span>
+
+                       <span class="blinking" *ngIf="role?.deleting">deleting</span>
+                  </span>
+
+                  </td>
+                  <td>
+                    <a class="btn btn-xx btn-info mr-2 text-white" routerLink="{{role?.slug}}"
+
+                    ><i
+                      class="ion-gear-a"></i></a>
+                    <button class="btn btn-xx btn-primary mr-2"
+
+                            (click)="openEditModal(role)" *ngIf="userActivities?.update"><i class="ion-edit"></i>
+                    </button>
+                    <button class="btn btn-xx btn-danger mr-2 text-white"
+
+
+                            [disabled]="role?.deleting" (click)="deleteRole(role)"
+                            *ngIf="userActivities?._delete">
+                      <i *ngIf="!role?.deleting" class="dripicons-cross"></i>
+                      <i *ngIf="role?.deleting" class="fa fa-spin fa-spinner"></i>
+                    </button>
+                  </td>
+
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end col -->
+    </div> <!-- end row -->
+
+  </div> <!-- end container -->
+</div>

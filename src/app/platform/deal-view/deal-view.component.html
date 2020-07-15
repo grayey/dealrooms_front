@@ -1,0 +1,1054 @@
+<div id="close_deal_terms" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="close_deal_terms"
+     aria-hidden="true">
+  <div class="modal-dialog">
+
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="pull-left">
+          <img class=" modal-logo" src="assets/front/img/app_logo.png">
+
+        </div>
+        <h5 class="modal-title mt-2 ml-5 text-center" id="create_role_modalLabel">Closure Agreement <i
+          class="fa fa-handshake"></i></h5>
+        <button type="button" class="close " data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="jumbotron text-center">
+          Closure content here
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-secondary  waves-effect" data-dismiss="modal">Close</button>
+        <button type="button" (click)="shakeClosureHands()" class="btn btn-sm btn-success waves-effect"
+                [disabled]="loaders?.processing || viewedDeal?.finishing">
+          Finish{{viewedDeal?.finishing ? 'ing' : ''}}
+          <i class="fa fa-check" *ngIf="!loaders?.processing && !viewedDeal?.finishing"></i>
+          <i class="spinner" *ngIf="loaders?.processing || viewedDeal?.finishing"></i>
+        </button>
+      </div>
+    </div><!-- /.modal-content -->
+
+
+  </div><!-- /.modal-dialog -->
+
+</div>
+
+
+<div class="header-bg top-white">
+  <div class="ml-4 mr-5">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+
+          <form class="float-right app-searchx">
+
+          </form>
+          <h4 class="page-title no_button"><i class="dripicons-suitcase"></i><em>{{viewedDeal?.project_name}}</em>
+          </h4>
+          <div class="spinner" *ngIf="loaders?.processing"></div>
+
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+
+<div class="container-fluid">
+
+  <div class="card m-b-20">
+
+    <div class="card-header animated fadeInRight"
+         *ngIf="viewedDeal?.user_is_assigned && !finished && !viewedDeal?.closed_by">
+
+      <em class="text-info text-center">You are seeing this because <b>{{viewedDeal?.user?.financier_runner_profile?.company_name
+        || viewedDeal?.user?.dealowner_profile?.name}}</b> is requesting to close this deal with you.</em>
+      <button class="btn btn-sm btn-success pull-right" (click)="triggerModal('open','close_deal_terms')">Shake
+        Hands <i class="fa fa-handshake"></i></button>
+    </div>
+    <div class="card-header animated fadeInRight"
+         *ngIf="viewedDeal?.user_is_accessing && !viewedDeal?.user_is_investing">
+
+      <button class="btn btn-sm btn-success pull-right" (click)="investDeal(viewedDeal)"
+              [disabled]="viewedDeal?.process_invest">Invest <i class="fa fa-thumbs-up"
+                                                                *ngIf="!viewedDeal?.process_invest"></i>
+        <i class="fa fa-cog fa-spin" *ngIf="viewedDeal?.process_invest"></i>
+      </button>
+    </div>
+
+    <div class="card-body">
+
+      <div class="row pb-2">
+        <div class="col-md-3">
+          <h4>Contact Info<sup *ngIf="isOwner"><span class="badge badge-danger">You</span></sup></h4>
+          <div class="card m-b-30">
+            <img class="card-img-top img-fluid"
+                 src="{{viewedDeal?.user?.business_logo || businessLogo}}" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title font-20 mt-0">
+                <a routerLink="/panel/profile-view/{{viewedDeal?.user?.user_ref}}">{{viewedDeal?.user?.dealowner_profile
+                  ? viewedDeal?.user?.dealowner_profile?.name :
+                  viewedDeal?.user?.financier_runner_profile ?
+                  viewedDeal?.user?.financier_runner_profile?.company_name
+                  :
+                  viewedDeal?.user?.full_name }}
+                </a>
+              </h4>
+              <p class="card-text">
+                {{viewedDeal?.user?.dealowner_profile ? viewedDeal?.user?.dealowner_profile?.description :
+                viewedDeal?.user?.financier_runner_profile ?
+                viewedDeal?.user?.financier_runner_profile?.description :
+                null }}
+              </p>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item"><b>Address:</b> <em> {{viewedDeal?.user?.dealowner_profile ?
+                viewedDeal?.user?.dealowner_profile?.location?.split('|')?.join(', ') :
+                viewedDeal?.user?.financier_runner_profile ?
+                viewedDeal?.user?.financier_runner_profile?.company_address?.split('|')?.join(', ')
+                :
+                '' | titlecase }}</em></li>
+
+              <li class="list-group-item">
+                <!--<b>Portfolio Site: </b> -->
+
+                <em> <a target="_blank" href="{{viewedDeal?.user?.dealowner_profile ? viewedDeal?.user?.dealowner_profile?.website :
+                viewedDeal?.user?.financier_runner_profile ? viewedDeal?.user?.financier_runner_profile?.company_website :
+                null }}" class="card-link">{{viewedDeal?.user?.dealowner_profile ?
+                  viewedDeal?.user?.dealowner_profile?.website :
+                  viewedDeal?.user?.financier_runner_profile ?
+                  viewedDeal?.user?.financier_runner_profile?.company_website :
+                  null }}</a></em></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-md-4 border-left">
+          <h4 class="pb-1">Project Summary</h4>
+          <div class="card">
+            <div class="card-body">
+
+
+              <p class="text-danger text-center">
+                <!--<b>Provide general project details.</b>-->
+
+              </p>
+
+
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><b>Synopsis: </b>
+                  <small *ngIf="viewedDeal">USD <b>{{viewedDeal?.funding_amount|number|summarize}}</b>
+                    {{viewedDeal?.fund_type?.name?.toLowerCase()?.startsWith('eq') ? 'and offering':'as'}} <b>{{viewedDeal?.fund_type?.name}}</b>
+                    for {{isVowel ?'an':'a'}}
+                    {{viewedDeal?.sector?.name}} {{viewedDeal?.project_type |removeUnderscore|
+                    titlecase}}
+                  </small>
+                </li>
+                <li class="list-group-item"><b>Project Type:</b> {{viewedDeal?.project_type |removeUnderscore|
+                  titlecase}}
+                </li>
+                <li class="list-group-item"><b>Location:</b> {{viewedDeal?.location}}</li>
+                <li class="list-group-item"><b>Sector:</b> {{viewedDeal?.sector?.name}}</li>
+                <li class="list-group-item"><b>Fund Type:</b> {{viewedDeal?.fund_type?.name}}</li>
+                <li class="list-group-item"><b>Funding Amount:</b> USD {{viewedDeal?.funding_amount|number |
+                  summarize}}
+                </li>
+                <li class="list-group-item"><b>Email:</b> {{viewedDeal?.email}}</li>
+                <li class="list-group-item"><b>Telephone:</b> {{viewedDeal?.telephone}}</li>
+                <li class="list-group-item"><b>Project website:</b>
+                  <a target="_blank" href="{{viewedDeal?.website}}">
+                    {{viewedDeal?.website}}
+                  </a>
+                </li>
+
+
+              </ul>
+
+
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-5 border-left">
+          <div class="card">
+            <div class="card-body">
+
+
+              <p class="text-danger text-center">
+                <!--<b>Provide general project details.</b>-->
+
+              </p>
+
+
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item"><b>Date Initiated:</b> {{viewedDeal?.created_at |
+                  date:'mediumDate'}}
+                </li>
+                <li class="list-group-item"><b>Status:</b>&nbsp; <span [ngClass]="setClass(viewedDeal?.status)">{{dealLabel(viewedDeal?.status)}}</span>
+                </li>
+                <li class="list-group-item"
+                    *ngIf="authUser && (authUser?.user_type == 'admin' || authUser?.id == viewedDeal?.user?.id)">
+
+                  <div class="progress">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated text-white"
+                         role="progressbar"
+                         [ngClass]="setDealProgressStatus(viewedDeal?.stage?.step)" role="progressbar"
+                         [ngStyle]="setDealProgressBar(viewedDeal?.stage?.percentage)" aria-valuenow="0"
+                         aria-valuemin="0"
+                         aria-valuemax="100">
+
+                      {{viewedDeal?.stage?.percentage}}%
+
+                    </div>
+
+                  </div>
+                  <div>
+
+                    <span class="badge badge-default text-dark">{{viewedDeal?.stage?.name}}: <small><em>Stage {{viewedDeal?.stage?.step}}</em></small></span>
+
+                  </div>
+                </li>
+
+                <li class="list-group-item" *ngIf="authUser && (authUser?.user_type == 'financier')">
+
+                  <div class="progress">
+
+                    <div class="progress-bar progress-bar-striped progress-bar-animated text-white"
+                         role="progressbar"
+                         [ngClass]="viewedDeal?.progress_info?.progress_class" role="progressbar"
+                         [ngStyle]="viewedDeal?.progress_info?.progress_bar" aria-valuenow="0"
+                         aria-valuemin="0"
+                         aria-valuemax="100">
+
+                      {{viewedDeal?.progress_info?.percentage}}%
+
+                    </div>
+
+                  </div>
+                  <div>
+
+                    <span [innerHTML]="viewedDeal?.progress_info?.progress_label"></span>
+                  </div>
+                </li>
+
+
+                <li class="list-group-item"><b>Owned By:</b> &nbsp; <span
+                  class="badge badge-{{viewedDeal?.user?.user_type == 'deal_runner'?'info':'success'}}"> {{viewedDeal?.user?.user_type | removeUnderscore |titlecase }}</span>
+                </li>
+
+                <div id="accordion">
+                  <div class="card">
+                    <div class="card-header p-3" id="headingOne">
+                      <div class="pull-right">
+                        <span class="badge badge-default "><em>{{viewedDeal?.watchers?.length |number}}</em> <small
+                          style="color: black"> watcher{{viewedDeal?.watchers?.length=='1'?'':'s'}} <i
+                          class="mdi mdi-heart"></i></small> </span>
+                        <br>
+                        <span class="badge badge-default "><em>{{viewedDeal?.investors?.length |number}}</em> <small
+                          style="color: black"> interest{{viewedDeal?.investors?.length=='1'?'':'s'}} <i
+                          class="fa fa-thumbs-up"></i></small> </span>
+
+
+                      </div>
+                      <h6 class="m-0">
+                        <a href="#collapseOne" class="text-dark" data-toggle="collapse"
+                           aria-expanded="true"
+                           aria-controls="collapseOne">
+                          Interests <i class="fa fa-angle-down"></i>
+                        </a>
+                      </h6>
+                    </div>
+                    <div class="card-bodyx mt-2">
+                      <div id="collapseOne" class="collapse show"
+                           aria-labelledby="headingOne" data-parent="#accordion">
+
+                        <div class="table-responsive">
+
+                          <table id="interested_dealers_table"
+                                 class="table table-striped table-sm table-hover table-bordered "
+                                 cellspacing="0" width="100%">
+                            <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Interest</th>
+                              <ng-container
+                                *ngIf="(authUser && !authUser?.user_type?.includes('admin') && !authUser?.user_type?.includes('financier'))">
+                                <th><em>Operation <i class="fa fa-cogs"></i></em></th>
+                              </ng-container>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let interestedDealer of interestedDealers; let i=index">
+                              <td>
+
+
+                                <img
+                                  src="{{interestedDealer?.user?.business_logo || 'assets/images/small/img-3.jpg'}}"
+                                  alt="user-image"
+                                  class="thumb-sm rounded-circle mr-2"/>
+
+                                <a href="javascript:void(0)"
+                                   (click)="findFinancier(interestedDealer?.user?.user_ref)">
+                                  {{interestedDealer?.user?.dealowner_profile
+                                  ? interestedDealer?.user?.dealowner_profile?.name :
+                                  interestedDealer?.user?.financier_runner_profile ?
+                                  interestedDealer?.user?.financier_runner_profile?.company_name
+                                  :
+                                  interestedDealer?.user?.full_name }}
+
+                                  <sup *ngIf="interestedDealer?.user?.id == authUser?.id"><span
+                                    class="badge badge-danger">You</span></sup>
+                                </a>
+                              </td>
+                              <td>
+                <!--<span *ngIf="interestedDealer?.watching || interestedDealer?.user_is_watching"-->
+                      <!--class="badge-purple badge">watching <i-->
+                  <!--class="mdi mdi-heart"></i></span>&nbsp;-->
+                                <!--<span *ngIf="interestedDealer?.accessing===1"-->
+                                      <!--class="badge-warning badge text-white">accessing <i-->
+                                  <!--class="mdi mdi-key"></i></span>&nbsp;-->
+                                <!--<span *ngIf="interestedDealer?.investing" class="badge-success badge">investing <i-->
+                                  <!--class="fa fa-thumbs-up"></i></span>&nbsp;-->
+
+                                <!--<span class="badge-dark badge"-->
+                                      <!--*ngIf="viewedDeal?.assigned?.includes(interestedDealer?.user?.id)">-->
+
+                                  <!--Handshake-->
+                                  <!--&lt;!&ndash;{{viewedDeal?.closed_by?.id == interestedDealer?.user?.id || interestedDealer?.temp_closed  ? 'Closed' : 'Awaiting'}}&ndash;&gt;-->
+                                            <!--<i class="fa fa-handshake"></i>-->
+
+                                        <!--</span>-->
+                                <!--&nbsp;-->
+
+                                <!--<span class="badge-primary badge"-->
+                                      <!--*ngIf="viewedDeal?.closed?.includes(interestedDealer?.user?.id)">-->
+                                  <!--Closed-->
+                                            <!--<i class="fa fa-angle-double-down"></i>-->
+
+                                        <!--</span>-->
+
+
+                                <div class="progress">
+
+                                  <div class="progress-bar progress-bar-striped progress-bar-animated text-white"
+                                       role="progressbar"
+                                       [ngClass]="interestedDealer?.progress_info?.progress_class" role="progressbar"
+                                       [ngStyle]="interestedDealer?.progress_info?.progress_bar" aria-valuenow="0"
+                                       aria-valuemin="0"
+                                       aria-valuemax="100">
+
+                                    {{interestedDealer?.progress_info?.percentage}}%
+
+                                  </div>
+
+
+
+                                </div>
+
+                                <div>
+
+                                  <span [innerHTML]="interestedDealer?.progress_info?.progress_label"></span>
+                                </div>
+                              </td>
+
+                              <ng-container
+                                *ngIf="(authUser && !authUser?.user_type?.includes('admin') && !authUser?.user_type?.includes('financier') &&
+                                        authUser?.id == viewedDeal?.user?.id)">
+                                <td>
+                                  <ng-container
+                                    *ngIf="!viewedDeal?.assigned?.includes(interestedDealer?.user?.id) && !viewedDeal?.closed_by && !interestedDealer?.closing">
+                                    <select name="" id=""
+                                            (change)="grantUserAccess($event,viewedDeal,interestedDealer)"
+                                            id="gt_access{{i}}">
+                                      <option value="" disabled>Not Available</option>
+                                      <option value="1" [disabled]="interestedDealer?.investing"
+                                              [selected]="interestedDealer?.accessing === 1">Enable Access
+                                      </option>
+                                      <option value="2" [disabled]="interestedDealer?.investing"
+                                              [selected]="interestedDealer?.accessing === 2">Disable Access
+                                      </option>
+
+                                      <option value="3" *ngIf="interestedDealer?.investing">Close Deal</option>
+
+                                    </select>
+                                    <div *ngIf="interestedDealer?.toggling">
+                    <span class="text-dark blinking badge badge-default"
+                    >{{interestedDealer?.toggling}}</span>
+                                    </div>
+                                  </ng-container>
+
+                                  <ng-container
+                                    *ngIf="interestedDealer?.assigned || viewedDeal?.closed_by">
+
+                                    <span class="badge badge-default">{{'Unavailable'}}</span>
+
+                                  </ng-container>
+
+
+                                </td>
+                              </ng-container>
+                            </tr>
+                            </tbody>
+                          </table>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </ul>
+
+
+            </div>
+          </div>
+
+        </div>
+      </div> <!-- end row -->
+
+      <!--<h4 class="mt-0 header-title">ENTREPRENEUR<small>@if($isAdmin)<b>: {{$user->name}}</b> @endif </small></h4>-->
+
+      <hr class="bg-primary" style="height: 3px">
+
+
+      <hr style="height: 3px">
+
+      <div class="extra-info">
+
+
+        <!-- Nav tabs -->
+
+        <div class="extra-content">
+
+
+          <ul class="nav nav-pills pt-2" role="tablist">
+
+            <li class="nav-item">
+              <a class="nav-link active" data-toggle="tab" href="#project_overview" role="tab"><i
+                class="mdi mdi-view-list"></i> Project Overview</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#funding_req" role="tab"><i class="fa fa-money"></i>
+                Funding
+                Requirements</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#financials" role="tab"><i class="fa fa-file"></i>
+                Financials</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#team_key_challenge" role="tab"><i
+                class="fa fa-users"></i>
+                Team &
+                Key Challenges</a>
+            </li>
+            <!--<li class="nav-item">-->
+            <!--<a class="nav-link" data-toggle="tab" href="#key_challenge" role="tab">Key Challenges</a>-->
+            <!--</li>-->
+
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#documents" role="tab"><i
+                class="fa fa-folder-open"></i>
+                Documents</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" data-toggle="tab" href="#deal_messages" role="tab" (click)="openMessages()">
+                <i
+                  class="fa fa-envelope"></i>
+                Messages</a>
+            </li>
+          </ul>
+
+
+          <!-- Tab panes -->
+          <ng-container *ngIf="userCanAccess">
+            <div class="tab-content" style="min-height: 500px;">
+
+              <div class="tab-pane active  p-3" id="project_overview" role="tabpanel">
+
+                <div class="row">
+                  <div class="col-md-12">
+
+                    <!-- <h4 class="mt-0 header-title">Company/Project Overview</h4> -->
+                    <p class="text-danger m-b-30 font-14 text-center ">
+
+                      <!--<b>-->
+                      <!--Provide a succinct overview of your organisation-->
+                      <!--or project-->
+                      <!--using the sample headings provided as much as possible.</b>-->
+
+                    </p>
+
+                    <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#problem_situation_business_model"
+                           role="tab">Problem
+                          Situation & Business Model</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#operating_model_target_market" role="tab">Operating
+                          Model & Target Market</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#current_status_achievements_future_plans"
+                           role="tab">Current
+                          Achievements & Future Plans</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#competition_revenue_streams" role="tab">Competition
+                          &
+                          Revenue Stream</a>
+                      </li>
+
+                    </ul>
+
+                    <div class="tab-content" style="min-height: 500px;">
+                      <div class="tab-pane active p-3" id="problem_situation_business_model" role="tabpanel">
+
+                        <div class="row">
+
+                          <div class="col-md-6">
+                            <p class="text-muted"><b>Problem Situation</b></p>
+
+                            <div class="summernotex" id="problem_situation_note"
+                                 [innerHTML]="viewedDeal?.problem_situation | allow">
+                            </div>
+                          </div>
+                          <div class="col-md-6 border-left">
+                            <p class="text-muted"><b> Business Model</b></p>
+
+                            <div class="summernotex" id="business_model_note"
+                                 [innerHTML]="viewedDeal?.business_model | allow">
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane p-3" id="operating_model_target_market" role="tabpanel">
+
+                        <div class="row">
+
+                          <div class="col-md-6">
+                            <p class="text-muted"><b>Operating Model</b></p>
+
+                            <div class="summernotex" id="operating_model_note"
+                                 [innerHTML]="viewedDeal?.operating_model | allow">
+
+
+                            </div>
+                          </div>
+                          <div class="col-md-6 border-left">
+                            <p class="text-muted"><b>Target Market</b></p>
+
+                            <div class="summernotex" id="target_market_note"
+                                 [innerHTML]="viewedDeal?.target_market | allow">
+
+
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="tab-pane p-3" id="current_status_achievements_future_plans" role="tabpanel">
+                        <div class="row">
+
+                          <div class="col-md-6">
+                            <p class="text-muted"><b>Current Status/Achievements</b></p>
+
+                            <div class="summernotex" id="current_status_note"
+                                 [innerHTML]="viewedDeal?.current_status_achievements | allow">
+
+                            </div>
+                          </div>
+                          <div class="col-md-6 border-left">
+                            <p class="text-muted"><b>Future Plans</b></p>
+
+                            <div class="summernotex" id="future_plans_note"
+                                 [innerHTML]="viewedDeal?.future_plans | allow">
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane p-3" id="competition_revenue_streams" role="tabpanel">
+                        <div class="row">
+
+                          <div class="col-md-6">
+                            <p class="text-muted"><b>Competition</b></p>
+
+                            <div class="summernotex" id="competition_note"
+                                 [innerHTML]="viewedDeal?.competition | allow">
+
+
+                            </div>
+                          </div>
+                          <div class="col-md-6 border-left">
+                            <p class="text-muted"><b> Revenue Streams</b></p>
+
+                            <div class="summernotex" id="revenue_streams_note"
+                                 [innerHTML]="viewedDeal?.revenue_streams | allow">
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="tab-pane p-3" id="financials" role="tabpanel">
+                <div class="row">
+                  <div class="col-md-12">
+                    <p class="text-danger m-b-30 font-14 ">
+                      <!--<b>Key Challenges.</b>-->
+                    </p>
+
+                    <div class="summernotex" id="financial_note" [innerHTML]="viewedDeal?.financials | allow">
+
+
+                    </div>
+                  </div>
+                  <!--<div class="col-md-6 border-left">-->
+                  <!--<p class="text-muted"><b>Upload Financial Document (optional)</b></p>-->
+                  <!--<div class="m-b-30">-->
+                  <!--<form action="#" class="dropzone">-->
+                  <!--<div class="fallback">-->
+                  <!--<input name="file" type="file" multiple="multiple">-->
+                  <!--</div>-->
+                  <!--</form>-->
+                  <!--</div>-->
+                  <!--</div>-->
+
+
+                </div>
+              </div>
+              <div class="tab-pane p-3" id="funding_req" role="tabpanel">
+                <div class="row">
+                  <div class="col-md-12">
+
+                    <!-- <h4 class="mt-0 header-title">Company/Project Overview</h4> -->
+                    <p class="text-danger m-b-30 font-14 text-center ">
+                      <!--<b>Describe Funding Requirements.</b>-->
+                    </p>
+
+                    <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#amount_fund_usage" role="tab">Usage
+                          of
+                          Funds</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#fund_infused_current_indicative"
+                           role="tab">Funds
+                          Infused (Current Indicative Valuation) & Ownership Structure</a>
+                      </li>
+
+
+                    </ul>
+
+                    <div class="tab-content" style="min-height: 500px;">
+                      <div class="tab-pane active p-3" id="amount_fund_usage" role="tabpanel">
+
+                        <div class="row">
+
+                          <div class="col-md-12">
+                            <p class="text-muted"><b>Description of how funds will be used</b></p>
+
+                            <div class="summernotex" id="fund_usage_note"
+                                 [innerHTML]="viewedDeal?.fund_usage | allow"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane p-3" id="fund_infused_current_indicative" role="tabpanel">
+
+                        <div class="row">
+
+                          <div class="col-md-6">
+                            <p class="text-muted"><b>Funds infused current indicative
+                              valuation</b></p>
+
+                            <div class="summernotex" id="fund_infused_current_indicative_note"
+                                 [innerHTML]="viewedDeal?.fund_infused_current_indicative | allow"></div>
+                          </div>
+                          <div class="col-md-6 border-left">
+                            <p class="text-muted"><b>Ownership Structure</b></p>
+                            <div class="summernotex" id="ownership_structure_note"
+                                 [innerHTML]="viewedDeal?.ownership_structure | allow"></div>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane p-3" id="team_key_challenge" role="tabpanel">
+                <div class="row">
+                  <div class="col-md-6">
+
+                    <!-- <h4 class="mt-0 header-title">Company/Project Overview</h4> -->
+                    <p class="text-muted m-b-30 font-14 ">
+                      <b>Team Description.</b>
+                    </p>
+
+
+                    <div class="summernotex" id="team_note" [innerHTML]="viewedDeal?.team | allow"></div>
+                  </div>
+                  <div class="col-md-6 border-left">
+
+
+                    <!-- <h4 class="mt-0 header-title">Company/Project Overview</h4> -->
+                    <p class="text-muted m-b-30 font-14 ">
+                      <b>Key Challenges.</b>
+                    </p>
+
+                    <div class="summernotex" id="key_challenge_note"
+                         [innerHTML]="viewedDeal?.key_challenges | allow"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tab-pane p-3" id="documents" role="tabpanel">
+
+                <p class="text-danger m-b-30 font-14 ">
+                  <!--<b>Team Description.</b>-->
+                </p>
+                <div class="row">
+
+                  <div class="col-md-12">
+                    <div class="card" style="min-height: 340px">
+                      <div class="card-header">
+                        <h4>
+                          Documents List
+                        </h4>
+                      </div>
+
+                      <div class="card-body">
+                        <div class="table">
+                          <table id="all_documents_table"
+                                 class="table table-striped table-hover table-bordered ">
+                            <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Doc Type</th>
+                              <th>Date Created</th>
+                              <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngIf="allDocuments?.length == 0">
+                              <td colspan="4" class="text-center">No documents available</td>
+
+                            </tr>
+                            <tr *ngFor="let doc of allDocuments; let i = index">
+
+                              <td>{{doc?.name}}</td>
+                              <td>
+                                <i class="fa fa-2x fa-file-{{doc?.icon}}"></i>
+                              </td>
+                              <td>{{doc?.created_at |date:'mediumDate'}}</td>
+                              <td>
+                                <div class="btn-group button btn btn-sm btn-info"><i class="fa fa-eye"></i>
+                                </div>
+
+                              </td>
+
+                            </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+
+                      <div class="card-footer">
+                        <div class="row">
+                          <div class="col-md-10"></div>
+                          <div class="col-md-2"><h6><em>{{allDocuments?.length}} file(s)</em></h6></div>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div class="tab-pane p-3" id="deal_messages" role="tabpanel">
+
+                <p class="text-danger m-b-30 font-14 ">
+                  <!--<b>Team Description.</b>-->
+                </p>
+                <div class="row">
+
+                  <div class="col-md-5">
+                    <form role="form" [formGroup]="messageForm" (ngSubmit)="createMessage()" action="">
+
+                      <div class="card m-t-20">
+                        <div class="card-header">
+                          <div class="pull-right">
+                            <div class="btn-group" *ngIf="userCanAccess && authUser?.user_type !== 'admin'">
+                              <button type="button" class="btn btn-danger waves-effect waves-light m-r-5"><i
+                                class="fa fa-trash-o"></i></button>
+                              <button class="btn btn-purple waves-effect waves-light" [disabled]="sending"
+                                      type="submit">
+                                <span>Send</span>
+                                <i class="fa fa-send m-l-10" *ngIf="!sending"></i>
+                                <i class="fa fa-cog fa-spin" *ngIf="sending"></i>
+                              </button>
+                            </div>
+
+                          </div>
+                          <h4><i class="fa fa-pencil"></i> Compose</h4>
+                        </div>
+                        <div class="card-body">
+
+
+                          <div class="form-group">
+                            <label for="recipients_list">Recipient{{isOwner ? '(s)':''}}:</label>
+                            <select formControlName="recipient_id" class="select2_list" multiple="multiple"
+                                    id="recipients_list"
+                                    [disabled]="!isOwner"
+                                    name="recipients[]"
+                                    multiple="multiple">
+                              <option [value]="rcp?.id" *ngFor="let rcp of allRecipients" [selected]="!isOwner">
+                                <ng-container *ngIf="isOwner">
+                                  {{rcp?.company_name}}
+                                  ({{rcp?.contact_email}})
+                                </ng-container>
+                                <ng-container *ngIf="!isOwner">
+                                  {{rcp?.name || rcp?.company_name}}
+                                  <!--({{rcp?.email}})-->
+                                </ng-container>
+
+
+                              </option>
+                            </select>
+                          </div>
+
+                          <div class="form-group">
+                            <input type="text" formControlName="subject" class="form-control"
+                                   placeholder="Subject">
+                          </div>
+                          <div class="form-group">
+                            <input type="text" formControlName="msg_body" class="d-none">
+                            <small *ngIf="msgError" class="text-danger">
+                              {{msgError}}
+                            </small>
+                            <div class="summernote" id="message_note">
+                              <h6>Hello <em>{{authUser?.full_name}}</em></h6>
+                              <ul>
+                                <li>
+                                  Write a message to the owner of this deal,
+                                  <em>{{viewedDeal?.user?.full_name}}</em>
+                                  requesting extra information, documents, etc.
+                                </li>
+                                <li>
+                                  Clear this message to start.
+                                </li>
+                              </ul>
+
+
+                            </div>
+
+                          </div>
+
+
+                        </div>
+
+                      </div>
+                    </form>
+
+                  </div>
+
+                  <div class="col-md-7 border-left">
+
+                    <div class="card m-t-20">
+                      <div class="card-header" id="messageList">
+                        <h4><i class="dripicons-mail"></i> All</h4>
+                      </div>
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item" *ngFor="let message of allMessages; let i = index">
+
+                          <ul class="message-list">
+                            <li class="">
+                              <div id="messages_accordion"
+                                   class="card p-2 {{message?.focused ? 'bg-secondary':''}}">
+                                <a href="#collapseTwo{{i}}" (click)="setMessage(message)" data-toggle="collapse"
+                                   aria-expanded="true"
+                                   [attr.aria-controls]="'collapseTwo' + i">
+                                  <div class="col-mail col-mail-1 {{message?.focused ? 'text-white':''}}">
+                                    <div class="checkbox-wrapper-mail bg-primary">
+                                      <i class="fa fa-angle-{{message?.viewing ? 'up':'down'}} text-white"
+                                         style="position: absolute; top: 4px; left: 5px"></i>
+
+                                    </div>
+                                    <p class="title {{message?.focused ? 'text-white':''}}">{{'Inbox'}}
+                                      <span
+                                        *ngIf="message?.recipients?.length - 1">({{message?.recipients?.length - 1}} others)</span>
+                                    </p><span
+                                    class="star-toggle fa fa-eye{{message?.viewing ? '-slash':''}}"></span>
+                                  </div>
+                                  <div class="col-mail col-mail-2 {{message?.focused ? 'text-white':''}}">
+                                    <div class="subject"><span class="teaser">{{message?.subject}}</span>
+                                    </div>
+                                    <div class="date">{{message?.created_at | date:'mediumDate'}}</div>
+                                  </div>
+                                </a>
+
+                              </div>
+                            </li>
+                          </ul>
+
+
+                          <div class="d-block">
+                            <div id="collapseTwo{{i}}" class="collapse"
+                                 aria-labelledby="messageList" data-parent="#messages_accordion">
+
+
+                              <div class="card m-t-20">
+                                <div class="card-body">
+
+                                  <div class="media m-b-30">
+                                    <img class="d-flex mr-3 rounded-circle thumb-md"
+                                         src="assets/images/users/avatar-2.jpg"
+                                         alt="Generic placeholder image">
+                                    <div class="media-body">
+                                      <h4 class="font-14 m-0">Humberto D. Champion</h4>
+                                      <small class="text-muted">support@domain.com</small>
+                                    </div>
+                                  </div>
+
+                                  <h4 class="mt-0 font-18">{{message?.subject}}</h4>
+
+                                  <div [innerHTML]="message?.msg_body |allow">
+
+                                  </div>
+                                  <hr/>
+
+                                  <div class="card-headerx ">
+                                    <h6><em>Recipients</em></h6>
+                                  </div>
+                                  <div class="row mt-1">
+                                    <div class="col-sm-2 col-xs-4" *ngFor="let rcp of message?.recipients">
+                                      <div class="card m-b-20">
+                                        <img class="card-img-top img-fluid" [src]="rcp?.business_logo"
+                                             alt="Card image cap">
+                                        <div class="p-t-10 p-b-10 text-center">
+                                          <a href="mailto:{{rcp?.email}}" class="text-muted font-600">
+                                            <small>{{rcp?.email}}</small>
+                                          </a>
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                  </div>
+
+                                  <a href="javascript:void(0)" class="btn btn-secondary waves-effect m-t-30"
+                                     *ngIf="userCanAccess && authUser?.user_type !== 'admin'"><i
+                                    class="mdi mdi-reply"></i> Reply</a>
+                                </div>
+
+                              </div>
+
+
+                            </div>
+
+                          </div>
+
+
+                        </li>
+
+                      </ul>
+
+
+                    </div> <!-- panel -->
+
+                    <div class="row m-t-20">
+                      <div class="col-7">
+                        <b><em>{{allMessages?.length}} Message{{allMessages?.length==1 ? '':'s'}}</em></b>
+                      </div>
+                      <div class="col-5">
+                        <div class="btn-group pull-right">
+                          <button type="button"
+                                  class="btn btn-sm btn-{{focusItem?'secondary':'purple'}} waves-effect"
+                                  (click)="focusItem = !focusItem"><i class="dripicons-pin"></i>
+                            Focus{{focusItem?'ed':''}}
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+
+                  </div>
+                </div>
+
+              </div>
+
+
+            </div>
+          </ng-container>
+
+          <div class="jumbotron" style="min-height: 300px" *ngIf="!userCanAccess">
+            <h4 class="text-center mt-5">
+              INACCESSIBLE DATA
+            </h4>
+          </div>
+
+
+        </div>
+
+        <div class="access-overlay" *ngIf="!userCanAccess">
+
+          <div class="card">
+            <div class="card-header">
+              <div class="pull-right">
+                <div class="btn-group">
+                  <ng-container *ngIf="!authUser">
+                    <button class="btn btn-info btn-sm waves-effect" (click)="reRoute('login')">Login <i
+                      class="fa fa-sign-in"></i></button>
+                    <button class="btn btn-secondary btn-sm waves-effect" (click)="reRoute('signup')">SignUp <i
+                      class="fa fa-user-plus"></i></button>
+                  </ng-container>
+
+                  <ng-container *ngIf="authUser && authUser?.user_type == 'financier' && !userCanAccess">
+                    <button class="btn btn-purple btn-sm waves-effect" [disabled]="viewedDeal?.process_watch"
+                            (click)="requestAccess(viewedDeal)" *ngIf="!userIsWaiting">
+                      Request{{viewedDeal?.process_watch ? 'ing':''}} Access <i class="mdi mdi-key"
+                                                                                *ngIf="!viewedDeal?.process_watch"></i>
+                      <i class="fa fa-cog fa-spin" *ngIf="viewedDeal?.process_watch"></i>
+                    </button>
+
+                    <span *ngIf="userIsWaiting" class="badge badge-info">Currently Awaiting Access</span>
+
+                  </ng-container>
+                </div>
+              </div>
+              <h4 class="text-center">Project Breakdown Unavailable</h4>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+
+
+    </div> <!-- Page content Wrapper -->
+    <div class="card-footer" style="bottom: 0">
+      <div class="pull-right">
+        <img class=" modal-logo" src="assets/front/img/app_logo.png">
+
+      </div>
+    </div>
+  </div>
+</div>

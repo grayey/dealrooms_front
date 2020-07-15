@@ -1,0 +1,246 @@
+<!--<div id="preloader" *ngIf="loaders.processing">-->
+<!--<div id="status">-->
+<!--<div class="spinner"></div>-->
+<!--</div>-->
+<!--</div>-->
+
+
+<div class="header-bg top-white">
+  <div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+          <form class="float-right app-search">
+            <b>Today:</b> {{today}}
+          </form>
+          <h4 class="page-title"><i class="dripicons-briefcase"></i><b>Role:</b> {{viewedRole?.name}} </h4>
+          <div class="spinner" *ngIf="loaders?.processing"></div>
+
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+
+  </div>
+</div>
+
+
+<div class="card m-b-20 pull-up">
+  <div class="card-body">
+
+    <h4 class="mt-0 header-title"><img class="pull-right modal-logo" src="assets/front/img/app_logo.png" height="100">
+    </h4>
+    <div class="text-muted m-b-30 font-14">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a class="page-nav-link" routerLink="../">Roles</a></li>
+          <li class="breadcrumb-item active" aria-current="page">
+            <small>{{viewedRole?.name}}</small>
+          </li>
+        </ol>
+      </nav>
+    </div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs nav-tabs-custom" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active show" data-toggle="tab" href="#home1" role="tab"
+           aria-selected="true">Role Information</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#profile1" role="tab" aria-selected="false">Permissions</a>
+      </li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content mt-4">
+      <div class="tab-pane p-3 active show" id="home1" role="tabpanel">
+
+
+        <div class="row">
+          <div class="col-4">
+            <div class="card card-lined">
+              <h4 class="mt-2 ml-2 m-b-15 header-title"><b>General</b></h4>
+              <ol class="activity-feed mb-0">
+                <li class="feed-item">
+                  <span class="date">Name</span>
+                  <span class="activity-text">{{viewedRole?.name}}</span>
+                </li>
+                <li class="feed-item">
+                  <span class="date">Description</span>
+                  <span class="activity-text">{{viewedRole?.description}}</span>
+                </li>
+                <li class="feed-item">
+                  <span class="date">No. of {{viewedRole?.name | titlecase}} Staff</span>
+                  <span class="activity-text">{{viewedRole?.users?.length}}</span>
+                </li>
+
+
+                <li class="feed-item">
+                  <span class="date">Date Created</span>
+                  <span class="activity-text">{{viewedRole?.created_at |date:'mediumDate'}}</span>
+                </li>
+                <li class="feed-item">
+                  <span class="date">Last Updated</span>
+                  <span class="activity-text">{{viewedRole?.updated_at |date:'mediumDate'}}</span>
+                </li>
+
+                <li class="feed-item">
+                  <span class="date">Status</span>
+                  <span class="activity-text">
+                                        <span *ngIf="viewedRole?.enabled===1">
+                                        <i class="mdi mdi-checkbox-blank-circle text-success"></i>
+                                        Active
+                                            </span>
+                                        <span *ngIf="viewedRole?.enabled===0">
+                                        <i class="mdi mdi-checkbox-blank-circle text-danger"></i>
+                                        Inactive
+                                            </span>
+                                    </span>
+                </li>
+
+              </ol>
+            </div>
+
+          </div>
+          <div class="col-8">
+            <div class="card p-3 card-lined">
+              <h4 class="mt-2 ml-2 m-b-15 header-title"><b>{{viewedRole?.name|titlecase}} <span
+                *ngIf="viewedRole?.name">Staff</span></b></h4>
+              <table
+                class="table table-striped table-bordered" cellspacing="0"
+                width="100%">
+                <thead>
+                <tr>
+                  <th><b>#</b></th>
+                  <th><b>Full Name</b></th>
+                  <th><b>Email</b></th>
+                  <th><b>Phone</b></th>
+                  <th><b>Date Created</b></th>
+                  <th><b>Date Updated</b></th>
+
+                </tr>
+                </thead>
+
+
+                <tbody>
+                <tr *ngIf="loaders?.processing || viewedRole?.users?.length===0">
+                  <td colspan="7" class="text-center" *ngIf="loaders?.processing">
+                    <div class="spinner"></div>
+                  </td>
+                  <td colspan="7" class="text-center"
+                      *ngIf="(!loaders?.processing &&  viewedRole?.users?.length===0) || !viewedRole?.users ">
+                    No {{viewedRole?.name}} found.
+                  </td>
+                </tr>
+                <tr *ngFor="let user of  viewedRole?.users; let ind=index">
+                  <td>{{ind+1}}.</td>
+                  <td>{{user?.name |titlecase}}</td>
+                  <td>{{user?.email}}</td>
+                  <td>{{user?.phone}}</td>
+                  <td><span>{{user?.created_at |date :'mediumDate'}}</span></td>
+                  <td><span>{{user?.updated_at |date :'mediumDate'}}</span></td>
+
+                </tr>
+
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="top_assignment"></div>
+      <div class="tab-pane p-3" id="profile1" role="tabpanel">
+        <div class="pull-right">
+          <div class="mr-4 mt-4">
+            <div class="custom-control custom-checkbox">
+
+              <input type="checkbox" [checked]="allChecked" class="custom-control-input" id="customControlInline_selectall" (click)="toggleAll()">
+              <label class="custom-control-label" for="customControlInline_selectall"><b class="{{allChecked ? 'text-danger':'text-primary'}}">{{allChecked ? 'Uncheck':'Check'}} all?</b></label>
+
+            </div>
+          </div>
+
+        </div>
+        <h3 class="text-center">
+          <i class="fa fa-cogs"></i> &nbsp;&nbsp; Manage <b><i>{{viewedRole?.name |titlecase}}'s</i></b> Permissions
+        </h3>
+
+
+        <div class="text-center" *ngIf="!viewedRole?.tasks">loading permissions <span class="blinking">..</span></div>
+
+
+        <div id="accordion">
+          <div class="row table-responsive">
+            <table id="tasks_list"
+                   class="table table-striped table-hover table-bordered" cellspacing="0"
+                   width="100%">
+              <thead>
+              <tr>
+                <th><b>#</b></th>
+                <th><b>Name</b></th>
+                <th><b>Label</b></th>
+                <th><b>Select</b></th>
+
+              </tr>
+              </thead>
+
+
+              <tbody>
+              <tr *ngIf="loaders?.processing || viewedRole?.tasks?.length===0">
+                <td colspan="7" class="text-center" *ngIf="loaders?.processing">
+                  <div class="spinner"></div>
+                </td>
+                <td colspan="7" class="text-center"
+                    *ngIf="(!loaders?.processing &&  allTasks?.length===0) ">
+                  No tasks have been assigned to {{viewedRole?.name}}.
+                </td>
+              </tr>
+              <tr *ngFor="let task of  allTasks; let ind=index">
+                <td>{{ind+1}}.</td>
+                <td>{{task?.name| removeUnderscore  |titlecase}}</td>
+                <td>{{task?.action}} <span class="badge badge-success" *ngIf="assignedTaskIds?.includes(task?.id)">assigned</span>
+                </td>
+                <td>
+                  <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customControlInline{{task?.id}}"
+                           [checked]="assignedTaskIds?.includes(task?.id)" (click)="setSelection(task['id'])">
+                    <label class="custom-control-label" for="customControlInline{{task?.id}}"></label>
+                  </div>
+
+                </td>
+
+              </tr>
+
+
+              </tbody>
+
+              <tfoot>
+              <tr>
+                <td colspan="4">
+                  <div class="pull-right">
+                    <button (click)="saveAssigment()"
+                            [ngClass]="setValidationClass(!loaders.processing && assignedTaskIds.length > 0)"
+                            [disabled]="loaders.processing || assignedTaskIds.length == 0"><i
+                      class="fa fa-spinner fa-spin" *ngIf="loaders.processing"></i> <i class="fa fa-save"
+                                                                                       *ngIf="!loaders.processing"></i>
+                      {{messages.create | uppercase}} ASSIGNMENT
+                    </button>
+                  </div>
+                </td>
+              </tr>
+              </tfoot>
+            </table>
+            <div id="save_assignment"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+
+</div>

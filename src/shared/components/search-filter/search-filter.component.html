@@ -1,0 +1,106 @@
+<div class="spinner" *ngIf="loadingFilter"></div>
+
+
+<form class="form-inline pull-right pr-4" #filterForm="ngForm">
+  <div class="row">
+
+    <div class="input-group form-group mr-2">
+
+      <select name="match_type" #match_type ngModel id="match_type" class="form-control filterSelect"
+              style="width: 140px">
+        <option value="">Match Type</option>
+        <option value="deal"  *ngIf="!userType?.includes('deal')" >
+          Deal
+        </option>
+        <option value="financier" *ngIf="!userType?.includes('financier') ">
+          Financier
+        </option>
+      </select>
+    </div>
+
+
+    <div class="form-group mr-2">
+
+      <select  #sector_list ngModel id="sector_seacrh_list"  name="sector_id" class="form-control filterSelect" style="width: 140px">
+        <option value="">Sector</option>
+        <option value="{{sector?.id}}" *ngFor="let sector of sectorList">
+          {{sector?.name}}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group mr-2">
+      <select name="project_type" #business_list ngModel id="business_list" class="form-control filterSelect"
+              style="width: 140px">
+        <option value="">Business</option>
+        <option value="start_up" >
+          Start Up
+        </option>
+        <option value="scale_up" >
+          Scale Up
+        </option>
+      </select>
+    </div>
+
+
+
+    <div class="input-group form-group mr-2">
+
+      <select name="fund_type_id" #funding_list ngModel id="funding_list" class="form-control filterSelect"
+              style="width: 140px">
+        <option value="">Fund Type</option>
+        <option *ngFor="let fundType of fundTypeList; let i = index" [value]="fundType?.id">
+          {{fundType?.name}}
+        </option>
+      </select>
+
+    </div>
+
+
+    <div class="input-group form-group mr-2">
+      <select name="category" disabled #size_list ngModel id="size_list" class="form-control filterSelect" style="width: 140px">
+        <option value="">Size</option>
+        <option value="{{filter.columnName}}" *ngFor="let filter of categoryList">
+          {{filter.displayName}}
+        </option>
+      </select>
+
+    </div>
+
+    <div class="form-group mr-2">
+      <select name="category" disabled #category_list ngModel id="category_list" class="form-control filterSelect"
+              style="width: 140px">
+        <option value="">Location</option>
+        <option value="{{filter.columnName}}" *ngFor="let filter of categoryList">
+          {{filter.displayName}}
+        </option>
+      </select>
+    </div>
+
+
+    <div class="input-group form-group pl-2" style="width: 210px">
+
+
+      <div class="btn-group">
+        <button type="button" [disabled]="loadingFilter" class="btn btn-sm btn-light" (click)="search(filterForm.value)">Search <i class="fa fa-cog fa-spin" *ngIf="loadingFilter"></i> <i class="dripicons-search" *ngIf="!loadingFilter"></i></button>
+        <button type="button" class="btn btn-sm btn-warning text-white  dropdown-toggle dropdown-toggle-split"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Export
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="javascript:void(0)"><em> EXCEL </em> <i class="fa fa-file-excel-o"></i></a>
+          <a class="dropdown-item" href="javascript:void(0)" style="cursor: pointer"><em> CSV </em> <i class="fa fa-file-code-o"></i></a>
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</form>
+
+
+<a id="exportLink" href="{{templateUrl}}" download style="display: none"></a>
+
+
+

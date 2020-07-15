@@ -1,0 +1,182 @@
+
+<div id="create_sector_modal" class="modal fade" tabindex="-1" sector="dialog" aria-labelledby="create_sector_modalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <form [formGroup]="createSectorForm" (ngSubmit)="createSector()">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="pull-left">
+            <img class=" modal-logo" src="assets/front/img/app_logo.png">
+
+          </div>
+          <h5 class="modal-title mt-2 ml-5 text-center" id="create_sector_modalLabel">Create New Sector</h5>
+          <button type="button" class="close " data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Name<span class="required"
+                             *ngIf="hasRequiredField(createSectorForm.get('name'))">*</span></label>
+            <input formControlName="name" type="text" class=" form-control" value="">
+          </div>
+
+          <div class="form-group">
+            <label>Description<span class="required"
+                                    *ngIf="hasRequiredField(createSectorForm.get('description'))">*</span></label>
+            <textarea formControlName="description" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+          <button type="submit" class="" [disabled]="createSectorForm.invalid || loaders?.processing"
+                  [ngClass]="setValidationClass(createSectorForm.valid)">
+            {{messages.create}}&nbsp;
+            <i class="spinner" *ngIf="loaders?.processing"></i>
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </form>
+
+  </div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
+<div id="update_sector_modal" class="modal fade" tabindex="-1" sector="dialog" aria-labelledby="update_sector_modalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog">
+    <form [formGroup]="updateSectorForm" (ngSubmit)="updateSector()">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="pull-left">
+            <img class=" modal-logo" src="assets/front/img/app_logo.png">
+
+          </div>
+          <h5 class="modal-title mt-2 ml-5 text-center" id="update_sector_modalLabel">Edit: <b>{{sectorToEdit?.name}}</b>
+          </h5>
+          <button type="button" class="close " data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Name<span class="required"
+                             *ngIf="hasRequiredField(updateSectorForm.get('name'))">*</span></label>
+            <input formControlName="name" type="text" class=" form-control" value="">
+          </div>
+
+          <div class="form-group">
+            <label>Description<span class="required"
+                                    *ngIf="hasRequiredField(updateSectorForm.get('description'))">*</span></label>
+            <textarea formControlName="description" class="form-control"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+          <button type="submit" class="" [disabled]="updateSectorForm.invalid || loaders?.processing"
+                  [ngClass]="setValidationClass(updateSectorForm.valid)">
+            {{messages.update}}&nbsp;
+            <i class="spinner" *ngIf="loaders?.processing"></i>
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </form>
+
+  </div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
+
+
+<div class="header-bg top-white">
+  <div class="ml-4 mr-5">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+
+          <form class="float-right app-searchx">
+
+            <button class="btn btn-light btn text-dark" type="button"
+                    (click)="triggerModal('open','create_sector_modal')" *ngIf="userActivities?.create">
+              <i class="dripicons-plus"></i> Create Sector
+            </button>
+          </form>
+          <h4 class="page-title"><i class="dripicons-graph-pie"></i> Sectors</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="ml-2 mr-2">
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card m-b-20">
+          <div class="card-body">
+
+            <div class="table-responsive">
+
+              <table id="sectors_table" class="table table-hover table-striped table-bordered mt-3" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                  <th><b>#</b></th>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Date Created</th>
+                  <th>Date Updated</th>
+                  <th>Action</th>
+                </tr>
+                </thead>
+
+
+                <tbody>
+
+                <tr *ngIf="loaders?.processing || allSectors?.length===0">
+                  <td colspan="6" class="text-center" *ngIf="loaders?.processing">
+                    <div class="spinner"></div>
+                  </td>
+                  <td colspan="6" class="text-center"
+                      *ngIf="(!loaders?.processing &&  allSectors?.length===0) ">
+                    No sectors available.
+                  </td>
+                </tr>
+
+                <tr *ngFor="let sector of allSectors; let i=index">
+                  <td><b>{{i+1}}.</b></td>
+                  <td>
+
+                      <img src="assets/new_front/bell/images/users/avatar-{{i+1}}.jpg" alt="user-image" class="thumb-sm rounded-circle mr-2"/>
+
+                  </td>
+                  <td>{{sector?.name}}</td>
+                  <td>{{sector?.created_at | date:'mediumDate'}}</td>
+                  <td>{{sector?.updated_at | date:'mediumDate'}}</td>
+                  <td>
+
+                    <button class="btn btn-xx btn-primary mr-2"
+
+                            (click)="openEditModal(sector)" *ngIf="userActivities?.update"><i class="ion-edit"></i>
+                    </button>
+                    <button class="btn btn-xx btn-danger mr-2 text-white"
+
+                            [disabled]="sector?.deleting" (click)="deleteSector(sector)"
+                            *ngIf="userActivities?._delete">
+                      <i *ngIf="!sector?.deleting" class="dripicons-cross"></i>
+                      <i *ngIf="sector?.deleting" class="fa fa-spin fa-spinner"></i>
+                    </button>
+                  </td>
+
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end col -->
+    </div> <!-- end row -->
+
+  </div> <!-- end container -->
+</div>

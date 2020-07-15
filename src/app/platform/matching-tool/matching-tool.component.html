@@ -1,0 +1,335 @@
+<div class="header-bg top-white">
+  <div class="ml-4 mr-5">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+
+          <!--<form class="float-right app-searchx">-->
+
+          <!--<button class="btn btn-light btn text-dark" type="button"-->
+          <!--(click)="openOverlay('create_deal_overlay')" [disabled]="openingOverlay"-->
+          <!--*ngIf="userActivities?.create">-->
+          <!--<i class="dripicons-plus" *ngIf="!openingOverlay"></i>-->
+          <!--<i class="fa fa-cog fa-spin" *ngIf="openingOverlay"></i> Create Deal-->
+          <!--</button>-->
+          <!--</form>-->
+          <app-search-filter [component]="componentName" [userType]="userType" [fundTypeList]="allFundTypes" [sectorList]="allSectors"></app-search-filter>
+          <h4 class="page-title no_button"><i class="mdi mdi-bookmark-outline"></i> Matching Tool <small class="text-white"></small></h4>
+
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="ml-2 mr-2">
+
+
+    <div class="card-headerx" *ngIf="matchType">
+      <div class="row">
+        <div class="col-md-4"><p class="text-white text-left"><em><u>Showing {{filteredDataLength}} {{matchType |titlecase}} Result{{filteredDataLength == 1 ?'':'s'}}</u></em></p></div>
+        <div class="col-md-8" *ngIf="matchType == 'deal'">
+          <div class="btn btn-group">
+            <button class="btn btn-sm btn-{{isCard ? 'info' : 'light'}}" (click)="toggleView(true)"> <i class="dripicons-card"></i> Card View</button>
+            <button class="btn btn-sm btn-{{isCard ? 'light' : 'info'}}" (click)="toggleView(false)"> <i class="dripicons-view-list"></i> Table View</button>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>
+
+    <div class="row mt-1">
+      <div class="col-12">
+        <div class="jumbotron text-center" style="min-height: 400px" *ngIf="filteredDataLength == 0">
+          <!--Select any company to see a list of most suitable investors-->
+          <h5>
+            <em>
+             No Search Results
+            </em>
+          </h5>
+
+        </div>
+      </div>
+      <ng-container *ngIf="isCard && matchType=='deal'">
+        <div class="col-lg-4 " *ngFor="let activeDeal of allDeals; let i = index">
+          <div class="card m-b-20 gallery_view">
+
+            <div class="card-body">
+              <div class="pull-right">
+                <span class="badge badge-default "><em>{{activeDeal?.watchers?.length |number | summarize}}</em> <small style="color: black"> watcher{{activeDeal?.watchers?.length=='1'?'':'s'}} <i class="mdi mdi-heart"></i></small> </span>
+                <br>
+                <span class="badge badge-default "><em>{{activeDeal?.investors?.length |number | summarize}}</em> <small style="color: black"> interest{{activeDeal?.investors?.length=='1'?'':'s'}} <i class="fa fa-thumbs-up"></i></small> </span>
+
+
+              </div>
+              <div class="media">
+                <img src="{{ activeDeal?.user?.business_logo || 'assets/images/small/img-3.jpg' }}" alt="business-logo"  class="thumb-md rounded-circle mr-2"/>
+
+                <div class="media-body">
+                  <h5 class="m-t-10 font-18 mb-1"><a href="{{activeDeal?.website}}" target="_blank">{{activeDeal?.project_name}} <sup *ngIf="activeDeal?.user?.id == authUser?.id"><i class="mdi mdi-star text-danger"></i></sup></a>
+                    <span
+                      class="ml-2 badge text-white badge-{{activeDeal?.project_type=='start_up'?'info':'secondary'}}"><small
+                      style="color: white"><em>{{activeDeal?.project_type| removeUnderscore }}</em></small></span>
+                  </h5>
+                  <p class="text-muted m-b-5">
+                    <em>{{activeDeal?.user?.dealowner_profile ? activeDeal?.user?.dealowner_profile?.name : activeDeal?.user?.financier_runner_profile ? activeDeal?.user?.financier_runner_profile?.company_name : '----' }}</em>
+
+                  </p>
+                  <div class="text-muted font-14 font-500 font-secondary shorten"> {{activeDeal?.sector?.name}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="text-center ">
+                <em>{{activeDeal?.location?.split('|')?.join(', ')}}</em>
+              </div>
+
+              <div class="row text-center m-t-5">
+                <div class="col-6">
+                  <h5 class="mb-0"><span class="post-tags">{{activeDeal?.fund_type?.name}}</span></h5>
+                  <p class="text-muted font-14">Fund Type</p>
+                </div>
+                <div class="col-6">
+                  <h5 class="mb-0"><span class="post-tags">${{activeDeal?.funding_amount | number | summarize}}</span></h5>
+                  <p class="text-muted font-14">Amount</p>
+                </div>
+              </div>
+
+
+              <ul class="social-links text-center list-inline mt-1">
+                <li class="list-inline-item">
+                  <div class="btn-group">
+
+                    <button class="btn waves-effect  btn-info" (click)="viewDeal(activeDeal?.slug)">View <i class="mdi mdi-eye"></i></button>
+
+                    <ng-container *ngIf="authUser && (authUser?.user_type=='financier' || authUser?.user_type=='deal_runner')">
+                      <button
+                        class="btn waves-effect  btn-purple {{activeDeal?.user_is_watching ? 'text-danger':'text-white'}}"
+                        [disabled]="activeDeal?.process_watch  || activeDeal?.user_is_watching"
+                        (click)="watchDeal(activeDeal)">Watch{{activeDeal?.user_is_watching ? 'ing':''}} <i
+                        class="mdi mdi-heart {{activeDeal?.process_watch ? 'fa-spin':''}}"></i>
+                      </button>
+
+                      <button *ngIf="activeDeal?.user_is_accessing" class="btn waves-effect btn-success {{activeDeal?.user_is_investing ? 'text-danger':'text-white'}}"
+                              [disabled]="activeDeal?.process_invest  || activeDeal?.user_is_investing" (click)="investDeal(activeDeal)">Invest{{activeDeal?.user_is_investing ? 'ing':''}} <i class="fa fa-thumbs-up {activeDeal?.process_invest ? 'fa-spin':''}}"></i></button>
+
+                    </ng-container>
+
+
+                  </div>
+
+                </li>
+
+              </ul>
+
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+
+        <div *ngIf="!isCard && matchType=='deal'" class="col-12">
+        <div class="card m-b-20">
+          <div class="card-body">
+
+            <div class="table-responsive">
+
+              <table id="filtered_deals_table" class="table table-striped table-sm table-hover table-bordered mt-3" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+
+
+                  <th class="border-right-0"></th>
+                  <th>Business Name</th>
+                  <th>Project Name</th>
+                  <th>Date Initiated</th>
+                  <th>Sector</th>
+                  <th class="text-right">($) Amount</th>
+                  <th>Fund Type</th>
+
+                  <th>Interests</th>
+                  <th>Progress</th>
+
+
+
+                    <th>Owner</th>
+                    <th>Portfolio</th>
+
+
+                  <th>Status</th>
+
+                </tr>
+                </thead>
+
+
+                <tbody>
+
+                <tr *ngIf="loaders?.processing || allDeals?.length===0">
+                  <td [attr.colspan]="'13'" class="text-center"
+                      *ngIf="loaders?.processing">
+                    <div class="spinner"></div>
+                  </td>
+                  <td [attr.colspan]="'13'" class="text-center"
+                      *ngIf="(!loaders?.processing &&  allDeals?.length===0) ">
+                    No deals available.
+                  </td>
+                </tr>
+
+                <tr *ngFor="let deal of allDeals; let i=index">
+                  <td class="border-right-0">
+                    <img src="{{ deal?.user?.business_logo || 'assets/images/small/img-3.jpg' }}" alt="business-logo" class="thumb-sm rounded-circle mr-2"/>
+
+                  </td>
+
+
+                  <td>
+
+                    {{deal?.user?.dealowner_profile ? deal?.user?.dealowner_profile?.name : deal?.user?.financier_runner_profile ? deal?.user?.financier_runner_profile?.company_name : '----' }}
+
+
+                  </td>
+
+                  <td>
+                    <a routerLink="../deals/{{deal?.slug}}">
+
+                      {{deal?.project_name}}
+                      <br>
+                      <span class="text-white badge badge-{{deal?.project_type =='start_up'?'info':'secondary'}}">{{deal?.project_type| removeUnderscore |titlecase}}</span>
+                    </a>
+                  </td>
+
+                  <td>
+                    {{deal?.created_at | date:'mediumDate'}}
+                  </td>
+
+                  <td>
+                    <div class="shorten">{{deal?.sector?.name}}</div>
+                  </td>
+                  <td class="text-right">{{deal?.funding_amount | number |summarize}}</td>
+                  <td>
+                    <div class="shorten">
+                      {{deal?.fund_type?.name}}
+                    </div>
+                  </td>
+
+
+
+                  <td>
+                    <div class="{{deal?.process_interests ? 'spinner':'activities_div'}}"
+                         (click)="viewDealActivities(deal)">
+                      <span class="btn badge badge-purple activity_badge"><small><b>watching <i class="mdi mdi-heart"></i> &nbsp;({{deal?.watchers?.length |number}})</b></small></span>
+                      <br>
+                      <span class="btn badge text-white badge-warning activity_badge"> <small><b>accessing <i class="mdi mdi-key"></i> &nbsp;({{deal?.accessors?.length |number}})</b></small></span>
+
+                      <br>
+                      <span class="btn badge text-white badge-success activity_badge"> <small><b>investing <i
+                        class="fa fa-thumbs-up"></i> &nbsp;({{deal?.investors?.length |number}})</b></small></span>
+
+                    </div>
+
+                    <div class="blinking" *ngIf="deal?.process_interests"><span
+                      class="badge badge-default">fetching</span></div>
+
+
+                  </td>
+
+
+
+                  <td>
+                    <div class="progress">
+                      <div class="progress-bar progress-bar-striped progress-bar-animated text-white" role="progressbar"
+                           [ngClass]="setDealProgressStatus(deal?.stage?.step)" role="progressbar"
+                           [ngStyle]="setDealProgressBar(deal?.stage?.percentage)" aria-valuenow="0" aria-valuemin="0"
+                           aria-valuemax="100">
+
+                        {{deal?.stage?.percentage}}%
+
+                      </div>
+                    </div>
+                    <div>
+
+                      <span class="badge badge-default text-dark">{{deal?.stage?.name}}: <small><em>Stage {{deal?.stage?.step}}</em></small></span>
+
+                    </div>
+
+
+                  </td>
+
+
+
+
+                    <td>{{deal?.user?.full_name}}</td>
+
+
+                    <td>{{deal?.user?.user_type| removeUnderscore  |titlecase}}</td>
+
+
+
+                  <td>
+                    <!--{{deal?.status}}-->
+                    <div class="text-center">
+
+                        <span [ngClass]="setClass(deal?.status)"
+                              *ngIf="!deal?.toggling">{{dealLabel(deal?.status)}}</span>
+
+
+
+
+
+
+                    </div>
+                  </td>
+
+
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        </div>
+
+      <ng-container *ngIf="!isCard && matchType=='financier'">
+
+        <div class="col-md-6 col-lg-6 col-xl-3" *ngFor="let financier of allFinanciers">
+
+          <div class="card m-b-30">
+            <div class="card-body">
+              <h4 class="card-title font-20 mt-0">{{financier?.financier_runner_profile?.company_name || financier?.full_name }}</h4>
+              <h6 class="card-subtitle text-muted"><em>{{financier?.financier_runner_profile?.contact_address?.split('|')?.join(', ') || financier?.country |titlecase}}</em></h6>
+            </div>
+            <img class="img-fluid fin-img" [src]="financier?.business_logo || 'assets/images/small/empty.png'" alt="Financier Logo">
+            <div class="card-body border-top">
+              <p class="card-text">{{financier?.financier_runner_profile?.description || 'Undescribed'}}</p>
+              <a  class="card-link"><b>No of Deals: </b> {{financier?.deals?.length | number}}</a>
+              <!--<a  class="card-link mr-1"><b>Sectors: </b></a> <span class="badge badge-info" *ngFor="let sector of financier?.financier_runner_profile?.sector">{{sector}}</span>-->
+              <a *ngIf="financier?.financier_runner_profile?.company_website" [href]="financier?.financier_runner_profile?.company_website" target="_blank" class="card-link mr-1 shorten"><b>Visit website</b> </a>
+            </div>
+            <ul class="social-links text-center list-inline mb-1">
+              <li class="list-inline-item">
+                <div class="btn-group">
+                  <button (click)="viewFinancier(financier?.user_ref)" class="btn btn-sm btn-primary waves-effect waves-light"> <i class="fa fa-eye"></i> View</button>
+                  <button class="btn btn-sm btn-info waves-effect waves-light"><i class="mdi mdi-human-greeting"></i> Wave</button>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+        </div><!-- end col -->
+
+      </ng-container>
+
+
+
+
+      <!-- end col -->
+    </div>
+
+
+  </div>
+</div>

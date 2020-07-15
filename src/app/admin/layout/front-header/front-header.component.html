@@ -1,0 +1,153 @@
+<header class="main-header {{headerClass}}">
+  <!-- Header top -->
+  <div class="header-top">
+    <div class="inner-container">
+      <div class="top-left">
+        <ul class="contact-list clearfix">
+          <li><a href="#"><i class="fa fa-envelope"></i>info@dealrooms.com</a></li>
+          <li></li>
+        </ul>
+      </div>
+      <div class="top-right">
+        <ul class="social-icon-one">
+          <li><a href="#"><span class="fab fa-facebook-f"></span></a></li>
+          <li><a href="#"><span class="fab fa-linkedin-in"></span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- End Header Top -->
+
+  <!-- Main box -->
+  <div class="main-box">
+    <div class="menu-box">
+      <div class="logo">
+        <a href="index.html" class="main-logo"><img src="assets/front/newdeal/images/logo.png" alt="" title=""></a>
+        <a href="index.html" class="sticky-logo"><img src="assets/front/newdeal/images/logo-5.png" alt="" title=""></a>
+      </div>
+
+
+      <!--Nav Box-->
+      <div class="nav-outer">
+        <!-- Main Menu -->
+        <nav class="main-menu navbar-expand-md navbar-light">
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navigation clearfix">
+              <li>
+                <a routerLink="/"><span>Home</span></a>
+              </li>
+              <li>
+                <a routerLink="/about"><span>About Us</span></a>
+              </li>
+              <li>
+                <a routerLink="/how-it-works"><span>How It Works</span></a>
+              </li>
+              <li>
+
+                <a routerLink="/gallery"><span>Deals Gallery</span></a>
+              </li>
+              <!--<li>-->
+              <!--<a href="#"><span>Investors</span></a>                             -->
+              <!--</li>-->
+
+
+              <!--<li><a href="contact.html">Contacts</a></li>-->
+            </ul>
+          </div>
+        </nav>
+        <!-- Main Menu End-->
+      </div>
+
+      <div>
+
+        <div class="btn-box">
+          <ng-container *ngIf="!authUser">
+            <a routerLink="/login" class="theme-btn  btn-style-one"><span class="btn-title">Login</span></a>
+            <a routerLink="/signup" class="theme-btn ml-1 btn-style-one"><span class="btn-title">SignUp</span></a>
+          </ng-container>
+
+
+          <div class="btn-group m-b-10" *ngIf="authUser">
+            <button type="button" class="btn  btn-secondary">{{authUser?.full_name}}</button>
+            <button type="button" class="btn btn-secondary  dropdown-toggle dropdown-toggle-split"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span class="sr-only"><i class="fa fa-cog"></i></span>
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" (click)="reRoute('/dashboard')"> Dashboard <i class="dripicons-meter"></i></a>
+
+              <a class="dropdown-item" (click)="logUserOut('home')" style="cursor: pointer">Logout  <i class="dripicons-exit"></i></a>
+
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Search Btn -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Sticky Header  -->
+  <div class="sticky-header">
+    <div class="main-box">
+      <!--Keep This Empty / Menu will come through Javascript-->
+    </div>
+  </div><!-- End Sticky Menu -->
+
+  <!-- Mobile Header -->
+  <div class="mobile-header">
+    <div class="logo"><a href="index.html"><img src="assets/front/newdeal/images/logo-5.png" alt="" title=""></a></div>
+
+    <!--Nav Box-->
+    <div class="nav-outer clearfix">
+      <!--Keep This Empty / Menu will come through Javascript-->
+    </div>
+  </div>
+
+  <!-- Mobile Sticky Header -->
+  <div class="mobile-sticky-header">
+    <div class="logo"><a href="index.html"><img src="assets/front/newdeal/images/logo.png" alt="" title=""></a></div>
+
+    <!--Nav Box-->
+    <div class="nav-outer clearfix">
+      <!--Keep This Empty / Menu will come through Javascript-->
+    </div>
+  </div>
+
+  <!-- Mobile Menu  -->
+  <div class="mobile-menu">
+    <span class="mobile-menu-back-drop"></span>
+    <div class="menu-outer">
+      <nav class="menu-box">
+        <div class="nav-logo"><a routerLink="/"><img src="assets/front/newdeal/images/logo-5.png" alt="" title=""></a>
+        </div><!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->
+      </nav>
+
+
+    </div>
+  </div><!-- End Mobile Menu -->
+
+  <!-- Header Search -->
+  <div class="search-popup">
+    <span class="search-back-drop"></span>
+
+    <div class="search-inner">
+      <div class="auto-container">
+        <div class="upper-text">
+          <div class="text">Search for anything.</div>
+          <button class="close-search"><span class="fa fa-times"></span></button>
+        </div>
+
+        <form method="post" action="http://html.rainbow-themes.net/setech/blog-checkerboard.html">
+          <div class="form-group">
+            <input type="search" name="search-field" value="" placeholder="Search..." required="">
+            <button type="submit"><i class="fa fa-search"></i></button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- End Header Search -->
+
+</header>

@@ -24,9 +24,50 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "./node_modules/bootstrap/dist/css/bootstrap.css",
+              "src/assets/plugins/datatables/dataTables.bootstrap4.min.css",
+              "src/assets/plugins/datatables/buttons.bootstrap4.min.css",
+              "src/assets/plugins/datatables/responsive.bootstrap4.min.css",
+              "./node_modules/select2/dist/css/select2.css",
+              "src/assets/plugins/intel-input/css/intlTelInput.css",
+              "src/styles.css",
+              "src/assets/front/newdeal/css/bootstrap.css",
+              "src/assets/front/newdeal/plugins/revolution/css/settings.css",
+              "src/assets/front/newdeal/plugins/revolution/css/layers.css",
+              "src/assets/front/newdeal/plugins/revolution/css/navigation.css",
+              "src/assets/front/newdeal/css/style.css",
+              "src/assets/front/newdeal/css/responsive.css"
+
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/plugins/intel-input/js/intlTelInput.min.js",
+              "src/assets/js/jquery.min.js",
+              "src/assets/js/popper.min.js",
+              "src/assets/plugins/intel-input/js/intlTelInput-jquery.min.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.js",
+              "./node_modules/select2/dist/js/select2.js",
+              "src/assets/js/modernizr.min.js",
+              "src/assets/js/jquery.slimscroll.js",
+              "src/assets/js/waves.js",
+              "src/assets/js/jquery.nicescroll.js",
+              "src/assets/js/jquery.scrollTo.min.js",
+              "src/assets/plugins/datatables/jquery.dataTables.min.js",
+              "src/assets/plugins/datatables/dataTables.bootstrap4.min.js",
+              "src/assets/plugins/datatables/dataTables.buttons.min.js",
+              "src/assets/plugins/datatables/buttons.bootstrap4.min.js",
+              "src/assets/plugins/datatables/jszip.min.js",
+              "src/assets/plugins/datatables/pdfmake.min.js",
+              "src/assets/plugins/datatables/vfs_fonts.js",
+              "src/assets/plugins/datatables/buttons.html5.min.js",
+              "src/assets/plugins/datatables/buttons.print.min.js",
+              "src/assets/plugins/datatables/buttons.colVis.min.js",
+              "src/assets/plugins/datatables/dataTables.responsive.min.js",
+              "src/assets/plugins/datatables/responsive.bootstrap4.min.js",
+              "src/assets/plugins/morris/morris.min.js",
+              "src/assets/plugins/raphael/raphael-min.js",
+              "src/assets/plugins/chart.js/chart.min.js",
+              "src/assets/plugins/summernote/summernote.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -53,8 +94,37 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "60kb",
+                  "maximumError": "100kb"
+                }
+              ]
+            },
+            "staging": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.staging.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "250kb",
+                  "maximumError": "500kb"
                 }
               ]
             }

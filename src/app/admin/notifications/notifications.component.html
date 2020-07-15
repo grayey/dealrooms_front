@@ -1,0 +1,71 @@
+
+<div class="header-bg top-white">
+  <div class="container-fluid">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+          <h4 class="page-title"><i class="fa fa-newspaper-o"></i> My Notifications</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="container-fluid">
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card m-b-20">
+          <div class="card-body">
+
+            <div class="table-responsive">
+
+              <table id="data_table" class="table table-hover table-striped table-bordered mt-3" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                  <th><b>#</b></th>
+                  <th><b>Notification Type</b></th>
+                  <th colspan="2"><b>Content</b></th>
+                  <th><b>Date Created</b></th>
+                  <th><b>Date Viewed</b> <i class="fa fa-eye"></i></th>
+                </tr>
+                </thead>
+
+
+                <tbody>
+
+                <tr *ngIf="loaders?.processing || allNotifications?.length===0">
+                  <td colspan="6" class="text-center" *ngIf="loaders?.processing">
+                    <div class="spinner"></div>
+                  </td>
+                  <td colspan="6" class="text-center"
+                      *ngIf="(!loaders?.processing &&  allNotifications?.length===0) ">
+                    No notifications available.
+                  </td>
+                </tr>
+
+                <tr *ngFor="let notification of allNotifications; let i=index">
+                  <td><b>{{i+1}}.</b></td>
+                  <td>
+
+                    <div><span class="badge  text-white {{notification?.head?.bg}}"><i class="{{notification?.head?.icon}} fa-2x"></i> </span>
+                       {{notification?.head?.line}}</div>
+                  </td>
+                  <td colspan="2">{{notification?.body}}</td>
+                  <td>{{notification?.created_at | date:'mediumDate'}}</td>
+                  <td>{{notification?.updated_at | date:'mediumDate'}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end col -->
+    </div> <!-- end row -->
+
+  </div> <!-- end container -->
+</div>

@@ -1,0 +1,11 @@
+/*@import "../../../../assets/front/newdeal/css/bootstrap.css";*/
+/*@import "../../../../assets/front/newdeal/plugins/revolution/css/settings.css";*/
+/*@import "../../../../assets/front/newdeal/plugins/revolution/css/layers.css";*/
+/*@import "../../../../assets/front/newdeal/plugins/revolution/css/navigation.css";*/
+/*@import "../../../../assets/front/newdeal/css/style.css";*/
+/*@import "../../../../assets/front/newdeal/css/responsive.css";*/
+
+.btn-secondary{
+  background-color: rgb(254,110,0) !important;
+  border-top: rgb(254,110,0) !important;
+}

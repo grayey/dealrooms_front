@@ -1,1 +1,376 @@
 /* You can add global styles to this file, and also import other style files */
+/* @import './assets/front/css/themify-icons.css';
+@import './assets/front/css/style.css';
+@import './assets/front/css/responsive.css';
+
+@import './assets/front/css/animate.css'; */
+/*@import './assets/front/css/owl.carousel.css';*/
+/*@import './assets/front/css/video.min.css';*/
+/* @import './assets/css/menu.css'; */
+@import "./assets/plugins/morris/morris.css";
+@import "./assets/css/style.css";
+@import "./assets/css/icons.css";
+@import "./assets/plugins/summernote/summernote.css";
+/*@import "./assets/plugins/dropzone/dist/dropzone.css";*/
+/* You can add global styles to this file, and also import other style files */
+/*@import './assets/front/css/themify-icons.css';*/
+/*@import './assets/front/css/style.css';*/
+/*@import './assets/front/css/owl.carousel.css';*/
+/*@import './assets/front/css/video.min.css';*/
+/*@import "./assets/admin/plugins/morris/morris.css";*/
+@import "./assets/admin/style.css";
+
+.post-tags {
+  color: #4B708E;
+  text-transform: capitalize;
+  font-weight: bold;
+  font-size: 14px;
+  display: inline-block;
+  background-color: rgb(240, 243, 252);
+  border-radius: 999px;
+  -webkit-border-radius: 999px;
+  -moz-border-radius: 999px;
+  -ms-border-radius: 999px;
+  -o-border-radius: 999px;
+  width: 100%;
+  padding-top: 4px;
+  padding-right: 20px;
+  padding-bottom: 4px;
+  padding-left: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.summerview, .summernotex{
+
+  max-height: 350px;
+  overflow-y: scroll;
+}
+
+
+
+.shorten{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 150px;
+}
+
+.sector_name{
+  width: 100%;
+}
+
+.gallery_view {
+  cursor: pointer;
+}
+
+#cd-timeline::before {
+  border-left: 3px solid #57809E;
+}
+
+.cd-timeline-content::before {
+  border-color: transparent;
+  border-left-color: #4B708E;
+}
+
+.cd-timeline-block:nth-child(even) .cd-timeline-content::before {
+  border-color: transparent;
+  border-right-color: #4B708E;
+}
+
+.cd-timeline-content {
+  border-radius: 5px;
+  border: 1px solid #eff3f6;
+  box-shadow: 1px 1px #CCCCCC;
+  background-color: white;
+}
+
+.card-img-top.img-fluid{
+  max-height: 200px !important;
+  width: auto !important;
+}
+
+
+div.dataTables_wrapper div.dataTables_filter input {
+  margin-left: 0.5em;
+  display: inline-block;
+  width: auto;
+  /*height: 25px !important;*/
+  /* border-color: #57809E !important; */
+}
+
+.gallery_view :hover {
+  /*opacity: 0.4;*/
+  /*box-shadow: 1px 1px #cccc;*/
+}
+
+.top-white {
+  border-top: 1px solid white !important;
+}
+
+.pull-up {
+  margin-top: -4% !important;
+}
+
+.nav-tabs-custom > li > a.active {
+  color: #57809E !important;
+}
+
+.card-lined {
+  box-shadow: 1px 1px 1px 1px #888888;
+}
+
+.card-lined-small {
+  box-shadow: 0.4px 0.4px 0.4px 0.4px #999999;
+}
+
+.no-photo {
+  /*background: url("assets/images/blank_photo.png") no-repeat  !important;*/
+  height: 15rem !important;
+}
+
+.photo-neighbor {
+  min-height: 21rem !important;
+
+}
+
+.no-photo img {
+  height: 15rem !important;
+  width: inherit;
+}
+
+.nav-tabs-custom > li > a::after {
+  content: "";
+  background: #57809E;
+  height: 2px;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: -1px;
+  -webkit-transition: all 250ms ease 0s;
+  transition: all 250ms ease 0s;
+  -webkit-transform: scale(0);
+  transform: scale(0);
+}
+
+.page-item.active .page-link {
+  /*background-color: #57809E !important;*/
+  /*border-color: #57809E !important;*/
+}
+
+.buttons-print, .buttons-csv, .buttons-collection {
+  color: white !important;
+}
+
+div.dataTables_wrapper div.dataTables_filter input {
+  margin-left: 0.5em;
+  display: inline-block;
+  width: auto;
+  /*border-color: #57809E !important;*/
+
+}
+
+button:disabled {
+  cursor: not-allowed !important;
+}
+
+span.required {
+  color: red !important;
+}
+
+.modal-logo {
+  height: 30px !important;
+}
+
+.site-button {
+  /*background-color: #57809E !important;*/
+  color: white;
+
+}
+
+.form-control:focus {
+  /*border-color: #57809E !important;*/
+}
+
+.breadcrumb {
+  top: 0 !important;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 !important;
+  margin-bottom: 0 !important;
+  list-style: none;
+  background-color: transparent !important;;
+  border-radius: 0.25rem;
+}
+
+.page-content-wrapper {
+  margin: 0 -10px;
+  padding-top: 50px;
+}
+
+.btn-xx, .btn-group-xx > .btn {
+  padding: 0.2rem 0.3rem !important;
+  font-size: 0.7rem !important;
+  line-height: 1.0 !important;
+  border-radius: 0.2rem !important;
+}
+
+/*.blinking {*/
+/*font-size: 8px;*/
+/*}*/
+
+.blinking:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4, end) 900ms infinite;
+  animation: ellipsis steps(4, end) 900ms infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  width: 0px;
+}
+
+.page-nav-link, a.page-nav-link:visited {
+  color: deepskyblue;
+}
+
+.page-nav-link:hover {
+  text-decoration: underline;
+}
+
+.alert.alert-success {
+  color: white !important;
+  background-color: green !important;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 1.25em;
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 1.25em;
+  }
+}
+
+.activities_div {
+  cursor: pointer;
+  /*box-shadow: 1px 1px lightgrey;*/
+  /*padding: 1px;*/
+}
+
+.btn.buttons-html5,  .btn.buttons-print {
+  padding: 0.2rem 0.4rem !important;
+  font-size: 10px;
+}
+th  {
+  text-transform: uppercase;
+  font-size: 10px !important;
+  font-weight: bold;
+}
+
+
+
+.activity_badge{
+  width: 100px !important;
+  text-align: left !important;
+}
+
+.table-sm {
+  font-size: 12px;
+}
+
+.table > tbody > tr > td, .table > tfoot > tr > td, .table > thead > tr > td {
+  padding: 10px 8px;
+}
+
+.table-bordered {
+  border: 0.01px solid #dee2e6;
+}
+.dt-buttons.btn-group{
+  top:20px;
+}
+
+.table-bordered thead th, .table-bordered thead td {
+  border-bottom-width: 0.1px;
+}
+.table thead th {
+  vertical-align: bottom;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.page-title {
+  margin-top: 15px;
+  line-height: 10px;
+  padding-left: 15px;
+  font-size: 20px;
+  /*top:40px !important;*/
+  position: absolute;
+}
+
+.card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 1.0rem 1.25rem 1.25rem 1.25rem !important;
+}
+
+.page-title.no_button {
+  margin-top: 0px;
+  line-height: 10px;
+  padding-left: 15px;
+  font-size: 20px;
+  /*top:40px !important;*/
+  position: absolute;
+}
+
+
+.container-fluid {
+  max-width: 1700px !important;
+}
+
+.navbar-custom .container-fluid {
+  max-width: 1500px !important;
+}
+
+/* The Overlay (background) */
+.overlay {
+  /* Height & width depends on how you want to reveal the overlay (see JS below) */
+  height: 100%;
+  width: 0;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  background-color: rgb(255, 255, 255); /* Black fallback color */
+  background-color: rgba(255, 255, 255, 1.0); /* Black w/opacity */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+}
+
+/* Position the content inside the overlay */
+.overlay-content {
+  position: relative;
+  top: 25%; /* 25% from the top */
+  width: 100%; /* 100% width */
+  text-align: center; /* Centered text/links */
+  margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+
+

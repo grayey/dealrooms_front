@@ -1,0 +1,200 @@
+<form [formGroup]="createCompanyForm" (ngSubmit)="createCompany()" id="entrepreneur_deal_form">
+
+
+  <div class="container-fluid">
+
+    <div class="card ">
+
+
+
+
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-10">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Business Name<span class="required"
+                                            *ngIf="hasRequiredField(createCompanyForm.get('name'))">*</span></label>
+                  <input formControlName="name" type="text" class=" form-control" value="">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Launch Date<span class="required"
+                                          *ngIf="hasRequiredField(createCompanyForm.get('launch_date'))">*</span></label>
+
+                  <input formControlName="launch_date" type="date" class=" form-control" value="">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Contact Phone<span class="required"
+                                       *ngIf="hasRequiredField(createCompanyForm.get('telephone'))">*</span> </label>
+                  <br>
+                   <input formControlName="telephone" (change)="patchCountryValue()" type="text" class="form-control" value=""  id="contact_phone">
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Location<span class="required"
+                  *ngIf="hasRequiredField(createCompanyForm.get('location'))">*</span></label>
+
+                  <div class="row">
+                    <div class="col-md-{{showCity ? '6' :12}}">
+
+                      <select id="country_list" formControlName="country" #countryList (change)="setCountry(countryList.value)" class="form-control">
+                        <option value="">Select Country</option>
+                        <option *ngFor="let country of allCountries" [value]="country?.name">{{country?.name}}
+                        </option>
+                      </select>
+                      <small class="text-muted" style="position: absolute; top: -2px; right: 20px">Country</small>
+                    </div>
+                    <div class="col-md-6" *ngIf="showCity">
+
+                      <input formControlName="location" type="text" class="form-control" value="" placeholder="City e.g, New York">
+                      <small class="text-muted" style="position: absolute; top: -2px; right: 20px">City</small>
+
+                    </div>
+                  </div>
+
+                  <!--<label>Location<span class="required"-->
+                                       <!--*ngIf="hasRequiredField(createCompanyForm.get('location'))">*</span></label>-->
+                  <!--<input formControlName="location" type="text" class=" form-control" value="">-->
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>No. of Employees<span class="required"
+                                               *ngIf="hasRequiredField(createCompanyForm.get('no_employees'))">*</span></label>
+                  <input formControlName="no_employees" type="number" class=" form-control" value="">
+
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Valuation<span class="required"
+                                        *ngIf="hasRequiredField(createCompanyForm.get('valuation'))">*</span></label>
+                  <input formControlName="valuation" type="number" class=" form-control" value="">
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Sector<span class="required"
+                                     *ngIf="hasRequiredField(createCompanyForm.get('sectors'))">*</span></label>
+
+                  <select formControlName="sectors" class="form-control sector_list" id="sector_list"  multiple="multiple" name="sectors[]">
+                    <option value=""  disabled id="enable_scroll">Select</option>
+                    <option [value]="sector?.id" *ngFor="let sector of allSectors">{{sector?.name}}</option>
+
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Business Type<span class="required"
+                                            *ngIf="hasRequiredField(createCompanyForm.get('type'))">*</span></label>
+                  <select formControlName="type" class="form-control">
+                    <option value="">Select</option>
+                    <option value="start_up">Start Up</option>
+                    <option value="scale_up">Scale Up</option>
+                  </select>
+                </div>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Client Focus<span class="required"
+                                           *ngIf="hasRequiredField(createCompanyForm.get('client_focus'))">*</span></label>
+                  <!--<textarea formControlName="client_focus" class="form-control"></textarea>-->
+                  <select formControlName="client_focus" class="form-control">
+                    <option value="">Select</option>
+                    <option value="customer">Customer</option>
+                    <option value="business">Business</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label>Description<span class="required"
+                                           *ngIf="hasRequiredField(createCompanyForm.get('description'))">*</span></label>
+                  <textarea formControlName="description" class="form-control" name="" id="" ></textarea>
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-2 border-left">
+            <div class="card m-b-30">
+              <i class="spinner" *ngIf="uploadInProgress"></i>
+              <img class="card-img-top img-fluid" [src]="imageFileUrl" alt="Card image cap">
+              <h6 class="card-title text-center text-{{uploadError=='na'?'success':'muted'}}" *ngIf="!uploadError || uploadError=='na'">{{uploadMessage}}</h6>
+              <h6 class="card-title text-center text-danger" *ngIf="uploadError && uploadError!=='na'"><em>{{uploadMessage}}</em></h6>
+              <hr>
+
+              <div class="card-body">
+
+                <div class="mt-3 mr-3" *ngIf="uploadInProgress">
+                  <div class="progress">
+                    <div [ngClass]="setProgressStatus(percentageUpload)" role="progressbar"
+                         [ngStyle]="setProgressBar(percentageUpload)" aria-valuenow="50" aria-valuemin="0"
+                         aria-valuemax="100">
+                      {{percentageUpload}}
+                    </div>
+                  </div>
+                  <div>
+                    {{percentageInFraction}}
+                    <small class="text-{{percentageUpload !== '100%'?'info':'success'}}"><b>complete</b></small>
+                  </div>
+                </div>
+                <div class="custom-file" *ngIf="!uploadInProgress">
+                  <input type="file" class="custom-file-input mt-3"
+                         id="document_file" accept=".jpg,.jpeg,.png"
+                         (change)="selectFile($event, true)">
+                  <label class="custom-file-label" for="document_file">{{manualPaymentFileName}}</label>
+
+                  <!--uploadInProgress-->
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+
+      </div>
+
+
+      <div class="card-footer" style="bottom: 0">
+
+        <button type="submit" class="pull-right"
+                [disabled]="createCompanyForm.invalid || !countryList.value || loaders?.processing || uploadInProgress"
+                [ngClass]="setValidationClass(createCompanyForm.valid && countryList.value,true)">
+          {{messages.create}}&nbsp;Profile
+          <i class="spinner" *ngIf="loaders?.processing || uploadInProgress"></i>
+        </button>
+      </div>
+
+    </div>
+
+  </div> <!-- Page content Wrapper -->
+
+</form>

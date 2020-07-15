@@ -1,0 +1,96 @@
+
+
+<div class="accountbg"></div>
+<div class="wrapper-page">
+  <div class="card">
+
+    <div class="card-header" style="background-color: #333333">
+      <h3 class="text-center m-0">
+        <a routerLink="" class="logo logo-admin"><img src="assets/front/img/app_logo.png" height="30" alt="logo"></a>
+      </h3>
+    </div>
+    <div class="card-body">
+
+
+
+      <div class="">
+        <h4 class="text-muted text-center">SIGN UP</h4>
+        <p class="text-{{!success ? 'muted':'success'}} text-center">{{userMessage}} <b *ngIf="success"><small>{{email}}</small></b></p>
+
+        <form [formGroup]="createUserForm" (ngSubmit)="createUser()" class="form-horizontal" action="https://themesbrand.com/fonik/purple/index.html">
+
+
+          <div class="form-group">
+            <label for="user_type">Register As</label>
+            <select class="form-control" id="user_type" formControlName="user_type">
+              <option value="">Select</option>
+              <option value="deal_owner">Deal Owner</option>
+              <option value="deal_runner">Deal Runner</option>
+              <option value="financier">Financier</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="full_name">Full Name</label>
+            <input type="text" class="form-control" formControlName="full_name" id="full_name" placeholder="">
+          </div>
+
+
+          <div class="form-group">
+            <label for="useremail">Email</label>
+            <input type="email" class="form-control" formControlName="email" id="useremail" placeholder="">
+          </div>
+
+
+
+          <div class="form-group">
+            <label for="phone_number">Phone</label>
+            &nbsp;&nbsp;<input type="text" (change)="patchCountryValue()" class="form-control" formControlName="phone" id="phone_number" placeholder="">
+          </div>
+
+          <div class="form-group">
+            <label for="country_list">Location</label>
+            <div class="row">
+              <div class="col-md-{{showCity ? '6' :12}}">
+
+                <select id="country_list"  #countryList (change)="setCountry(countryList.value)" class="form-control">
+                  <option value="">Select Country</option>
+                  <option *ngFor="let country of allCountries" [value]="country?.name">{{country?.name}}
+                  </option>
+                </select>
+                <small class="text-muted" style="position: absolute; top: -2px; right: 20px">Country</small>
+              </div>
+              <div class="col-md-6" *ngIf="showCity">
+
+                <input formControlName="country" type="text" class="form-control" value="" placeholder="City e.g, New York">
+                <small class="text-muted" style="position: absolute; top: -2px; right: 20px">City</small>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group row m-t-20">
+            <div class="col-12">
+              <small>By registering you agree to the DealRooms <a routerLink="../login"> Terms of Use</a></small>
+              <button class="btn btn-primary btn-sm pull-right w-md waves-effect waves-light" type="submit" [disabled]="loaders?.processing">Register
+                <i class="spinner" *ngIf="loaders?.processing"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <div class="col-12">
+              <p>Already have an account? <a routerLink="../login" class="font-500 font-14 text-primary font-secondary"> Login </a> </p>
+            </div>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="m-t-40 text-center">
+    <p class="text-center mt-2">© {{today?.split(' ')[3]}} DealRooms </p>
+  </div>
+</div>

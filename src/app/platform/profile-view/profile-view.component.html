@@ -1,0 +1,37 @@
+<div class="header-bg top-white">
+  <div class="ml-4 mr-5">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+
+          <form class="float-right app-searchx">
+
+          </form>
+          <h4 class="page-title no_button"><i class="dripicons-user-id"></i><em>{{user?.full_name}} </em> </h4>
+          <div class="spinner" *ngIf="loaders?.processing"></div>
+
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <div class="ml-2 mr-2">
+
+    <ng-container *ngIf="user?.user_type==='financier' || user?.user_type==='deal_runner'">
+      <app-run-finance [inputData]="user" ></app-run-finance>
+
+    </ng-container>
+
+    <ng-container *ngIf="user?.user_type==='deal_owner'">
+
+      <app-owner [inputData]="user"></app-owner>
+
+    </ng-container>
+
+  </div>
+</div>

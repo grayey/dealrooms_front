@@ -1,0 +1,33 @@
+<div class="header-bg top-white">
+  <div class="ml-4 mr-5">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+
+          <h4 class="page-title no_button"><i class="dripicons-user-id"></i><em>{{authUser?.full_name}}</em> </h4>
+          <div class="spinner" *ngIf="loaders?.processing"></div>
+
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+
+  <div class="ml-2 mr-2">
+
+    <ng-container *ngIf="userType==='financier' || userType==='deal_runner'">
+      <app-runner-financier [inputData]="user"></app-runner-financier>
+
+    </ng-container>
+
+    <ng-container *ngIf="userType==='deal_owner'">
+      <app-deal-owner-profile [inputData]="user"></app-deal-owner-profile>
+
+    </ng-container>
+
+  </div>
+</div>

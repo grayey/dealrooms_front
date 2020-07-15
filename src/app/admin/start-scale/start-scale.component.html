@@ -1,0 +1,101 @@
+<div class="header-bg top-white">
+  <div class="mr-5 ml-4">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+          <form class="float-right app-searchx">
+
+            <button class="btn btn-light btn text-dark" type="button"
+                    (click)="triggerModal('open','create_role_modal')" >
+              <i class="dripicons-plus"></i> Create Company
+            </button>
+          </form>
+          <h4 class="page-title"><i class="dripicons-rocket"></i>Companies > Startups & Scaleups</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="ml-3 mr-2">
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card m-b-20">
+          <div class="card-body">
+            <div class="table-responsive">
+
+              <table id="company_table" class="table table-striped table-hover table-bordered mt-3" cellspacing="0"
+                     width="100%">
+                <thead>
+                <tr>
+                  <th><b>#</b></th>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Location</th>
+                  <th>Roles</th>
+                  <th>No. of Deals</th>
+                  <th>Action</th>
+
+                </tr>
+                </thead>
+
+
+                <tbody>
+
+                <tr *ngIf="loaders?.processing || allCompanies?.length===0">
+                  <td colspan="8" class="text-center" *ngIf="loaders?.processing">
+                    <div class="spinner"></div>
+                  </td>
+                  <td colspan="8" class="text-center"
+                      *ngIf="(!loaders?.processing &&  allCompanies?.length===0) ">
+                    No companies available.
+                  </td>
+                </tr>
+
+                <tr *ngFor="let user of allCompanies; let i=index">
+                  <td><b>{{i+1}}.</b> <sup><span *ngIf="user?.is_super_admin"
+                                                 class="badge-danger badge-pill text-white"> <i class="fa fa-star"></i></span></sup>
+                  </td>
+                  <td>
+                    <a class="page-nav-link" routerLink="{{user?.id}}">
+                      {{user?.full_name}}
+                    </a>
+                  </td>
+                  <td>{{user?.phone}}</td>
+                  <td>{{user?.email}}</td>
+
+                  <td>
+                    {{user?.country || "----"}}
+                  </td>
+
+                  <td>
+
+                  </td>
+                  <td>
+
+                  </td>
+                  <td>
+                    <a class="btn btn-xx btn-info mr-2 text-white" routerLink="{{user?.id}}"><i
+                      class="dripicons-view-thumb"></i></a>
+
+
+                  </td>
+
+
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end col -->
+    </div> <!-- end row -->
+
+  </div> <!-- end container -->
+</div>

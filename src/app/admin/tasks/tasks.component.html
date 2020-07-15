@@ -1,0 +1,75 @@
+<div class="header-bg top-white">
+  <div class="ml-4 mr-5">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+
+          <form class="float-right app-searchx" *ngIf="allTasks.length == 0">
+
+            <button class="btn btn-light btn text-dark" (click)="generateTasks()" [disabled]="generating || loaders.processing">
+              <i *ngIf="generating" class="fa fa-spin fa-spinner"></i>
+              <i *ngIf="!generating" class="dripicons-gear"></i>
+               Generate System Tasks
+            </button>
+          </form>
+          <h4 class="page-title {{allTasks.length == 0? '':'no_button'}}"><i class="fa fa-cogs"></i> System Tasks</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="ml-2 mr-2">
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card m-b-20">
+          <div class="card-body">
+
+            <div class="table-responsive">
+
+            <table id="tasks_table" class="table table-hover table-striped table-bordered mt-3" cellspacing="0" width="100%">
+              <thead>
+              <tr>
+                <th><b>#</b></th>
+                <th>Name</th>
+                <th>Action</th>
+                <th>Date Created</th>
+                <th>Date Updated</th>
+              </tr>
+              </thead>
+
+
+              <tbody>
+
+              <tr *ngIf="loaders?.processing || allTasks?.length===0">
+                <td colspan="5" class="text-center" *ngIf="loaders?.processing">
+                  <div class="spinner"></div>
+                </td>
+                <td colspan="5" class="text-center"
+                    *ngIf="(!loaders?.processing &&  allTasks?.length===0) ">
+                  No tasks available.
+                </td>
+              </tr>
+
+              <tr *ngFor="let task of allTasks; let i=index">
+                <td><b>{{i+1}}.</b></td>
+                <td>{{task?.name || task?.route}}</td>
+                <td>{{task?.action}}</td>
+                <td>{{task?.created_at | date:'mediumDate'}}</td>
+                <td>{{task?.updated_at | date:'mediumDate'}}</td>
+              </tr>
+              </tbody>
+            </table>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end col -->
+    </div> <!-- end row -->
+
+  </div> <!-- end container -->
+</div>

@@ -1,0 +1,19 @@
+
+/*@import "src/assets/admin/css/style.css";*/
+/*@import "src/assets/admin/css/icons.css";*/
+
+.btn-primary {
+  background-color: #57809E !important;
+  border: 1px solid #57809E !important;
+}
+.btn-primary :hover {
+  background-color: #57809E !important;
+  border: 1px solid #57809E !important;
+}
+
+.password-view{
+  position: absolute;
+  cursor: pointer;
+  top: -23px;
+  right: 15px;
+}

@@ -1,0 +1,216 @@
+<div class="container-fluid">
+
+  <div class="card m-b-20">
+
+    <div class="card-body">
+
+      <div class="row pb-2">
+        <div class="col-md-3">
+
+          <div class="card m-b-30">
+            <div class="card-header">
+              <h4>Contact Info <sup *ngIf="isOwner"><span
+                class="badge badge-danger">You</span></sup></h4>
+            </div>
+            <img class="card-img-top img-fluid"
+                 src="{{user?.business_logo || businessLogo}}" alt="Card image cap">
+            <div class="card-body">
+              <h4 class="card-title font-20 mt-0">
+                <a routerLink="/panel/profile-view/{{user?.user_ref}}">{{user?.full_name }}
+                </a>
+              </h4>
+            </div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">
+                <b>Email:</b>
+
+                <a href="mailto:{{user?.email }}"> {{user?.email }}</a>
+              </li>
+              <li class="list-group-item"><b>Phone:</b> <em>
+                {{
+                user?.phone }}</em></li>
+              <li class="list-group-item">
+                <b>Date Joined:</b>
+                {{user?.dealowner_profile?.created_at | date:'mediumDate'}}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="col-md-3 border-left">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="pb-1">Business</h4>
+            </div>
+            <div class="card-body">
+
+
+              <p class="text-danger text-center">
+                <!--<b>Provide general project details.</b>-->
+
+              </p>
+
+
+              <ul class="list-group list-group-flush">
+
+                <li class="list-group-item"><b>Name:</b> {{user?.dealowner_profile?.name |
+                  titlecase}} <span class="badge badge-{{user?.dealowner_profile?.type=='start_up'?'info':'secondary'}}"
+                                    *ngIf="user?.dealowner_profile?.type"> {{user?.dealowner_profile?.type | removeUnderscore}}</span>
+                </li>
+                <li class="list-group-item"><b>Description: </b>
+                  {{user?.dealowner_profile ? user?.dealowner_profile?.description :
+                  user?.financier_runner_profile ? user?.financier_runner_profile?.description :
+                  null }}
+                </li>
+                <li class="list-group-item"><b>Location:</b> {{user?.dealowner_profile?.location?.split('|')?.join(', ') |
+                  titlecase}}
+                </li>
+                <li class="list-group-item"><b>Launch Date:</b> {{user?.dealowner_profile?.launch_date | date :'mediumDate'}}
+                </li>
+                <li class="list-group-item"><b>No of Employees:</b> {{user?.dealowner_profile?.no_employees | number}}
+                </li>
+                <li class="list-group-item"><b>Valuation:</b>USD {{user?.dealowner_profile?.valuation | number | summarize}}
+                </li>
+                <li class="list-group-item"><b>No. of Deals:</b> {{user?.deals?.length | number }}
+                </li>
+                <li class="list-group-item"><b>Business Type:</b> {{user?.dealowner_profile?.business_type |
+                  titlecase}}
+                </li>
+                <li class="list-group-item"><b>Client Focus:</b> {{user?.dealowner_profile?.client_focus |
+                  titlecase}} <span *ngIf="user?.dealowner_profile?.client_focus ">({{user?.dealowner_profile?.client_focus == 'customer'?'B2C':'B2B'}})</span>
+                </li>
+
+
+
+
+              </ul>
+
+
+            </div>
+          </div>
+
+        </div>
+        <div class="col-md-6 border-left">
+        <div class="card">
+          <div class="card-header">
+            <h4>
+              {{user?.user_type=='deal_runner' || user?.user_type=='deal_owner' ? "Deals": "Interests"}}
+            </h4>
+          </div>
+        <div class="card-body">
+
+
+        <p class="text-danger text-center">
+        <!--<b>Provide general project details.</b>-->
+
+        </p>
+
+
+      <div class="table-responsive">
+        <table id="deal_owner_deals" class="table table-striped table-sm table-hover table-bordered" cellspacing="0" width="100%">
+          <thead>
+          <tr>
+
+            <th>Project Name</th>
+            <th>Date Initiated</th>
+            <th>Sector</th>
+            <th class="text-right">($) Amount</th>
+            <th>Fund Type</th>
+            <th>Status</th>
+          </tr>
+          </thead>
+
+
+          <tbody>
+
+          <tr *ngIf="loaders?.processing || ownerDeals?.length===0">
+            <td [attr.colspan]="'6'" class="text-center"
+                *ngIf="loaders?.processing">
+              <div class="spinner"></div>
+            </td>
+            <td [attr.colspan]="'6'" class="text-center"
+                *ngIf="(!loaders?.processing &&  ownerDeals?.length===0) ">
+              No deals available.
+            </td>
+          </tr>
+
+          <tr *ngFor="let deal of ownerDeals; let i=index">
+
+
+
+            <td>
+              <a routerLink="../../deals/{{deal?.slug}}">
+
+                {{deal?.project_name}}
+                <br>
+                <span class="text-white badge badge-{{deal?.project_type =='start_up'?'info':'secondary'}}">{{deal?.project_type| removeUnderscore |titlecase}}</span>
+              </a>
+            </td>
+
+            <td>
+              {{deal?.created_at | date:'mediumDate'}}
+            </td>
+
+            <td>
+              <div class="shorten">{{deal?.sector?.name}}</div>
+            </td>
+            <td class="text-right">{{deal?.funding_amount | number |summarize}}</td>
+            <td>
+              <div class="shorten">
+                {{deal?.fundtype?.name}}
+              </div>
+            </td>
+
+
+
+
+
+
+
+
+            <td>
+              <!--{{deal?.status}}-->
+              <div class="text-center">
+
+                <ng-container *ngIf="(authUser && authUser?.user_type?.includes('admin'))">
+                  <select class="form-controlx" (change)="toggleDeal($event,deal)" id="deal_item{{i}}">
+                    <option value="0" [selected]="deal?.status==0" class="text-danger">Inactive</option>
+                    <option value="1" [selected]="deal?.status==1" class="text-success">Open</option>
+                    <option value="2" [selected]="deal?.status==2" class="text-info">Closed</option>
+                  </select>
+                  <br>
+
+                  <span [ngClass]="setClass(deal?.status)"
+                        *ngIf="!deal?.toggling">{{dealLabel(deal?.status)}}</span>
+                  <span class="text-dark blinking badge badge-default"
+                        *ngIf="deal?.toggling">{{deal?.toggling}}</span>
+
+                </ng-container>
+
+                <ng-container *ngIf="(authUser && !authUser?.user_type?.includes('admin'))">
+                         <span [ngClass]="setClass(deal?.status)"
+                               *ngIf="!deal?.toggling">{{dealLabel(deal?.status)}}</span>
+                </ng-container>
+
+
+              </div>
+            </td>
+
+
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+        </div>
+        </div>
+
+        </div>
+      </div> <!-- end row -->
+
+
+    </div> <!-- Page content Wrapper -->
+
+  </div>
+</div>

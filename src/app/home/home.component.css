@@ -1,0 +1,62 @@
+
+
+
+
+
+
+
+/*.post-tags {*/
+  /*color: #E04F00;*/
+  /*text-transform: capitalize;*/
+  /*font-weight: 600;*/
+  /*font-size: 15px;*/
+  /*!*display: inline-block;*!*/
+  /*background-color: rgb(240, 243, 252);*/
+  /*border-radius: 999px;*/
+  /*-webkit-border-radius: 999px;*/
+  /*-moz-border-radius: 999px;*/
+  /*-ms-border-radius: 999px;*/
+  /*-o-border-radius: 999px;*/
+  /*width: 50%;*/
+  /*padding-top: 7px;*/
+  /*padding-right: 20px;*/
+  /*padding-bottom: 7px;*/
+  /*padding-left: 20px;*/
+/*}*/
+
+
+
+
+/*.dropdown-menu {*/
+  /*position: absolute;*/
+  /*top: 100%;*/
+  /*left: 0;*/
+  /*z-index: 1000;*/
+  /*display: none;*/
+  /*float: left;*/
+  /*min-width: 3rem;*/
+  /*padding: .5rem 0;*/
+  /*margin: .08rem 0 0;*/
+  /*font-size: 0.5rem;*/
+  /*color: #212529;*/
+  /*text-align: left;*/
+  /*list-style: none;*/
+  /*background-color: #fff;*/
+  /*background-clip: padding-box;*/
+  /*border: 1px solid rgba(0,0,0,.15);*/
+  /*border-radius: .25rem;*/
+
+/*}*/
+
+/*.dropdown-item {*/
+  /*display: block;*/
+  /*width: 100%;*/
+  /*padding: 0rem 0.5rem !important;*/
+  /*clear: both;*/
+  /*font-weight: 200 !important;*/
+  /*color: #212529;*/
+  /*text-align: inherit;*/
+  /*white-space: nowrap;*/
+  /*background-color: transparent;*/
+  /*border: 0;*/
+/*}*/

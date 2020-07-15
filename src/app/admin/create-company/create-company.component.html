@@ -1,0 +1,126 @@
+
+<div class="header-bg top-white">
+  <div class="mr-5 ml-4">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+
+          <h4 class="page-title"><i class="dripicons-plus"></i>Companies > Create</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="ml-3 mr-2">
+
+
+
+        <form [formGroup]="createCompanyForm" (ngSubmit)="createCompany()" id="entrepreneur_deal_form">
+
+
+          <div class="container-fluid">
+
+            <div class="card m-b-20">
+
+              <div class="card-header">
+                <button type="submit" class="pull-right" [disabled]="createCompanyForm.invalid || loaders?.processing"
+                        [ngClass]="setValidationClass(createCompanyForm.valid)">
+                  {{messages.create}}&nbsp;
+                  <i class="spinner" *ngIf="loaders?.processing"></i>
+                </button>
+
+                <h2 class="text-muted  text-center">[ Create Company ]</h2>
+              </div>
+
+              <div class="card-body">
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Business Name<span class="required"
+                                       *ngIf="hasRequiredField(createCompanyForm.get('name'))">*</span></label>
+                      <input formControlName="name" type="text" class=" form-control" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Launch Date<span class="required"
+                                              *ngIf="hasRequiredField(createCompanyForm.get('launch_date'))">*</span></label>
+
+                      <input formControlName="launch_date" type="date" class=" form-control" value="">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Location<span class="required"
+                                           *ngIf="hasRequiredField(createCompanyForm.get('location'))">*</span></label>
+                      <input formControlName="location" type="text" class=" form-control" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>No. of Employees<span class="required"
+                                                   *ngIf="hasRequiredField(createCompanyForm.get('no_employees'))">*</span></label>
+                      <input formControlName="no_employees" type="number" class=" form-control" value="">
+
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Funding Amount<span class="required"
+                                                 *ngIf="hasRequiredField(createCompanyForm.get('funding_amount'))">*</span></label>
+                      <input formControlName="funding_amount" type="text" class=" form-control" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Sectors<span class="required"
+                                          *ngIf="hasRequiredField(createCompanyForm.get('sectors'))">*</span></label>
+                      <textarea formControlName="sectors" class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Business Type<span class="required"
+                                                *ngIf="hasRequiredField(createCompanyForm.get('business_type'))">*</span></label>
+                      <input formControlName="business_type" type="text" class=" form-control" value="">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Funding Type<span class="required"
+                                               *ngIf="hasRequiredField(createCompanyForm.get('funding_type_id'))">*</span></label>
+                      <textarea formControlName="funding_type_id" class="form-control"></textarea>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+              <div class="card-footer" style="bottom: 0">
+
+              </div>
+
+            </div>
+
+          </div> <!-- Page content Wrapper -->
+
+        </form>
+
+
+  </div> <!-- end container -->
+</div>

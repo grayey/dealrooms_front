@@ -1,0 +1,148 @@
+#cd-timeline:before {
+  left: 0;
+}
+
+.breadcrumb > .breadcrumb-item a {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.generalInformation, .personalInformation, .accountInformation, .fraudInformation, .otherInformation {
+  position: relative;
+}
+
+#req_ref{
+  border:  2px outset white !important;
+  border-radius: 1px;
+  z-index: 100000;
+  cursor: pointer;
+}
+.pointer {
+  position: absolute;
+  left: 0;
+}
+
+.content {
+  border-radius: 5px;
+  border: 1px solid #eff3f6;
+  margin-left: 40px;
+  padding: 1em;
+  position: relative;
+}
+
+.content h3 {
+  font-size: 18px;
+  margin: 0 0 15px 0;
+}
+
+.button-wrapper {
+  margin-left: 25px;
+  padding: 1em;
+  position: relative;
+}
+
+.tags-input > span.tags-input__tag {
+  background-color: lightgrey !important;
+  color: red;
+}
+
+#cd-timeline {
+  margin-bottom: 2em;
+  margin-top: 2em;
+  padding: 2em 1em;
+  position: relative;
+}
+
+/**
+Media screens only
+ */
+@media only screen and (max-width: 768px) {
+  .pointer {
+    left: -16px;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .pointer {
+    left: -20px;
+  }
+}
+
+.span-link {
+  cursor: pointer;
+  color: deepskyblue;
+}
+
+.edit_profile {
+  float: right;
+}
+
+.img-preview{
+  height: 16.5rem !important;
+  padding: 0 !important;
+}
+
+.img-preview img{
+  height: 16.5rem !important;
+  width: inherit;
+}
+.table-img{
+  height: 5rem !important;
+  padding: 0 !important;
+}
+
+.table-img img{
+  height: 5rem !important;
+  width: auto !important;
+}
+
+#certificate_iframe{
+  border: none !important;
+  overflow: hidden !important;
+}
+
+#display_certificate{
+  border: none !important;
+  overflow: hidden !important;
+}
+
+.img-div {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto;
+}
+
+.img-div img {
+  max-width: 100%;
+  max-height: 100px;
+  display: block;
+  margin: auto;
+}
+
+img.img {
+  max-width: 90px;
+  height: auto;
+}
+
+
+.watermark {
+  -webkit-filter: grayscale(100%);filter: grayscale(100%);opacity: .095;position: absolute;margin-top: 150px ;z-index:1035;transform: rotateY(0deg) rotate(-45deg);
+}
+
+.img-div img{
+
+  height:auto !important;
+  width: auto !important;
+}
+/*.watermark::after {*/
+  /*content: "";*/
+  /*background:url(../../../../assets/front/img/app_logo.png);*/
+  /*opacity: 0.2;*/
+  /*top: 0;*/
+  /*left: 0;*/
+  /*bottom: 0;*/
+  /*right: 0;*/
+  /*position: absolute;*/
+  /*z-index: -1;*/
+
+
+/*}*/

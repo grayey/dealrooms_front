@@ -1,0 +1,18 @@
+
+
+.card-img-top.img-fluid, .img-fluid{
+height: 200px !important;
+  width: auto !important;
+}
+
+
+.card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: 0.5rem 0.75rem 0.75rem 0.75rem !important;
+}
+
+.fin-img{
+  height: 5rem !important;
+  width: auto !important;
+}

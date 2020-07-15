@@ -1,0 +1,423 @@
+<div id="create_user_modal" class="modal fade" tabindex="-1" user="dialog" aria-labelledby="create_user_modalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form [formGroup]="createUserForm" (ngSubmit)="createUser()">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="pull-left">
+            <img class=" modal-logo" src="assets/front/img/app_logo.png">
+
+          </div>
+          <h5 class="modal-title mt-2 ml-5 text-center" id="create_user_modalLabel">Create New User</h5>
+          <button type="button" class="close " data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+          <div class="row">
+            <div class="col-md-{{userType == 'admin'?'6':'12'}}">
+              <div class="form-group">
+                <label>User Type<span class="required"
+                                      *ngIf="hasRequiredField(createUserForm.get('user_type'))">*</span></label>
+                <select class="form-control" (change)="setUserType($event.target.value)" formControlName="user_type">
+                  <option value="">Select User Type</option>
+                  <option value="deal_owner">Deal Owner</option>
+                  <option value="deal_runner">Deal Runner</option>
+                  <option value="financier">Financier</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+            </div>
+            <div *ngIf="userType == 'admin'" class="col-md-6">
+              <div class="form-group">
+                <label>Role<span class="required"
+                                 *ngIf="hasRequiredField(createUserForm.get('role_id'))">*</span></label>
+                <select class="form-control" formControlName="role_id">
+                  <option value="">Select User Role</option>
+                  <option [disabled]="!role?.enabled" [ngStyle]="setOptionStyle(role)"
+                          *ngFor="let role of allRoles; let r = index" [value]="role?.id">{{role?.name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Full Name<span class="required"
+                                      *ngIf="hasRequiredField(createUserForm.get('full_name'))">*</span></label>
+                <input formControlName="full_name" type="text" class=" form-control">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Email<span class="required"
+                                  *ngIf="hasRequiredField(createUserForm.get('email'))">*</span></label>
+                <input formControlName="email" type="email" class=" form-control">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Phone<span class="required"
+                                         *ngIf="hasRequiredField(createUserForm.get('phone'))">*</span></label>
+                <input formControlName="phone" type="text" class=" form-control">
+              </div>
+            </div>
+
+            <div class="col-md-6">
+
+
+              <div class="form-group">
+                <label>Country<span class="required"
+                                      *ngIf="hasRequiredField(createUserForm.get('country'))">*</span></label>
+                <!--<textarea formControlName="description" class="form-control"></textarea>-->
+
+                <select id="create_country" formControlName="country" class="form-control">
+                  <option value="">Select Country</option>
+                  <option *ngFor="let country of allCountries" [value]="country?.Name">{{country?.Name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+          <button type="submit" [disabled]="createUserForm.invalid || loaders?.processing"
+                  [ngClass]="setValidationClass(createUserForm.valid)">
+            {{messages.create}}&nbsp;
+            <i class="spinner" *ngIf="loaders?.processing"></i>
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </form>
+
+  </div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
+<div id="update_user_modal" class="modal fade" tabindex="-1" user="dialog" aria-labelledby="update_user_modalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <form [formGroup]="updateUserForm" (ngSubmit)="updateUser()">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="pull-left">
+            <img class=" modal-logo" src="assets/front/img/app_logo.png">
+
+          </div>
+          <h5 class="modal-title mt-2 ml-5 text-center" id="update_user_modalLabel">Edit: <b>{{userToEdit?.name}}</b>
+          </h5>
+          <button type="button" class="close " data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Last Name<span class="required"
+                                      *ngIf="hasRequiredField(updateUserForm.get('full_name'))">*</span></label>
+                <input formControlName="full_name" type="text" class=" form-control" value="">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Other Names<span class="required"
+                                        *ngIf="hasRequiredField(updateUserForm.get('country'))">*</span></label>
+                <!--<textarea formControlName="description" class="form-control"></textarea>-->
+
+                <select id="update_country" formControlName="country" class="form-control">
+                  <option value="">Select Country</option>
+                  <option *ngFor="let country of allCountries" [value]="country?.Name">{{country?.Name}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Email<span class="required"
+                                  *ngIf="hasRequiredField(updateUserForm.get('email'))">*</span></label>
+                <input formControlName="email" type="email" class=" form-control" value="">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Phone Number<span class="required"
+                                         *ngIf="hasRequiredField(updateUserForm.get('phone'))">*</span></label>
+                <input formControlName="phone" type="text" class=" form-control" value="">
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-{{userType == 'staff'?'6':'12'}}">
+              <div class="form-group">
+                <label>User Type<span class="required"
+                                      *ngIf="hasRequiredField(updateUserForm.get('user_type'))">*</span></label>
+                <select class="form-control" (change)="setUserType($event.target.value)" formControlName="user_type">
+                  <option value="">Select User Type</option>
+                  <option value="customer">Customer</option>
+                  <option value="staff">Staff</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6" *ngIf="userType == 'staff'">
+              <div class="form-group">
+                <label>Role<span class="required"
+                                 *ngIf="hasRequiredField(updateUserForm.get('role_id'))">*</span></label>
+                <select class="form-control" formControlName="role_id">
+                  <option value="">Select User Role</option>
+                  <option *ngFor="let role of allRoles; let r = index" [value]="role?.id">{{role?.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+          <button type="submit" class="" [disabled]="updateUserForm.invalid || loaders?.processing"
+                  [ngClass]="setValidationClass(updateUserForm.valid)">
+            {{messages.update}}&nbsp;
+            <i class="spinner" *ngIf="loaders?.processing"></i>
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </form>
+
+  </div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
+<div id="credit_user_modal" class="modal fade" tabindex="-1" user="dialog" aria-labelledby="credit_user_modalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+
+    <form [formGroup]="createPaymentForm" (ngSubmit)="refundUser()">
+
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="pull-left">
+            <img class=" modal-logo" src="assets/front/img/app_logo.png">
+
+          </div>
+          <h5 class="modal-title mt-2 ml-5 text-center" id="create_role_modalLabel">Refund {{userToCredit?.name}}</h5>
+          <button type="button" class="close " data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Amount<span class="required"
+                                   *ngIf="hasRequiredField(createPaymentForm.get('amount'))">*</span></label>
+                <input formControlName="amount" type="text" class=" form-control" readonly
+                       [value]="userToCredit?.profile?.credit_balance">
+              </div>
+
+              <div class="form-group">
+                <label>Scanned Evidence of Payment<span class="required"
+                                                        *ngIf="hasRequiredField(createPaymentForm.get('scanned_evidence'))">*</span></label>
+
+
+                <div class="custom-file">
+                  <input type="file" formControlName="scanned_evidence" class="custom-file-input mt-3"
+                         id="manual_payment_file" accept=".jpg, .jpeg, .png" (change)="uploadFile($event, true)">
+                  <label class="custom-file-label" for="customFile">{{manualPaymentFileName}}</label>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 card-lined-small scanned-preview">
+
+              <img [src]="manualPaymentFileUrl" alt="">
+
+            </div>
+
+
+          </div>
+
+          <div class="mt-3 mr-3" *ngIf="uploadInProgress">
+            <div class="progress">
+              <div [ngClass]="setProgressStatus(percentageUpload)" role="progressbar"
+                   [ngStyle]="setProgressBar(percentageUpload)" aria-valuenow="50" aria-valuemin="0"
+                   aria-valuemax="100">
+                {{percentageUpload}}
+              </div>
+            </div>
+            <div>
+              {{percentageInFraction}}
+              <small class="text-{{percentageUpload !== '100%'?'info':'success'}}"><b>complete</b></small>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+          <button type="submit" class=""
+                  [disabled]="manualPaymentFileName =='Evidence of Payment' || loaders?.processing"
+                  [ngClass]="setValidationClass(manualPaymentFileName !=='Evidence of Payment' )">
+            {{messages.create}}&nbsp;
+            <i class="spinner" *ngIf="loaders?.processing"></i>
+          </button>
+        </div>
+      </div><!-- /.modal-content -->
+    </form>
+
+
+  </div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
+
+
+<div class="header-bg top-white">
+  <div class="mr-5 ml-4">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+
+          <form class="float-right app-searchx">
+
+            <button *ngIf="userActivities?.create" class="btn btn-light btn text-dark" type="button"
+                    (click)="triggerModal('open','create_user_modal')">
+              <i class="dripicons-plus"></i> Create User
+            </button>
+          </form>
+          <h4 class="page-title"><i class="dripicons-user-group"></i> Users</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="ml-3 mr-2">
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card m-b-20">
+          <div class="card-body">
+            <div class="table-responsive">
+
+              <table id="users_table" class="table table-hover table-striped table-bordered mt-3" cellspacing="0" width="100%">
+                <thead>
+                <tr>
+                  <th><b>#</b></th>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>User Type</th>
+                  <th>Country</th>
+                  <th>Reference</th>
+                  <th>Date Created</th>
+                  <th>Date Updated</th>
+                  <th>Status</th>
+                  <th>Action</th>
+
+                </tr>
+                </thead>
+
+
+                <tbody>
+
+                <tr *ngIf="loaders?.processing || allUsers?.length===0">
+                  <td colspan="11" class="text-center" *ngIf="loaders?.processing">
+                    <div class="spinner"></div>
+                  </td>
+                  <td colspan="11" class="text-center"
+                      *ngIf="(!loaders?.processing &&  allUsers?.length===0) ">
+                    No users available.
+                  </td>
+                </tr>
+
+                <tr *ngFor="let user of allUsers; let i=index">
+                  <td><b>{{i+1}}.</b> <sup><span *ngIf="user?.is_super_admin"  class="badge-danger badge-pill text-white"> <i class="fa fa-star"></i></span></sup> </td>
+                  <td>
+                    <a class="page-nav-link" routerLink="panel/profile-view/{{user?.user_ref}}">
+                      {{user?.full_name}}
+                    </a>
+                  </td>
+                  <td>{{user?.phone}}</td>
+                  <td>{{user?.email}}</td>
+                  <td>{{user?.user_type| removeUnderscore  | titlecase}}
+                    <small *ngIf="user?.role">({{user?.role?.name}})</small>
+                    <small *ngIf="user?.is_super_admin">(Super Admin)</small>
+
+                  </td>
+                  <td>
+                    {{user?.country || "----"}}
+                  </td>
+                  <td>
+                    {{user?.user_ref || "----"}}
+                  </td>
+
+                  <td>{{user?.created_at | date:'mediumDate'}}</td>
+                  <td>{{user?.updated_at | date:'mediumDate'}}</td>
+                  <td>
+
+                    <ng-container *ngIf="!user?.is_super_admin && userActivities?.toggle">
+                      <input type="checkbox" id="switch3_{{i}}" switch="bool"
+                             [checked]="user?.status" (click)="toggleUser(user)">
+                      <label for="switch3_{{i}}" [attr.data-on-label]="'on'"
+                             [attr.data-off-label]="'off'"></label>
+                    </ng-container>
+                      <div>
+
+                    <span [ngClass]="setClassByNumber(user)">
+                      <span *ngIf="!user?.deleting">{{setStatusLabel(user?.status)}}</span>
+                       <span class="blinking" *ngIf="user?.deleting">deleting</span>
+                  </span>
+                      </div>
+
+
+
+                  </td>
+                  <td>
+                    <a class="btn btn-xx btn-info mr-2 text-white" routerLink="../../panel/profile-view/{{user?.user_ref}}"
+
+                    ><i
+                      class="ion-gear-a"></i></a>
+                    <button class="btn btn-xx btn-primary mr-2"
+                            (click)="openEditModal(user)" *ngIf="userActivities?.update"><i class="ion-edit"></i>
+                    </button>
+
+                    <button *ngIf="user?.profile?.credit_balance && +user?.profile?.credit_balance > 1"
+                            class="btn btn-xx btn-secondary mr-2"
+
+                            (click)="openRefundModal(user)"><i class="fa fa-money"></i>
+                    </button>
+
+
+                    <button *ngIf="!user?.is_super_admin && userActivities?._delete" class="btn btn-xx btn-danger mr-2 text-white"
+
+                            [disabled]="user?.deleting" (click)="deleteUser(user)">
+                      <i *ngIf="!user?.deleting" class="dripicons-cross"></i>
+                      <i *ngIf="user?.deleting" class="fa fa-spin fa-spinner"></i>
+                    </button>
+                  </td>
+
+
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end col -->
+    </div> <!-- end row -->
+
+  </div> <!-- end container -->
+</div>

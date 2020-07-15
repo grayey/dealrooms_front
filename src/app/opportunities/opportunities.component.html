@@ -1,0 +1,109 @@
+
+
+<div class="container-fluid">
+
+  <div class="row">
+
+
+    <div class="col-md-12 text-center" *ngIf="loaders?.processing || allActiveDeals?.length==0">
+
+
+      <ng-container *ngIf="loaders?.processing">
+        <div class="spinner"></div>
+        <div class="blinking text-white">Loading Opportunities</div>
+      </ng-container>
+      <ng-container *ngIf="!loaders?.processing">
+        <div class="card">
+          <div class="card-header">
+            <h4>No Opportunities Available at the moment <i class="mdi mdi-emoticon-sad"></i></h4>
+          </div>
+        </div>
+      </ng-container>
+
+
+    </div>
+
+
+    <div class="col-lg-4 " *ngFor="let activeDeal of allActiveDeals; let i = index">
+      <div class="card m-b-20 gallery_view">
+
+        <div class="card-body">
+          <div class="pull-right">
+            <span class="badge badge-default "><em>{{activeDeal?.watchers?.length |number | summarize}}</em> <small style="color: black"> watcher{{activeDeal?.watchers?.length=='1'?'':'s'}} <i class="mdi mdi-heart"></i></small> </span>
+            <br>
+            <span class="badge badge-default "><em>{{activeDeal?.investors?.length |number | summarize}}</em> <small style="color: black"> interest{{activeDeal?.investors?.length=='1'?'':'s'}} <i class="fa fa-thumbs-up"></i></small> </span>
+
+
+          </div>
+          <div class="media">
+            <img src="{{ activeDeal?.user?.business_logo || 'assets/images/small/img-3.jpg' }}" alt="business-logo"  class="thumb-md rounded-circle mr-2"/>
+
+            <div class="media-body">
+              <h5 class="m-t-10 font-18 mb-1"><a href="{{activeDeal?.website}}" target="_blank">{{activeDeal?.project_name}} <sup *ngIf="activeDeal?.user?.id == authUser?.id"><i class="mdi mdi-star text-danger"></i></sup></a>
+                <span
+                  class="ml-2 badge text-white badge-{{activeDeal?.project_type=='start_up'?'info':'secondary'}}"><small
+                  style="color: white"><em>{{activeDeal?.project_type| removeUnderscore }}</em></small></span>
+              </h5>
+              <p class="text-muted m-b-5">
+             <em>{{activeDeal?.user?.dealowner_profile ? activeDeal?.user?.dealowner_profile?.name : activeDeal?.user?.financier_runner_profile ? activeDeal?.user?.financier_runner_profile?.company_name : '----' }}</em>
+
+              </p>
+              <div class="text-muted font-14 font-500 font-secondary shorten"> {{activeDeal?.sector?.name}}
+              </div>
+            </div>
+          </div>
+
+          <div class="text-center ">
+            <em>{{activeDeal?.location?.split('|')?.join(', ')}}</em>
+          </div>
+
+          <div class="row text-center m-t-5">
+            <div class="col-6">
+              <h5 class="mb-0"><span class="post-tags">{{activeDeal?.fund_type?.name}}</span></h5>
+              <p class="text-muted font-14">Fund Type</p>
+            </div>
+            <div class="col-6">
+              <h5 class="mb-0"><span class="post-tags">${{activeDeal?.funding_amount | number | summarize}}</span></h5>
+              <p class="text-muted font-14">Amount</p>
+            </div>
+          </div>
+
+
+          <ul class="social-links text-center list-inline mt-1">
+            <li class="list-inline-item">
+              <div class="btn-group">
+
+                <button class="btn waves-effect  btn-info" (click)="viewDeal(activeDeal?.slug)">View <i class="mdi mdi-eye"></i></button>
+
+                <ng-container *ngIf="authUser && (authUser?.user_type=='financier')">
+                  <button
+                    class="btn waves-effect  btn-purple {{activeDeal?.user_is_watching ? 'text-danger':'text-white'}}"
+                    [disabled]="activeDeal?.process_watch  || activeDeal?.user_is_watching"
+                    (click)="watchDeal(activeDeal)">Watch{{activeDeal?.user_is_watching ? 'ing':''}} <i
+                    class="mdi mdi-heart {{activeDeal?.process_watch ? 'fa-spin':''}}"></i>
+                  </button>
+
+                  <button *ngIf="activeDeal?.user_is_accessing" class="btn waves-effect btn-success {{activeDeal?.user_is_investing ? 'text-danger':'text-white'}}"
+                          [disabled]="activeDeal?.process_invest  || activeDeal?.user_is_investing" (click)="investDeal(activeDeal)">Invest{{activeDeal?.user_is_investing ? 'ing':''}} <i class="fa fa-thumbs-up {activeDeal?.process_invest ? 'fa-spin':''}}"></i></button>
+
+                </ng-container>
+
+
+              </div>
+
+            </li>
+
+          </ul>
+
+        </div>
+      </div>
+    </div> <!-- end col -->
+  </div> <!-- end row -->
+
+
+</div>
+
+<!-- end container -->
+
+
+

@@ -1,0 +1,15 @@
+/*Filter select*/
+form > label{
+  color: #dddddd;
+}
+.filterSelect{
+  /*background-color: #c3c1c1;*/
+  /*background-color: #ffffff;*/
+  background-color: rgb(75,112,142);
+  color: white;
+  height: 30px!important;
+  padding: 0px 2px 0px 8px;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+
+}

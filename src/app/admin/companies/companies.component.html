@@ -1,0 +1,256 @@
+<div id="create_company_overlay" class="overlay">
+
+
+  <!--<form [formGroup]="createCompanyForm" (ngSubmit)="createCompany()" id="entrepreneur_deal_form">-->
+
+
+    <!--<div class="container-fluid">-->
+
+      <!--<div class="card m-b-20">-->
+
+        <!--<div class="card-header">-->
+          <!--<span class="btn  pull-right" role="button" type="button" (click)="closeOverlay('create_company_overlay')"-->
+                <!--aria-hidden="true"><i class="fa fa-3x fa-times"></i></span>-->
+
+          <!--<h2 class="text-muted  text-center">[ Create Company ]</h2>-->
+        <!--</div>-->
+
+        <!--<div class="card-body">-->
+
+          <!--<div class="row">-->
+            <!--<div class="col-md-6">-->
+              <!--<div class="form-group">-->
+                <!--<label>Name<span class="required"-->
+                                 <!--*ngIf="hasRequiredField(createCompanyForm.get('name'))">*</span></label>-->
+                <!--<input formControlName="name" type="text" class=" form-control" value="">-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-6">-->
+              <!--<div class="form-group">-->
+                <!--<label>Launch Date<span class="required"-->
+                                        <!--*ngIf="hasRequiredField(createCompanyForm.get('launch_date'))">*</span></label>-->
+
+                <!--<input formControlName="launch_date" type="date" class=" form-control" value="">-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+
+          <!--<div class="row">-->
+            <!--<div class="col-md-6">-->
+              <!--<div class="form-group">-->
+                <!--<label>Location<span class="required"-->
+                                     <!--*ngIf="hasRequiredField(createCompanyForm.get('location'))">*</span></label>-->
+                <!--<input formControlName="location" type="text" class=" form-control" value="">-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-6">-->
+              <!--<div class="form-group">-->
+                <!--<label>No. of Employees<span class="required"-->
+                                             <!--*ngIf="hasRequiredField(createCompanyForm.get('no_employees'))">*</span></label>-->
+                <!--<input formControlName="no_employees" type="number" class=" form-control" value="">-->
+
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+
+
+          <!--<div class="row">-->
+            <!--<div class="col-md-6">-->
+              <!--<div class="form-group">-->
+                <!--<label>Funding Amount<span class="required"-->
+                                           <!--*ngIf="hasRequiredField(createCompanyForm.get('funding_amount'))">*</span></label>-->
+                <!--<input formControlName="funding_amount" type="text" class=" form-control" value="">-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-6">-->
+              <!--<div class="form-group">-->
+                <!--<label>Sectors<span class="required"-->
+                                    <!--*ngIf="hasRequiredField(createCompanyForm.get('sectors'))">*</span></label>-->
+                <!--<textarea formControlName="sectors" class="form-control"></textarea>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+
+          <!--<div class="row">-->
+            <!--<div class="col-md-6">-->
+              <!--<div class="form-group">-->
+                <!--<label>Business Type<span class="required"-->
+                                          <!--*ngIf="hasRequiredField(createCompanyForm.get('business_type'))">*</span></label>-->
+                <!--<input formControlName="business_type" type="text" class=" form-control" value="">-->
+              <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-6">-->
+              <!--<div class="form-group">-->
+                <!--<label>Funding Type<span class="required"-->
+                                         <!--*ngIf="hasRequiredField(createCompanyForm.get('funding_type_id'))">*</span></label>-->
+                <!--<textarea formControlName="description" class="form-control"></textarea>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+
+
+        <!--</div>-->
+        <!--<div class="card-footer" style="bottom: 0">-->
+
+        <!--</div>-->
+
+      <!--</div>-->
+
+    <!--</div> &lt;!&ndash; Page content Wrapper &ndash;&gt;-->
+
+  <!--</form>-->
+
+
+</div>
+
+<!-- /.modal -->
+<!--<div id="update_company_modal" class="modal fade" tabindex="-1" company="dialog"-->
+     <!--aria-labelledby="update_company_modalLabel"-->
+     <!--aria-hidden="true">-->
+  <!--<div class="modal-dialog">-->
+    <!--<form [formGroup]="updateCompanyForm" (ngSubmit)="updateCompany()">-->
+
+      <!--<div class="modal-content">-->
+        <!--<div class="modal-header">-->
+          <!--<div class="pull-left">-->
+            <!--<img class=" modal-logo" src="assets/front/img/app_logo.png">-->
+
+          <!--</div>-->
+          <!--<h5 class="modal-title mt-2 ml-5 text-center" id="update_company_modalLabel">Edit:-->
+            <!--<b>{{companyToEdit?.name}}</b>-->
+          <!--</h5>-->
+          <!--<button type="button" class="close " data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i>-->
+          <!--</button>-->
+        <!--</div>-->
+        <!--<div class="modal-body">-->
+          <!--<div class="form-group">-->
+            <!--<label>Name<span class="required"-->
+                             <!--*ngIf="hasRequiredField(updateCompanyForm.get('name'))">*</span></label>-->
+            <!--<input formControlName="name" type="text" class=" form-control" value="">-->
+          <!--</div>-->
+
+          <!--<div class="form-group">-->
+            <!--<label>Description<span class="required"-->
+                                    <!--*ngIf="hasRequiredField(updateCompanyForm.get('description'))">*</span></label>-->
+            <!--<textarea formControlName="description" class="form-control"></textarea>-->
+          <!--</div>-->
+        <!--</div>-->
+        <!--<div class="modal-footer">-->
+          <!--<button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>-->
+          <!--<button type="submit" class="" [disabled]="updateCompanyForm.invalid || loaders?.processing"-->
+                  <!--[ngClass]="setValidationClass(updateCompanyForm.valid)">-->
+            <!--{{messages.update}}&nbsp;-->
+            <!--<i class="spinner" *ngIf="loaders?.processing"></i>-->
+          <!--</button>-->
+        <!--</div>-->
+      <!--</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
+    <!--</form>-->
+
+  <!--</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
+
+<!--</div>-->
+
+<!-- /.modal -->
+
+
+<div class="header-bg top-white">
+  <div class="mr-5 ml-4">
+    <!-- Page-Title -->
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="page-title-box">
+          <form class="float-right app-searchx">
+
+            <button class="btn btn-light btn text-dark" type="button"
+                    (click)="openOverlay('create_company_overlay')">
+              <i class="dripicons-plus"></i> Create Company
+            </button>
+          </form>
+          <h4 class="page-title"><i class="dripicons-rocket"></i>Companies > Corporates</h4>
+        </div>
+      </div>
+    </div>
+    <!-- end page title end breadcrumb -->
+  </div>
+</div>
+
+<div class="wrapper">
+  <div class="ml-3 mr-2">
+
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card m-b-20">
+          <div class="card-body">
+            <div class="table-responsive">
+
+              <table id="company_table" class="table table-striped table-hover table-bordered mt-3" cellspacing="0"
+                     width="100%">
+                <thead>
+                <tr>
+                  <th><b>#</b></th>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Email</th>
+                  <th>Location</th>
+                  <th>Companys</th>
+                  <th>No. of Deals</th>
+                  <th>Action</th>
+
+                </tr>
+                </thead>
+
+
+                <tbody>
+
+                <tr *ngIf="loaders?.processing || allCompanies?.length===0">
+                  <td colspan="8" class="text-center" *ngIf="loaders?.processing">
+                    <div class="spinner"></div>
+                  </td>
+                  <td colspan="8" class="text-center"
+                      *ngIf="(!loaders?.processing &&  allCompanies?.length===0) ">
+                    No companies available.
+                  </td>
+                </tr>
+
+                <tr *ngFor="let user of allCompanies; let i=index">
+                  <td><b>{{i+1}}.</b> <sup><span *ngIf="user?.is_super_admin"
+                                                 class="badge-danger badge-pill text-white"> <i class="fa fa-star"></i></span></sup>
+                  </td>
+                  <td>
+                    <a class="page-nav-link" routerLink="{{user?.id}}">
+                      {{user?.full_name}}
+                    </a>
+                  </td>
+                  <td>{{user?.phone}}</td>
+                  <td>{{user?.email}}</td>
+
+                  <td>
+                    {{user?.country || "----"}}
+                  </td>
+
+                  <td>
+
+                  </td>
+                  <td>
+
+                  </td>
+                  <td>
+                    <a class="btn btn-xx btn-info mr-2 text-white" routerLink="{{user?.id}}"
+                       ><i
+                      class="dripicons-view-thumb"></i></a>
+
+                  </td>
+
+
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div> <!-- end col -->
+    </div> <!-- end row -->
+
+  </div> <!-- end container -->
+</div>
