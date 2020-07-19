@@ -30,8 +30,12 @@ export class RunnerFinancierComponent extends MagicClasses implements OnInit, On
       history: ['', Validators.compose([Validators.required])],
       financier_type: ['', Validators.compose([Validators.required])],
       deal_size: ['', Validators.compose([Validators.required])],
-      funding_type: ['', Validators.compose([Validators.required])],
-      sector: ['', Validators.compose([Validators.required])],
+      funding_type: ['', Validators.compose([
+        // Validators.required
+      ])],
+      sector: ['', Validators.compose([
+        // Validators.required
+      ])],
       african_focus: ['', Validators.compose([Validators.required])],
       description: ['', Validators.compose([Validators.required])],
       country: ['', Validators.compose([Validators.required])],

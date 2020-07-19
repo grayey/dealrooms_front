@@ -210,6 +210,12 @@ export class DealViewComponent extends MagicClasses implements OnInit, AfterView
         this.resetLoaderAndMessage();
 
         this.notification.error(this.processErrors(error));
+      },
+
+      () => {
+        // if (this.viewedDeal['user_is_assigned'] && this.viewedDeal['closed_by']) {
+        //   this.triggerModal('open', 'close_deal_terms');
+        // }
       }
     )
   }

@@ -474,6 +474,43 @@ export class DealsComponent extends MagicClasses implements OnInit {
 
 
   }
+  public async closeDeal(deal) {
+
+    const accessData = {
+      id: deal['id'],
+      access: '3',
+      closed_by: this.authUser['id']
+    };
+
+    Swal.fire({
+      title: `You are about to request closure of ${deal.project_name}!`,
+      text: 'Continue?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        deal['deleting'] = true;
+        this.dealroomsRequestService.grantUserAccess(accessData).subscribe(
+          (dealDeletedResponse) => {
+            this.reassignRow(deal, dealDeletedResponse, false);
+            this.notification.success(`${deal.name} successfully deleted!`);
+
+          },
+          (error) => {
+            deal['deleting'] = false;
+            // $(`#${event.target.id}`)[0].click();
+            //console.log('An Error Occurred', error);
+            this.notification.error(`${deal.name} could not be deleted`, error);
+
+          }
+        );
+      }
+    });
+
+
+  }
 
   public openEditModal(deal) {
     this.updateDealForm.patchValue(deal);
@@ -675,7 +712,7 @@ export class DealsComponent extends MagicClasses implements OnInit {
       'ownership_structure_value': 'ownership_structure',
       'team_value': 'team',
       'key_challenge_value': 'key_challenges',
-    }
+    };
     const dealObject = {};
     const prefix = create ? '' : 'update_'; // take care of update: Remember to append 'update_' to all update ids
     for (const key in summerNoteObject) {
@@ -688,7 +725,6 @@ export class DealsComponent extends MagicClasses implements OnInit {
     setTimeout(() => {
       create ? this.createDealForm.patchValue(dealObject) : this.updateDealForm.patchValue(dealObject);
     }, 100);
-
 
   }
 
@@ -719,5 +755,37 @@ export class DealsComponent extends MagicClasses implements OnInit {
         this.notification.error(this.processErrors(error));
       }
     )
+  }
+
+  public investDeal(deal) {
+
+    Swal.fire({
+      title: `<span class="text-success">Register investment interest in '${deal.project_name}'? <em>You will receive notifications.</em></span>`,
+      text: 'Continue?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'No'
+    }).then((result) => {
+      if (result.value) {
+        deal['process_invest'] = true;
+        const investData = {...deal};
+        investData['interested_user'] = this.authUser.id;
+        investData['tracker'] = `${this.authUser.user_ref.toLowerCase()}-${deal.slug}`;
+
+        this.dealroomsRequestService.investDeal(investData).subscribe((investResponse) => {
+            deal['process_invest'] = false;
+            this.notification.success(`Your investment interest in ${deal.project_name} is now logged`)
+            this.reassignRow(deal, investResponse.data);
+            console.log('Active Deals', investResponse);
+          },
+          (error) => {
+            deal['process_invest'] = false;
+            this.notification.error(this.processErrors(error));
+          }
+        )
+      }
+    });
+
   }
 }

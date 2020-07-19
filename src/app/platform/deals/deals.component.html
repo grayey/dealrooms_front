@@ -1058,6 +1058,26 @@
                         <a class="dropdown-item" (click)="viewDealActivities(deal)" style="cursor: pointer"><em> view
                           interests </em> <i class="mdi mdi-eye"></i></a>
 
+                        <ng-container
+                          *ngIf="(authUser && !authUser?.user_type?.includes('admin') && !authUser?.user_type?.includes('deal') && deal?.accessors?.includes(authUser?.id) && !deal?.investors?.includes(authUser?.id)) && !deal?.assigned?.includes(authUser?.id)">
+                          <a class="dropdown-item" (click)="investDeal(deal)" href="javascript:void(0)"><em> invest
+                             </em> <i
+                            class="fa fa-thumbs-up"></i></a>
+                        </ng-container>
+
+                        <ng-container
+                        *ngIf="(authUser && !authUser?.user_type?.includes('admin') && !authUser?.user_type?.includes('deal')) && deal?.assigned?.includes(authUser?.id) && !deal?.closed?.includes(authUser?.id)">
+                        <a class="dropdown-item" (click)="investDeal(deal)" href="javascript:void(0)"><em> invest
+                        </em> <i
+                          class="fa fa-thumbs-up"></i></a>
+                      </ng-container>
+
+                        <ng-container
+                          *ngIf="(authUser && !authUser?.user_type?.includes('admin') && !authUser?.user_type?.includes('deal')) && deal?.investors?.includes(authUser?.id) && !deal?.closed?.includes(authUser?.id)">
+                          <a class="dropdown-item" (click)="closeDeal(deal)" href="javascript:void(0)"><em> Close
+                          </em> <i
+                            class="fa fa-angle-double-down"></i></a>
+                        </ng-container>
                       </div>
                     </div>
                   </td>

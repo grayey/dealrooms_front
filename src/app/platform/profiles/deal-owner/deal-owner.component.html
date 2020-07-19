@@ -63,9 +63,6 @@
                     </div>
                   </div>
 
-                  <!--<label>Location<span class="required"-->
-                                       <!--*ngIf="hasRequiredField(createCompanyForm.get('location'))">*</span></label>-->
-                  <!--<input formControlName="location" type="text" class=" form-control" value="">-->
                 </div>
               </div>
 
@@ -77,15 +74,15 @@
                 <div class="form-group">
                   <label>No. of Employees<span class="required"
                                                *ngIf="hasRequiredField(createCompanyForm.get('no_employees'))">*</span></label>
-                  <input formControlName="no_employees" type="number" class=" form-control" value="">
+                  <input  formControlName="no_employees" type="number" class=" form-control" value="">
 
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label>Valuation<span class="required"
+                  <label>Valuation(USD)<span class="required"
                                         *ngIf="hasRequiredField(createCompanyForm.get('valuation'))">*</span></label>
-                  <input formControlName="valuation" type="number" class=" form-control" value="">
+                  <input  formControlName="valuation" type="number" class=" form-control" value="">
                 </div>
               </div>
 
@@ -95,9 +92,9 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label>Sector<span class="required"
-                                     *ngIf="hasRequiredField(createCompanyForm.get('sectors'))">*</span></label>
+                                     *ngIf="hasRequiredField(createCompanyForm.get('sectors')) || true">*</span></label>
 
-                  <select formControlName="sectors" class="form-control sector_list" id="sector_list"  multiple="multiple" name="sectors[]">
+                  <select  formControlName="sectors" class="form-control sector_list" id="sector_list"   multiple="multiple" name="sectors[]">
                     <option value=""  disabled id="enable_scroll">Select</option>
                     <option [value]="sector?.id" *ngFor="let sector of allSectors">{{sector?.name}}</option>
 
@@ -112,6 +109,7 @@
                     <option value="">Select</option>
                     <option value="start_up">Start Up</option>
                     <option value="scale_up">Scale Up</option>
+                    <option value="corporate">Corporate</option>
                   </select>
                 </div>
               </div>
@@ -186,8 +184,8 @@
       <div class="card-footer" style="bottom: 0">
 
         <button type="submit" class="pull-right"
-                [disabled]="createCompanyForm.invalid || !countryList.value || loaders?.processing || uploadInProgress"
-                [ngClass]="setValidationClass(createCompanyForm.valid && countryList.value,true)">
+                [disabled]="createCompanyForm.invalid  || loaders?.processing || uploadInProgress"
+                [ngClass]="setValidationClass(createCompanyForm.valid)">
           {{messages.create}}&nbsp;Profile
           <i class="spinner" *ngIf="loaders?.processing || uploadInProgress"></i>
         </button>

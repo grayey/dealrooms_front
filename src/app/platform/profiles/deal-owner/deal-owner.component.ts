@@ -27,7 +27,9 @@ export class DealOwnerComponent extends MagicClasses implements OnInit, OnChange
       launch_date: ['', Validators.compose([Validators.required])],
       location: ['', Validators.compose([Validators.required])],
       no_employees: ['', Validators.compose([Validators.required])],
-      sectors: ['', Validators.compose([Validators.required])],
+      sectors: ['', Validators.compose([
+        // Validators.required
+      ])],
       type: ['', Validators.compose([Validators.required])],
       valuation: ['', Validators.compose([Validators.required])],
       client_focus: ['', Validators.compose([Validators.required])],
@@ -52,7 +54,7 @@ export class DealOwnerComponent extends MagicClasses implements OnInit, OnChange
   public uploadInProgress: boolean = false;
   public blankLogo: boolean = true;
   public countryName: string;
-  public showCity: boolean;
+  public showCity: boolean = true;
   public telInputInsatnce: any;
   public instanceGlobals: any;
   @Input('inputData') inputData: any;
@@ -114,6 +116,9 @@ export class DealOwnerComponent extends MagicClasses implements OnInit, OnChange
 
   }
 
+  public alertify(){
+    alert('Changed!!')
+  }
 
   public async createCompany() {
     const profileData = this.createCompanyForm.value;
@@ -139,7 +144,7 @@ export class DealOwnerComponent extends MagicClasses implements OnInit, OnChange
           this.notification.info('You can now proceed to create your first deal <i class="fa fa-smile-beam"></i>');
           Cache.set('WANTED_TO_CREATE', null);
         }
-        else{
+        else {
           this.router.navigateByUrl('/dashboard');
 
         }
@@ -266,7 +271,7 @@ export class DealOwnerComponent extends MagicClasses implements OnInit, OnChange
   private listFundTypes() {
     this.dealroomsRequestService.listFundTypes().subscribe((fundTypesResponse) => {
         this.allFundTypes = fundTypesResponse.data;
-        $('.fundtype_list').select2();
+        // $('.fundtype_list').select2();
       },
       (error) => {
         this.notification.error(this.processErrors(error));
@@ -274,6 +279,8 @@ export class DealOwnerComponent extends MagicClasses implements OnInit, OnChange
   }
 
   private listSectors() {
+
+
     this.dealroomsRequestService.listSectors().subscribe((sectorsResponse) => {
         this.allSectors = sectorsResponse.data;
         $('.sector_list').select2();
